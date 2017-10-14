@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/etReceipent"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="@string/enter_recipients"
+        android:paddingLeft="10dp"
+        android:inputType="phone"
+        android:textColor="#FF424242"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:paddingBottom="20dp"
+        android:layout_toLeftOf="@+id/contactFoto"
+        android:layout_toStartOf="@+id/contactFoto"
+        android:layout_marginRight="10dp"
+        android:translationY="10dp"/>
+
+    <ImageView
+        android:id="@+id/contactFoto"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:onClick="pickContacts"
+        android:background="@drawable/ic_action_name"
+        android:contentDescription="@string/enter_contact"
+        android:clickable="true"
+        android:layout_alignTop="@+id/etReceipent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:padding="10dp" />
+
+    <ImageView
+        android:id="@+id/bakground"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:background="#fff3e0"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:contentDescription="@string/background"
+        android:layout_below="@+id/etReceipent" />
+
+
+    <EditText
+        android:id="@+id/etMessageText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_message"
+        android:inputType="textMultiLine"
+        android:textColor="#FF424242"
+        android:maxLength="160"
+        android:gravity="start"
+        android:layout_below="@+id/bakground"
+        android:layout_toStartOf="@+id/imageButton"
+        android:layout_alignRight="@+id/etReceipent"
+        android:layout_alignEnd="@+id/etReceipent"
+        android:paddingLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:windowSoftInputMode="adjustPan|adjustResize"
+        android:visibility="visible"
+        android:layout_alignParentBottom="true" />
+    <requestFocus/>
+
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:contentDescription="@string/send_message"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:background="@drawable/ic_action_send"
+        android:layout_below="@+id/bakground"
+        android:layout_alignRight="@+id/contactFoto"
+        android:layout_alignEnd="@+id/contactFoto"
+        android:layout_marginTop="20dp" />
+
+
+
+    <TextView
+        android:id="@+id/sms_count"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/imageButton" />
+
+
+</RelativeLayout>
+

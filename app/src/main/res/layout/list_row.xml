@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:descendantFocusability="blocksDescendants">
+
+
+    <TextView
+        android:id="@+id/txtBroj"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryText"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="003859900000"
+        app:layout_constraintLeft_toRightOf="@+id/contactImage"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/txtPoruka"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="11"
+        android:textColor="@color/secondaryText"
+        android:textSize="14sp"
+        tools:text="Lorem ipsum dolor sit amet consectetue"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/txtBroj"
+        app:layout_constraintLeft_toRightOf="@+id/contactImage"
+        android:layout_marginLeft="16dp" />
+
+    <TextView
+        android:id="@+id/txtVrijeme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/secondaryText"
+        android:paddingLeft="15dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        tools:text="16:00"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtBroj"
+        android:layout_marginTop="0dp" />
+
+    <TextView
+        android:id="@+id/txtMinute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/secondaryText"
+        android:layout_alignBottom="@+id/contactImage"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentEnd="true"
+        android:layout_alignRight="@+id/txtVrijeme"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="0dp"
+        tools:text="@string/_05_15"/>
+
+    <ImageView
+        android:id="@+id/contactImage"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="@string/contact_photo"
+        android:layout_alignParentTop="false"
+        android:layout_centerVertical="true"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@drawable/ic_action_person_pin"/>
+
+
+</android.support.constraint.ConstraintLayout>

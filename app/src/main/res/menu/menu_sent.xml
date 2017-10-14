@@ -1,0 +1,24 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.SentActivity">
+
+
+
+    <item
+        android:id="@+id/PostavkeTelefona"
+        android:title="@string/phone_settings"
+        android:onClick="setSettings"
+        app:showAsAction="never"/>
+
+
+    <item
+        android:id="@+id/search"
+        android:title="@string/search"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+
+
+</menu>

@@ -1,0 +1,37 @@
+
+<resources>
+    <string name="app_name">SMSapp</string>
+    <string name="activity_sent">Sent messages</string>
+    <string name="activity_inbox">Messages</string>
+    <string name="activity_new_message">New message</string>
+
+    <string name="phone_settings">Phone settings</string>
+    <string name="enter_recipients">Recipient…</string>
+    <string name="enter_message">Enter message…</string>
+    <string name="background">Background</string>
+    <string name="send_message">SEND</string>
+    <string name="contact_photo">Contact photo</string>
+    <string name="ic_launcher">Launcher icon</string>
+    <string name="navigation">Navigation</string>
+    <string name="reply">Reply</string>
+    <string name="search">Search</string>
+    <string name="app_settings">Settings</string>
+    <string name="delete">Delete</string>
+    <string name="share">Share</string>
+    <string name="navigation_drawer_open" />
+    <string name="navigation_drawer_close" />
+    <string name="delete_message">This message will be deleted</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="permanently_message_delete">Permanently delete message!</string>
+    <string name="sms_message">SMS message</string>
+    <string name="show_full_message">Show full mesasge</string>
+    <string name="message_is_missing">Message is missing!</string>
+    <string name="sending_failed">Sending failed</string>
+    <string name="message_sent">Message sent</string>
+    <string name="share_via">Share via</string>
+    <string name="enter_contact">Enter recipient</string>
+    <string name="_05_15">05:15</string>
+
+
+</resources>

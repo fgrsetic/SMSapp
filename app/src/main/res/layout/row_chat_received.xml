@@ -1,0 +1,88 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="120dp"
+    android:background="#FFEEEEEE">
+
+        <TextView
+            android:id="@+id/txtVrijemeReceived"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="false"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp" />
+
+
+    <LinearLayout
+        android:id="@+id/chatReceived"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bubble_lijevo"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/txtVrijemeReceived"
+        android:layout_toRightOf="@+id/contactImageReceived"
+        android:layout_toEndOf="@+id/contactImageReceived"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:id="@+id/txtPorukaReceived"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#87000000"
+            android:textSize="16sp"
+            android:layout_margin="10dp" />
+
+        <TextView
+            android:id="@+id/txtMinuteReceived"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#87000000"
+            android:textSize="16sp"
+            android:padding="10dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/contactImageReceived"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_action_person_pin"
+            android:contentDescription="@string/contact_photo"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_below="@+id/chatReceived"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingBottom="5dp" />
+
+    <EditText
+        android:id="@+id/etReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="13"
+        android:translationY="5dp"
+        android:layout_below="@+id/contactImageReceived"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="27dp"
+        android:layout_marginLeft="10dp" />
+
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="@drawable/ic_action_reply"
+        android:contentDescription="@string/reply"
+        android:onClick="reply"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="false"
+        android:layout_marginRight="16dp"
+        android:layout_alignBottom="@+id/etReply"
+        android:layout_marginBottom="16dp" />
+
+
+</RelativeLayout>
