@@ -3,6 +3,7 @@ package com.example.franjo.smsapp.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,7 @@ import android.widget.TextView;
 
 import com.example.franjo.smsapp.R;
 import com.example.franjo.smsapp.model.SMSData;
-import com.example.franjo.smsapp.ui.SentActivity;
+import com.example.franjo.smsapp.ui.SentMessagesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,19 +88,30 @@ public class SentAdapter extends ArrayAdapter<SMSData> implements Filterable {
         holder.txtPoruka = (TextView) convertView.findViewById(R.id.txtPoruka);
         holder.txtVrijeme = (TextView) convertView.findViewById(R.id.txtVrijeme);
         holder.txtMinute = (TextView) convertView.findViewById(R.id.txtMinute);
-        holder.imageView = (ImageView) convertView.findViewById(R.id.contactImage);
+        holder.imageView = (ImageView) convertView.findViewById(R.id.contactPhotoPick);
 
-        // Populate the data into the template view using the data object
-        holder.txtBroj.setText(smsData.getNumber());
-
-        if (!SentActivity.showFullText()) {
+        if (!SentMessagesActivity.showFullText()) {
             holder.txtPoruka.setSingleLine(true);
             holder.txtPoruka.setEllipsize(TextUtils.TruncateAt.END);
         }
 
-        holder.txtPoruka.setText(smsData.getBody());
-        holder.txtVrijeme.setText(smsData.getDate());
-        holder.txtMinute.setText(smsData.getMinute());
+        // Populate the data into the template view using the data object
+        if (smsData != null) {
+            holder.txtBroj.setText(smsData.getNumber());
+        }
+
+        if (smsData != null) {
+            holder.txtPoruka.setText(smsData.getBody());
+        }
+
+        if (smsData != null) {
+            holder.txtVrijeme.setText(smsData.getDate());
+        }
+
+        if (smsData != null) {
+            holder.txtMinute.setText(smsData.getMinute());
+        }
+
         holder.imageView.setImageResource(R.drawable.ic_action_person_pin);
 
         Random rand = new Random();
@@ -117,7 +129,7 @@ public class SentAdapter extends ArrayAdapter<SMSData> implements Filterable {
     }
 
     //Keep reference to children view to avoid unnecessary calls
-    static class ViewHolder {
+    private static class ViewHolder {
         TextView txtBroj;
         ImageView imageView;
         TextView txtPoruka;
@@ -126,6 +138,7 @@ public class SentAdapter extends ArrayAdapter<SMSData> implements Filterable {
     }
 
     //Get custom filter, return filter
+    @NonNull
     @Override
     public Filter getFilter() {
         if (filter == null) {
@@ -146,7 +159,7 @@ public class SentAdapter extends ArrayAdapter<SMSData> implements Filterable {
 
                 // search content in smsList
                 for (SMSData smsData : smsList) {
-                    if (smsData.getBody().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                    if (smsData.getNumber().toLowerCase().contains(constraint.toString().toLowerCase())) {
                         tempList.add(smsData);
                     }
                 }

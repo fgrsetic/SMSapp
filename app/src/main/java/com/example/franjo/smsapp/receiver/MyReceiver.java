@@ -1,6 +1,7 @@
 package com.example.franjo.smsapp.receiver;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -8,43 +9,59 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.telephony.SmsMessage;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.franjo.smsapp.R;
 import com.example.franjo.smsapp.model.SMSData;
-import com.example.franjo.smsapp.ui.InboxActivity;
-import com.example.franjo.smsapp.ui.SMSDetailsInbox;
+import com.example.franjo.smsapp.ui.DetailsMessagesInbox;
+import com.example.franjo.smsapp.ui.InboxMessagesActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class MyReceiver extends BroadcastReceiver {
 
     // A PDU is a "protocol data unit". This is the industrial standard for SMS message
     private static final String SMS_BUNDLE = "pdus";
-    protected final ArrayList<SMSData> smsList = new ArrayList<>();
+    protected final List<SMSData> smsList = new ArrayList<>();
     SMSData smsData = new SMSData();
+    String smsMessageStr = "";
+
+    /*
+    * This notification ID can be used to access our notification after we've displayed it. This
+    * can be handy when we need to cancel the notification, or perhaps update it. This number is
+    * arbitrary and can be set to whatever you like. 1138 is in no way significant.
+    */
+    private static final int SMS_NOTIFICATION_ID = 1138;
+    /**
+     * This pending intent id is used to uniquely reference the pending intent
+     */
+    private static final int SMS_PENDING_INTENT = 3417;
+
 
     public MyReceiver() {
+
     }
+
     // This method is called when this BroadcastReceiver receives an Intent broadcast
     @Override
     public void onReceive(Context context, Intent intent) {
         // Get the SMS message received
         final Bundle bundle = intent.getExtras();
+
         try {
             if (bundle != null) {
-                // A PDU is a "protocol data unit". This is the industrial standard for SMS message
                 final Object[] pdusObj = (Object[]) bundle.get(SMS_BUNDLE);
-
-                String smsMessageStr = "";
 
                 if (pdusObj != null) {
                     for (Object aPdusObj : pdusObj) {
@@ -84,39 +101,21 @@ public class MyReceiver extends BroadcastReceiver {
                         smsData.setContactImage();
                         smsList.add(smsData);
 
-                        if (InboxActivity.active) {
-                            InboxActivity inst = InboxActivity.instance();
+                        if (InboxMessagesActivity.active) {
+                            InboxMessagesActivity inst = InboxMessagesActivity.instance();
                             inst.updateInbox(smsData);
                         } else {
-                            Intent i = new Intent(context, InboxActivity.class);
+                            Intent i = new Intent(context, InboxMessagesActivity.class);
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             context.startActivity(i);
-
                         }
 
                     }
-//                    //show alert
-//                    Toast.makeText(context, smsMessageStr, Toast.LENGTH_SHORT).show();
+                    // Show alert
+                    Toast.makeText(context, smsMessageStr, Toast.LENGTH_SHORT).show();
 
-                    Intent i = new Intent(context, SMSDetailsInbox.class);
-                    i.putExtra("broj", smsMessageStr);
-                    i.putExtra("name", smsData.getNumber());
-                    i.putExtra("poruka", smsData.getBody());
-                    i.putExtra("vrijeme", smsData.getDate());
-                    i.putExtra("minute", smsData.getMinute());
+                    incomingSms(context);
 
-                    PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-                    builder.setAutoCancel(true)
-                            .setWhen(System.currentTimeMillis())
-                            .setSmallIcon(R.drawable.ic_mail_outline)
-                            .setContentTitle(smsData.getNumber())
-                            .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
-                            .setContentIntent(pendingIntent)
-                            .setContentText(smsData.getBody());
-
-                    Notification notification = builder.build();
-                    NotificationManagerCompat.from(context).notify(0, notification);
 
                 }
 
@@ -129,9 +128,43 @@ public class MyReceiver extends BroadcastReceiver {
         }
     }
 
+    public void incomingSms(Context context) {
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setAutoCancel(true)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.drawable.ic_stat_name)
+                .setContentTitle(smsData.getNumber())
+                .setDefaults(Notification.DEFAULT_VIBRATE)
+                .setContentIntent(contentIntent(context))
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
+                .setContentText(smsData.getBody());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            builder.setPriority(Notification.PRIORITY_HIGH);
+        }
 
 
+        NotificationManager notificationManager = (NotificationManager)
+                context.getSystemService(Context.NOTIFICATION_SERVICE);
+                    /* SMS_REMINDER_NOTIFICATION_ID allows you to update or cancel the notification later on */
+        notificationManager.notify(SMS_NOTIFICATION_ID, builder.build());
+    }
 
+
+    private PendingIntent contentIntent(Context context) {
+        Intent startActivityIntent = new Intent(context, DetailsMessagesInbox.class);
+
+            startActivityIntent.putExtra("broj", smsMessageStr);
+            startActivityIntent.putExtra("name", smsData.getNumber());
+            startActivityIntent.putExtra("poruka", smsData.getBody());
+            startActivityIntent.putExtra("vrijeme", smsData.getDate());
+            startActivityIntent.putExtra("minute", smsData.getMinute());
+
+        return PendingIntent.getActivity(context, SMS_PENDING_INTENT, startActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+    }
 
     private String getContactName(Context context, String phoneNumber) {
 

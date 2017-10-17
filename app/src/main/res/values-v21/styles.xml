@@ -10,5 +10,8 @@
 
         <!--  It should be true otherwise action mode will not overlay toolbar -->
         <item name="windowActionModeOverlay">true</item>
+
+        <!-- If we dont add a theme for preference app would crash -->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 </resources>
