@@ -114,7 +114,6 @@ public class InboxMessagesActivity extends AppCompatActivity {
 
     private void setupSharedPreferences() {
         // A reference to the default shared preferences from the PreferenceManager class
-        PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
     }
@@ -455,7 +454,8 @@ public class InboxMessagesActivity extends AppCompatActivity {
     }
 
     public static boolean showFullText() {
-        return sharedPreferences.getBoolean(FULL_SMS, true);
+       // Getting the value of the full sms checkbox preference
+       return sharedPreferences.getBoolean(FULL_SMS, true);
     }
 
 //
