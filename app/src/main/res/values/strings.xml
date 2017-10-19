@@ -39,6 +39,7 @@
 
     <string name="allow_permission">Please allow permission!</string>
     <string name="sms_permission_granted">Read SMS permission granted</string>
+    <string name="sms_permission_denied">Read SMS permission denied</string>
     <string name="last_letter_count">/1</string>
     <string name="select_picture">Select picture</string>
 

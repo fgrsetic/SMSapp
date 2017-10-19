@@ -58,8 +58,6 @@ public class InboxMessagesActivity extends AppCompatActivity {
     private FloatingActionButton fabInbox;
 
     private ImageView photoImage;
-    private int PICK_IMAGE_REQUEST = 1;
-    private int PICK_IMAGE_REQUEST_KITKAT = 2;
 
     Cursor cursor;
 
@@ -144,14 +142,11 @@ public class InboxMessagesActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void getPermissionToReadContacts() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (shouldShowRequestPermissionRationale(
-                    Manifest.permission.READ_CONTACTS)) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                 Toast.makeText(this, R.string.allow_permission, Toast.LENGTH_SHORT).show();
             }
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
-                    READ_CONTACTS_PERMISSIONS_REQUEST);
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, READ_CONTACTS_PERMISSIONS_REQUEST);
 
         }
     }
@@ -160,27 +155,22 @@ public class InboxMessagesActivity extends AppCompatActivity {
     // if it’s not, we’re checking whether we need to explain the situation to the user.
     // If so, then we’re displaying a toast message and either way, we’re then actually doing the asking.
     public void getPermissionToReadSMS() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (shouldShowRequestPermissionRationale(
-                        Manifest.permission.READ_SMS)) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_SMS)) {
                     Toast.makeText(this, R.string.allow_permission, Toast.LENGTH_SHORT).show();
                 }
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.READ_SMS},
-                        READ_SMS_PERMISSIONS_REQUEST);
+                requestPermissions(new String[]{Manifest.permission.READ_SMS}, READ_SMS_PERMISSIONS_REQUEST);
             }
         }
     }
 
     // We handle the response via onRequestPermissionResult.
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
-        // Make sure it's our original READ_CONTACTS request
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+
         if (requestCode == READ_SMS_PERMISSIONS_REQUEST) {
             if (grantResults.length == 1 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -188,7 +178,7 @@ public class InboxMessagesActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.sms_permission_granted, Toast.LENGTH_SHORT).show();
                 refreshSmsInbox();
             } else {
-                Toast.makeText(this, R.string.sms_permission_granted, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.sms_permission_denied, Toast.LENGTH_SHORT).show();
             }
 
         } else {
@@ -248,7 +238,7 @@ public class InboxMessagesActivity extends AppCompatActivity {
                 String dateStringMinute = sdfM.format(cal.getTime());
                 sms.setMinute(dateStringMinute);
 
-                sms.setContactImage();
+                sms.setContactImage(sms.getContactImage());
                 smsList.add(sms);
 
                 smsInboxCursor.moveToNext();
@@ -487,30 +477,71 @@ public class InboxMessagesActivity extends AppCompatActivity {
 //        intent.setAction(Intent.ACTION_GET_CONTENT);
 //        // Always show the chooser (if there are multiple options available)
 //        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-
+//
 //    }
 
 
-
+//
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
 //
+//        Bitmap bitmap = null;
+//        String imagePath = null;
+//
 //        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
 //
 //            Uri uri = data.getData();
+//            String[] filePath = { MediaStore.Images.Media.DATA };
+//            Cursor cursor = getContentResolver().query(uri, filePath, null, null, null);
 //
-//            try {
-//                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-//                // Log.d(TAG, String.valueOf(bitmap));
-//
-//                photoImage = (ImageView) findViewById(R.id.contactPhotoPick);
-//                photoImage.setImageBitmap(bitmap);
-//            } catch (IOException e) {
-//                e.printStackTrace();
+//            if (cursor != null) {
+//                cursor.moveToFirst();
 //            }
+//            if (cursor != null) {
+//                imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+//            }
+//
+//            if (cursor != null) {
+//                cursor.close();
+//            }
+//
+//            photoImage = (ImageView) findViewById(R.id.contactPhotoPick);
+//            // Resample the saved image to fit the ImageView
+//            bitmap = resamplePic(this, imagePath);
+//            photoImage.setImageBitmap(bitmap);
+//
+//
 //        }
 //    }
+
+//    static Bitmap resamplePic(Context context, String imagePath) {
+//
+//        // Get device screen size information
+//        DisplayMetrics metrics = new DisplayMetrics();
+//        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//        manager.getDefaultDisplay().getMetrics(metrics);
+//
+//        int targetH = metrics.heightPixels;
+//        int targetW = metrics.widthPixels;
+//
+//        // Get the dimensions of the original bitmap
+//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//        bmOptions.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(imagePath, bmOptions);
+//        int photoW = bmOptions.outWidth;
+//        int photoH = bmOptions.outHeight;
+//
+//        // Determine how much to scale down the image
+//        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+//
+//        // Decode the image file into a Bitmap sized to fill the View
+//        bmOptions.inJustDecodeBounds = false;
+//        bmOptions.inSampleSize = scaleFactor;
+//
+//        return BitmapFactory.decodeFile(imagePath);
+//    }
+
 
 
 }

@@ -1,7 +1,5 @@
 package com.example.franjo.smsapp.model;
 
-import com.example.franjo.smsapp.R;
-
 /**
  * Created by Franjo on 20.12.2016..
  */
@@ -62,8 +60,8 @@ public class SMSData {
         return contactImage;
     }
 
-    public void setContactImage() {
-        this.contactImage = R.drawable.ic_action_person_pin;
+    public void setContactImage(int contactImage) {
+        this.contactImage = contactImage;
     }
 
     public boolean isMine() {

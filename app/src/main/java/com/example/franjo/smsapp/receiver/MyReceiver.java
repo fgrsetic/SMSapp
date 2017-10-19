@@ -98,7 +98,7 @@ public class MyReceiver extends BroadcastReceiver {
                         smsData.setBody(smsBody);
                         smsData.setDate(dateString);
                         smsData.setMinute(dateStringMinute);
-                        smsData.setContactImage();
+                        //smsData.setContactImage();
                         smsList.add(smsData);
 
                         if (InboxMessagesActivity.active) {

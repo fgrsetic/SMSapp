@@ -116,7 +116,7 @@ public class SentMessagesActivity extends AppCompatActivity {
                 String dateStringMinute = sdfM.format(cal.getTime());
                 sms.setMinute(dateStringMinute);
 
-                sms.setContactImage();
+                sms.setContactImage(sms.getContactImage());
                 smsList.add(sms);
 
                 cursor.moveToNext();
