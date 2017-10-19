@@ -130,7 +130,8 @@ public class InboxAdapter extends ArrayAdapter<SMSData> implements Filterable {
 
     }
 
-    // Get custom filter, return filter
+    // Get custom filter
+    // Returns a filter that can be used to constrain data with a filtering pattern.
     @NonNull
     @Override
     public Filter getFilter() {
@@ -153,17 +154,17 @@ public class InboxAdapter extends ArrayAdapter<SMSData> implements Filterable {
             FilterResults filterResults = new FilterResults();
             // When the constraint is null, the original data must be restored.
             if (constraint != null && constraint.length()>0) {
-                List<SMSData> tempList = new ArrayList<>();
+                filteredList = new ArrayList<>();
 
-                // search content in smsList
+                // Search content in smsList
                 for (SMSData smsData : smsList) {
                     if (smsData.getNumber().toLowerCase().contains(constraint.toString().toLowerCase())) {
-                        tempList.add(smsData);
+                        filteredList.add(smsData);
                     }
                 }
 
-                filterResults.count = tempList.size();
-                filterResults.values = tempList;
+                filterResults.count = filteredList.size();
+                filterResults.values = filteredList;
 
             } else {
 

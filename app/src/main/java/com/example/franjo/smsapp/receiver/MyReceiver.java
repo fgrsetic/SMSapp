@@ -103,12 +103,6 @@ public class MyReceiver extends BroadcastReceiver {
                         //smsData.setContactImage();
                         smsList.add(smsData);
 
-                        // This will be in action whenever a new SMS is received
-                        // as long as the app is open
-//                        if (InboxMessagesActivity.active) {
-//                            InboxMessagesActivity inst = InboxMessagesActivity.instance();
-//                            inst.updateInbox(smsData);
-//                        }
 
                     }
                     InboxMessagesActivity inst = InboxMessagesActivity.instance();
