@@ -89,6 +89,9 @@ public class DetailsMessagesInbox extends AppCompatActivity {
                 break;
             case R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                break;
+            default:
+                break;
 
         }
 

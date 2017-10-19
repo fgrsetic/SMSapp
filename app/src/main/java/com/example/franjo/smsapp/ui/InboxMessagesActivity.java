@@ -63,10 +63,8 @@ public class InboxMessagesActivity extends AppCompatActivity {
 
     private static final String FULL_SMS = "full_sms";
     private static SharedPreferences sharedPreferences;
-
+    // This will help us to communicate between classes
     private static InboxMessagesActivity inst;
-    public static boolean active = false;
-
     private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
 
@@ -124,21 +122,10 @@ public class InboxMessagesActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        Log.i(LOG_TAG, "onStart");
-        active = true;
         inst = this;
         setInboxAdapter();
     }
 
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.i(LOG_TAG, "onStop");
-        active = false;
-
-
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void getPermissionToReadContacts() {
@@ -367,6 +354,8 @@ public class InboxMessagesActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 for (final SMSData sms : selection_list) {
                                     arrayAdapter.remove(sms);
+                                    // Notifies the attached observers that the underlying data has been changed
+                                    // and any View reflecting the data set should refresh itself.
                                     arrayAdapter.notifyDataSetChanged();
 
 

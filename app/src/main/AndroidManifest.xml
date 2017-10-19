@@ -85,7 +85,14 @@
 
         <activity
             android:name=".ui.DetailsMessagesInbox"
-            android:parentActivityName=".ui.InboxMessagesActivity"/>
+            android:parentActivityName=".ui.InboxMessagesActivity" >
+
+        <!-- Parent activity meta-data to support 4.0 and lower -->
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.InboxMessagesActivity" />
+
+        </activity>
 
         <activity
             android:name=".ui.SettingsActivity"
@@ -107,9 +114,10 @@
 
             <intent-filter
                 android:priority="999">
-                <!-- <action android:name="android.provider.Telephony.SMS_DELIVER" /> -->
-            <action
-                android:name="android.provider.Telephony.SMS_RECEIVED" />
+
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+                <action android:name="android.provider.Telephony.SMS_DELIVER" />
+                <action android:name="android.provider.Telephony.SMS_DELIVER_ACTION" />
             </intent-filter>
         </receiver>
 
@@ -130,10 +138,8 @@
             android:exported="true"
             android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE">
             <intent-filter>
-                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
                 <data android:scheme="sms" />
                 <data android:scheme="smsto" />
                 <data android:scheme="mms" />

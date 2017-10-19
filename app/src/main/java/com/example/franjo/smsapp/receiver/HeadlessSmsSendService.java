@@ -20,6 +20,7 @@ public class HeadlessSmsSendService extends Service {
         super.onDestroy();
     }
 
+    // We call in order to start our service
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
         return super.onStartCommand(intent,flags,startID);

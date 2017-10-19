@@ -41,7 +41,7 @@ public class SentMessagesActivity extends AppCompatActivity {
 
     private ListView listViewOutbox;
     private Cursor cursor;
-    private SentAdapter arrayAdapter2;
+    private SentAdapter sentAdapter;
     private final ArrayList<SMSData> smsList = new ArrayList<>();
     private final ArrayList<SMSData> selection_list = new ArrayList<>();
     private static final String FULL_SMS = "full_sms";
@@ -145,8 +145,8 @@ public class SentMessagesActivity extends AppCompatActivity {
 
     private void setSentAdapter() {
 
-        arrayAdapter2 = new SentAdapter(SentMessagesActivity.this, smsList);
-        listViewOutbox.setAdapter(arrayAdapter2);
+        sentAdapter = new SentAdapter(this, smsList);
+        listViewOutbox.setAdapter(sentAdapter);
 
 
 //        listViewOutbox.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -264,8 +264,10 @@ public class SentMessagesActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 for (final SMSData sms : selection_list) {
-                                    arrayAdapter2.remove(sms);
-                                    arrayAdapter2.notifyDataSetChanged();
+                                    sentAdapter.remove(sms);
+                                    // Notifies the attached observers that the underlying data has been changed
+                                    // and any View reflecting the data set should refresh itself.
+                                    sentAdapter.notifyDataSetChanged();
 
                                 }
                             }
@@ -321,7 +323,7 @@ public class SentMessagesActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                arrayAdapter2.getFilter().filter(newText);
+                sentAdapter.getFilter().filter(newText);
 
 //                if (TextUtils.isEmpty(newText)) {
 //                    listViewOutbox.clearTextFilter();
@@ -346,7 +348,9 @@ public class SentMessagesActivity extends AppCompatActivity {
         switch (id) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                break;
             default:
+                break;
 
         }
 

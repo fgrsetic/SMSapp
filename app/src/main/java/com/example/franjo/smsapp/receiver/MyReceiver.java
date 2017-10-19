@@ -16,7 +16,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.franjo.smsapp.R;
 import com.example.franjo.smsapp.model.SMSData;
@@ -29,6 +28,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+
+// Broadcast receivers enable applications to receive intents that are broadcast by the system or by other applications,
+// even when other components of the application are not running.
 public class MyReceiver extends BroadcastReceiver {
 
     // A PDU is a "protocol data unit". This is the industrial standard for SMS message
@@ -87,7 +89,7 @@ public class MyReceiver extends BroadcastReceiver {
                         // Get sender message
                         String smsBody = sms.getMessageBody();
 
-                        if( name == null )
+                        if (name == null)
                             smsData.setNumber(address);
                         else
                             smsData.setNumber(name);
@@ -101,24 +103,20 @@ public class MyReceiver extends BroadcastReceiver {
                         //smsData.setContactImage();
                         smsList.add(smsData);
 
-                        if (InboxMessagesActivity.active) {
-                            InboxMessagesActivity inst = InboxMessagesActivity.instance();
-                            inst.updateInbox(smsData);
-                        } else {
-                            Intent i = new Intent(context, InboxMessagesActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(i);
-                        }
+                        // This will be in action whenever a new SMS is received
+                        // as long as the app is open
+//                        if (InboxMessagesActivity.active) {
+//                            InboxMessagesActivity inst = InboxMessagesActivity.instance();
+//                            inst.updateInbox(smsData);
+//                        }
 
                     }
-                    // Show alert
-                    Toast.makeText(context, smsMessageStr, Toast.LENGTH_SHORT).show();
+                    InboxMessagesActivity inst = InboxMessagesActivity.instance();
+                    inst.updateInbox(smsData);
 
                     incomingSms(context);
 
-
                 }
-
 
             }
 
