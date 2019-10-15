@@ -1,9 +1,9 @@
-package com.example.franjo.smsapp.receiver;
+package com.franjo.smsapp.receiver;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Franjo on 13.11.2016..

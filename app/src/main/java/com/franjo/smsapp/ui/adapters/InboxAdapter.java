@@ -1,7 +1,6 @@
-package com.example.franjo.smsapp.adapters;
+package com.franjo.smsapp.ui.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,11 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.franjo.smsapp.R;
-import com.example.franjo.smsapp.model.SMSData;
-import com.example.franjo.smsapp.ui.InboxMessagesActivity;
+import androidx.annotation.NonNull;
+
+import com.franjo.smsapp.R;
+import com.franjo.smsapp.model.SMSData;
+import com.franjo.smsapp.ui.InboxMessagesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class InboxAdapter extends ArrayAdapter<SMSData> implements Filterable {
 
 
     // The Constructor for the Adapter helps to initialize the data items and the context.
-    public InboxAdapter(Context context, List<SMSData>smsList) {
+    public InboxAdapter(Context context, List<SMSData> smsList) {
         super(context, R.layout.activity_inbox, smsList);
         this.context = context;
         this.smsList = smsList;
@@ -42,19 +43,20 @@ public class InboxAdapter extends ArrayAdapter<SMSData> implements Filterable {
         getFilter();
 
     }
+
     // Get size of list, return list size
     @Override
     public int getCount() {
         return filteredList.size();
     }
 
-    // Get specific item from user list, parametar position item index, return list item
+    // Get specific item from user list, parameter position item index, return list item
     @Override
     public SMSData getItem(int position) {
         return filteredList.get(position);
     }
 
-    // Get list item id, parametar position item index, return current item id
+    // Get list item id, parameter position item index, return current item id
     @Override
     public long getItemId(int position) {
         return position;
@@ -84,11 +86,11 @@ public class InboxAdapter extends ArrayAdapter<SMSData> implements Filterable {
         }
 
         // Link the cached views to the view
-        holder.txtBroj = (TextView) convertView.findViewById(R.id.txtBroj);
-        holder.txtPoruka = (TextView) convertView.findViewById(R.id.txtPoruka);
-        holder.txtVrijeme = (TextView) convertView.findViewById(R.id.txtVrijeme);
-        holder.txtMinute = (TextView) convertView.findViewById(R.id.txtMinute);
-        holder.imageView = (ImageView) convertView.findViewById(R.id.contactPhotoPick);
+        holder.txtBroj = convertView.findViewById(R.id.txtBroj);
+        holder.txtPoruka = convertView.findViewById(R.id.txtPoruka);
+        holder.txtVrijeme = convertView.findViewById(R.id.txtVrijeme);
+        holder.txtMinute = convertView.findViewById(R.id.txtMinute);
+        holder.imageView = convertView.findViewById(R.id.contactPhotoPick);
 
         if (smsData != null) {
             holder.txtBroj.setText(smsData.getNumber());
@@ -117,7 +119,6 @@ public class InboxAdapter extends ArrayAdapter<SMSData> implements Filterable {
 
         return convertView;
     }
-
 
 
     // Keep reference to children view to avoid unnecessary calls
@@ -153,7 +154,7 @@ public class InboxAdapter extends ArrayAdapter<SMSData> implements Filterable {
             // The results of the filtering operation
             FilterResults filterResults = new FilterResults();
             // When the constraint is null, the original data must be restored.
-            if (constraint != null && constraint.length()>0) {
+            if (constraint != null && constraint.length() > 0) {
                 filteredList = new ArrayList<>();
 
                 // Search content in smsList
@@ -184,7 +185,6 @@ public class InboxAdapter extends ArrayAdapter<SMSData> implements Filterable {
         }
 
     }
-
 
 
 }

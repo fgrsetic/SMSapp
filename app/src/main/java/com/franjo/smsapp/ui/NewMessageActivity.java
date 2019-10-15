@@ -1,4 +1,4 @@
-package com.example.franjo.smsapp.ui;
+package com.franjo.smsapp.ui;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -8,10 +8,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,12 +19,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.franjo.smsapp.R;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
+
+import com.franjo.smsapp.R;
+
 
 public class NewMessageActivity extends AppCompatActivity {
 
     private ImageButton imageButton;
-    private EditText etReceipent;
+    private EditText etRecepient;
     private EditText etMessage;
     private TextView sms_count;
     private static final int CONTACT_PICKER_RESULT = 1;
@@ -60,7 +62,7 @@ public class NewMessageActivity extends AppCompatActivity {
 
     private void initWidgets() {
         imageButton = (ImageButton) findViewById(R.id.imageButton);
-        etReceipent = (EditText) findViewById(R.id.etReceipent);
+        etRecepient = (EditText) findViewById(R.id.etReceipent);
         etMessage = (EditText) findViewById(R.id.etMessageText);
         etMessage.requestFocus();
         sms_count = (TextView) findViewById(R.id.sms_count);
@@ -72,7 +74,7 @@ public class NewMessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (hasNumber() && hasText()) {
-                    String phoneNumber = etReceipent.getText().toString();
+                    String phoneNumber = etRecepient.getText().toString();
                     String poruka = etMessage.getText().toString();
                     finish();
 
@@ -103,7 +105,7 @@ public class NewMessageActivity extends AppCompatActivity {
     }
 
     private boolean hasNumber() {
-        if (etReceipent.getText().length() == 0) {
+        if (etRecepient.getText().length() == 0) {
             Toast.makeText(this, R.string.enter_recipients, Toast.LENGTH_LONG).show();
             return false;
         }
@@ -161,7 +163,7 @@ public class NewMessageActivity extends AppCompatActivity {
                             String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                             String name = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
 
-                            etReceipent.setText(phone);
+                            etRecepient.setText(phone);
 
 
 

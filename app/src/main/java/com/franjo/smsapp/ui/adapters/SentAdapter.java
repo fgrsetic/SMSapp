@@ -1,9 +1,8 @@
-package com.example.franjo.smsapp.adapters;
+package com.franjo.smsapp.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,11 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.franjo.smsapp.R;
-import com.example.franjo.smsapp.model.SMSData;
-import com.example.franjo.smsapp.ui.SentMessagesActivity;
+import androidx.annotation.NonNull;
+
+import com.franjo.smsapp.R;
+import com.franjo.smsapp.model.SMSData;
+import com.franjo.smsapp.ui.SentMessagesActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ public class SentAdapter extends ArrayAdapter<SMSData> implements Filterable {
 
         getFilter();
     }
+
     // Get size of list, return list size
     @Override
     public int getCount() {
@@ -78,7 +80,7 @@ public class SentAdapter extends ArrayAdapter<SMSData> implements Filterable {
 
             convertView.setTag(holder);
 
-        }else {
+        } else {
             // get view holder back
             convertView.getTag();
         }
@@ -119,7 +121,7 @@ public class SentAdapter extends ArrayAdapter<SMSData> implements Filterable {
         int r = rand.nextInt(255);
         int g = rand.nextInt(255);
         int b = rand.nextInt(255);
-        int randomColor = Color.rgb(r,g,b);
+        int randomColor = Color.rgb(r, g, b);
         holder.imageView.setColorFilter(randomColor, PorterDuff.Mode.MULTIPLY);
 
 
@@ -154,7 +156,7 @@ public class SentAdapter extends ArrayAdapter<SMSData> implements Filterable {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults filterResults = new FilterResults();
-            if (constraint!=null && constraint.length()>0) {
+            if (constraint != null && constraint.length() > 0) {
                 ArrayList<SMSData> tempList = new ArrayList<>();
 
                 // search content in smsList

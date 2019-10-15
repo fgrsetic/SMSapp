@@ -1,4 +1,4 @@
-package com.example.franjo.smsapp.ui;
+package com.franjo.smsapp.ui;
 
 import android.app.SearchManager;
 import android.content.ContentResolver;
@@ -11,13 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,9 +21,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.franjo.smsapp.R;
-import com.example.franjo.smsapp.adapters.SentAdapter;
-import com.example.franjo.smsapp.model.SMSData;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
+
+import com.franjo.smsapp.R;
+import com.franjo.smsapp.ui.adapters.SentAdapter;
+import com.franjo.smsapp.model.SMSData;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -95,7 +96,7 @@ public class SentMessagesActivity extends AppCompatActivity {
                 String body = cursor.getString(cursor.getColumnIndexOrThrow("body"));
                 sms.setBody(body);
 
-                if( name == null )
+                if (name == null)
                     sms.setNumber(number);
                 else
                     sms.setNumber(name);
@@ -212,10 +213,10 @@ public class SentMessagesActivity extends AppCompatActivity {
                 String senderNumberName = ((TextView) view.findViewById(R.id.txtBroj)).getText().toString();
                 intent.putExtra("name1", senderNumberName);
 
-                String smsBody = ((TextView)view.findViewById(R.id.txtPoruka)).getText().toString();
+                String smsBody = ((TextView) view.findViewById(R.id.txtPoruka)).getText().toString();
                 intent.putExtra("poruka1", smsBody);
 
-                String dateTime = ((TextView)view.findViewById(R.id.txtVrijeme)).getText().toString().trim();
+                String dateTime = ((TextView) view.findViewById(R.id.txtVrijeme)).getText().toString().trim();
                 intent.putExtra("vrijeme1", dateTime);
 
                 String minute = cursor.getString(cursor.getColumnIndexOrThrow("date"));
@@ -292,18 +293,18 @@ public class SentMessagesActivity extends AppCompatActivity {
                     default:
                         return false;
 
-                    }
-
                 }
 
-                @Override
-                public void onDestroyActionMode(ActionMode actionMode) {
-                    actionMode.finish();
+            }
 
-                }
-            });
+            @Override
+            public void onDestroyActionMode(ActionMode actionMode) {
+                actionMode.finish();
 
-        }
+            }
+        });
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {

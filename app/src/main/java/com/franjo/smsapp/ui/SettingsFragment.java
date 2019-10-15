@@ -1,9 +1,10 @@
-package com.example.franjo.smsapp.ui;
+package com.franjo.smsapp.ui;
 
 import android.os.Bundle;
-import android.support.v7.preference.PreferenceFragmentCompat;
 
-import com.example.franjo.smsapp.R;
+import androidx.preference.PreferenceFragmentCompat;
+
+import com.franjo.smsapp.R;
 
 
 public class SettingsFragment extends PreferenceFragmentCompat {

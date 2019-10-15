@@ -1,4 +1,4 @@
-package com.example.franjo.smsapp.model;
+package com.franjo.smsapp.model;
 
 /**
  * Created by Franjo on 20.12.2016..

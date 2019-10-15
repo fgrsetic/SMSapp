@@ -1,4 +1,4 @@
-package com.example.franjo.smsapp.receiver;
+package com.franjo.smsapp.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

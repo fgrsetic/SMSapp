@@ -1,20 +1,21 @@
-package com.example.franjo.smsapp.ui;
+package com.franjo.smsapp.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.franjo.smsapp.R;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
+
+import com.franjo.smsapp.R;
 
 import java.util.Random;
 
@@ -51,11 +52,11 @@ public class DetailsMessagesSent extends AppCompatActivity {
             String poruka1 = i.getStringExtra("poruka1");
             txtPorukaSent.setText(poruka1);
         }
-        if(i.hasExtra("vrijeme1")) {
+        if (i.hasExtra("vrijeme1")) {
             String vrijeme1 = i.getStringExtra("vrijeme1");
             txtVrijemeSent.setText(vrijeme1);
         }
-        if(i.hasExtra("minute1")) {
+        if (i.hasExtra("minute1")) {
             String minute1 = i.getStringExtra("minute1");
             txtMinuteSent.setText(minute1);
         }

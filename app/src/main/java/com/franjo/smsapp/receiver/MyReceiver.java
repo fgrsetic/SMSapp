@@ -1,4 +1,4 @@
-package com.example.franjo.smsapp.receiver;
+package com.franjo.smsapp.receiver;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,15 +12,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-import com.example.franjo.smsapp.R;
-import com.example.franjo.smsapp.model.SMSData;
-import com.example.franjo.smsapp.ui.DetailsMessagesInbox;
-import com.example.franjo.smsapp.ui.InboxMessagesActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
+
+import com.franjo.smsapp.R;
+import com.franjo.smsapp.model.SMSData;
+import com.franjo.smsapp.ui.DetailsMessagesInbox;
+import com.franjo.smsapp.ui.InboxMessagesActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,10 +41,10 @@ public class MyReceiver extends BroadcastReceiver {
     String smsMessageStr = "";
 
     /*
-    * This notification ID can be used to access our notification after we've displayed it. This
-    * can be handy when we need to cancel the notification, or perhaps update it. This number is
-    * arbitrary and can be set to whatever you like. 1138 is in no way significant.
-    */
+     * This notification ID can be used to access our notification after we've displayed it. This
+     * can be handy when we need to cancel the notification, or perhaps update it. This number is
+     * arbitrary and can be set to whatever you like. 1138 is in no way significant.
+     */
     private static final int SMS_NOTIFICATION_ID = 1138;
     /**
      * This pending intent id is used to uniquely reference the pending intent
@@ -139,7 +140,7 @@ public class MyReceiver extends BroadcastReceiver {
 
         NotificationManager notificationManager = (NotificationManager)
                 context.getSystemService(Context.NOTIFICATION_SERVICE);
-                    /* SMS_REMINDER_NOTIFICATION_ID allows you to update or cancel the notification later on */
+        /* SMS_REMINDER_NOTIFICATION_ID allows you to update or cancel the notification later on */
         notificationManager.notify(SMS_NOTIFICATION_ID, builder.build());
     }
 
@@ -147,11 +148,11 @@ public class MyReceiver extends BroadcastReceiver {
     private PendingIntent contentIntent(Context context) {
         Intent startActivityIntent = new Intent(context, DetailsMessagesInbox.class);
 
-            startActivityIntent.putExtra("broj", smsMessageStr);
-            startActivityIntent.putExtra("name", smsData.getNumber());
-            startActivityIntent.putExtra("poruka", smsData.getBody());
-            startActivityIntent.putExtra("vrijeme", smsData.getDate());
-            startActivityIntent.putExtra("minute", smsData.getMinute());
+        startActivityIntent.putExtra("broj", smsMessageStr);
+        startActivityIntent.putExtra("name", smsData.getNumber());
+        startActivityIntent.putExtra("poruka", smsData.getBody());
+        startActivityIntent.putExtra("vrijeme", smsData.getDate());
+        startActivityIntent.putExtra("minute", smsData.getMinute());
 
         return PendingIntent.getActivity(context, SMS_PENDING_INTENT, startActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

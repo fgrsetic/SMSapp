@@ -1,4 +1,4 @@
-package com.example.franjo.smsapp.ui;
+package com.franjo.smsapp.ui;
 
 
 import android.Manifest;
@@ -15,14 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -36,10 +28,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.franjo.smsapp.R;
-import com.example.franjo.smsapp.adapters.InboxAdapter;
-import com.example.franjo.smsapp.model.SMSData;
-import com.example.franjo.smsapp.receiver.HeadlessSmsSendService;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+
+import com.franjo.smsapp.R;
+import com.franjo.smsapp.ui.adapters.InboxAdapter;
+import com.franjo.smsapp.model.SMSData;
+import com.franjo.smsapp.receiver.HeadlessSmsSendService;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class InboxMessagesActivity extends AppCompatActivity {
 
         Log.i(LOG_TAG, "onCreate");
 
-        Toolbar toolbarInbox = (Toolbar) findViewById(R.id.toolbarInbox);
+        Toolbar toolbarInbox = findViewById(R.id.toolbarInbox);
         setSupportActionBar(toolbarInbox);
 
         // Initialize the lists
@@ -155,7 +156,7 @@ public class InboxMessagesActivity extends AppCompatActivity {
 
     // We handle the response via onRequestPermissionResult.
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         if (requestCode == READ_SMS_PERMISSIONS_REQUEST) {
             if (grantResults.length == 1 &&
@@ -174,9 +175,9 @@ public class InboxMessagesActivity extends AppCompatActivity {
 
 
     public void initWidgets() {
-        listViewInbox = (ListView) findViewById(R.id.listViewInbox);
+        listViewInbox = findViewById(R.id.listViewInbox);
 //        listViewInbox.setTextFilterEnabled(true); // use to enable search view popup text
-        fabInbox = (FloatingActionButton) findViewById(R.id.fabInbox);
+        fabInbox = findViewById(R.id.fabInbox);
         listViewInbox.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
 
 
@@ -255,7 +256,7 @@ public class InboxMessagesActivity extends AppCompatActivity {
 
     private void setInboxAdapter() {
         // Passing data items to the constructor of the custom adapter
-        arrayAdapter = new InboxAdapter(InboxMessagesActivity.this, smsList);
+        arrayAdapter = new InboxAdapter(this, smsList);
         // Setting the adapter on our listview
         listViewInbox.setAdapter(arrayAdapter);
     }
@@ -268,50 +269,41 @@ public class InboxMessagesActivity extends AppCompatActivity {
     }
 
     private void setUpListeners() {
-        fabInbox.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(InboxMessagesActivity.this, NewMessageActivity.class);
-                startActivity(i);
-            }
+        fabInbox.setOnClickListener(view -> {
+            Intent i = new Intent(InboxMessagesActivity.this, NewMessageActivity.class);
+            startActivity(i);
         });
 
-        listViewInbox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewInbox.setOnItemClickListener((adapterView, view, position, id) -> {
 
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+            Intent intent = new Intent(InboxMessagesActivity.this, DetailsMessagesInbox.class);
 
-                Intent intent = new Intent(InboxMessagesActivity.this, DetailsMessagesInbox.class);
-
-                // Move the cursor to required position
-                if (cursor != null) {
-                    cursor.moveToPosition(position);
-                }
-
-                String senderNumber = null;
-                if (cursor != null) {
-                    senderNumber = cursor.getString(cursor.getColumnIndexOrThrow("address"));
-                }
-                intent.putExtra("broj", senderNumber);
-
-                String senderNumberName = ((TextView) view.findViewById(R.id.txtBroj)).getText().toString();
-                intent.putExtra("name", senderNumberName);
-
-                String smsBody = ((TextView) view.findViewById(R.id.txtPoruka)).getText().toString();
-                intent.putExtra("poruka", smsBody);
-
-                String dateTime = ((TextView) view.findViewById(R.id.txtVrijeme)).getText().toString();
-                intent.putExtra("vrijeme", dateTime);
-
-                String minute = ((TextView) view.findViewById(R.id.txtMinute)).getText().toString();
-                intent.putExtra("minute", minute);
-
-
-                startActivity(intent);
-
-
+            // Move the cursor to required position
+            if (cursor != null) {
+                cursor.moveToPosition(position);
             }
+
+            String senderNumber = null;
+            if (cursor != null) {
+                senderNumber = cursor.getString(cursor.getColumnIndexOrThrow("address"));
+            }
+            intent.putExtra("broj", senderNumber);
+
+            String senderNumberName = ((TextView) view.findViewById(R.id.txtBroj)).getText().toString();
+            intent.putExtra("name", senderNumberName);
+
+            String smsBody = ((TextView) view.findViewById(R.id.txtPoruka)).getText().toString();
+            intent.putExtra("poruka", smsBody);
+
+            String dateTime = ((TextView) view.findViewById(R.id.txtVrijeme)).getText().toString();
+            intent.putExtra("vrijeme", dateTime);
+
+            String minute = ((TextView) view.findViewById(R.id.txtMinute)).getText().toString();
+            intent.putExtra("minute", minute);
+
+
+            startActivity(intent);
+
 
         });
 

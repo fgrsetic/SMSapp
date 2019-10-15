@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory
-        android:title="MESSAGE SETTINGS" >
+    <PreferenceCategory android:title="MESSAGE SETTINGS">
 
         <CheckBoxPreference
+            android:defaultValue="@bool/pref_show_fulltext_default"
             android:key="full_sms"
-            android:title="@string/sms_message"
             android:summary="@string/show_full_message"
-            android:defaultValue="@bool/pref_show_fulltext_default"/>
+            android:title="@string/sms_message" />
 
     </PreferenceCategory>
 

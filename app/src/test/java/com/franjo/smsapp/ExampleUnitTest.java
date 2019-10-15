@@ -1,4 +1,4 @@
-package com.example.franjo.smsapp;
+package com.franjo.smsapp;
 
 import org.junit.Test;
 
