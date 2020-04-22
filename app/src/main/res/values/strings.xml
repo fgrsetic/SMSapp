@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">SMSapp</string>
+    <string name="app_name">SMSMe</string>
     <string name="activity_sent">Sent messages</string>
-    <string name="activity_inbox">Messages</string>
+
 
     <string name="activity_new_message">New message</string>
     <string name="enter_recipients">Recipient…</string>
@@ -18,7 +18,6 @@
 
 
     <string name="reply">Reply</string>
-    <string name="search">Search</string>
     <string name="share">Share</string>
     <string name="share_via">Share via</string>
     <string name="app_settings">Settings</string>
@@ -42,6 +41,18 @@
     <string name="sms_permission_denied">Read SMS permission denied</string>
     <string name="last_letter_count">/1</string>
     <string name="select_picture">Select picture</string>
+    <string name="messages">Messages</string>
+
+    <!-- bottom navigation-->
+    <string name="title_messages">Messages</string>
+    <string name="title_contacts">Contacts</string>
+    <string name="title_favorites">Favorites</string>
+
+    <!-- toolbar menu -->
+    <string name="search">Search</string>
+    <string name="menu">Menu</string>
+    <string name="recipent_button">addContactAsRecipentButton</string>
+    <string name="new_message">New message</string>
 
 
 </resources>

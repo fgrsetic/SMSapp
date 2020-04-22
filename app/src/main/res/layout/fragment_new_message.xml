@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.franjo.smsapp.ui.messages.new_message.NewMessageViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <EditText
+            android:id="@+id/addRecipient"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginEnd="16dp"
+            android:autofillHints="@string/enter_recipients"
+            android:background="@drawable/edit_text_rounded"
+            android:hint="@string/enter_recipients"
+            android:inputType="phone|textPersonName"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingLeft="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_extra_small"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingRight="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_extra_small"
+            android:textColor="@color/primaryText"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/add_contact"
+            android:contentDescription="@string/recipent_button"
+            app:layout_constraintBottom_toBottomOf="@+id/addRecipient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/enterMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+
+            android:layout_marginBottom="16dp"
+            android:layout_toStartOf="@+id/imageButton"
+            android:autofillHints="@string/enter_message"
+            android:background="@drawable/edit_text_rounded"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center|start"
+            android:hint="@string/enter_message"
+            android:inputType="textMultiLine"
+            android:maxLength="160"
+            android:minHeight="38dp"
+            android:paddingStart="@dimen/spacing_normal"
+            android:paddingLeft="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_extra_small"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingRight="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_extra_small"
+            android:textColor="#FF424242"
+            android:visibility="visible"
+            android:windowSoftInputMode="adjustPan|adjustResize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/message_send"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!--    <requestFocus />-->
+
+
+        <!--    <TextView-->
+        <!--        android:id="@+id/sms_count"-->
+        <!--        android:layout_width="80dp"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_below="@+id/imageButton"-->
+        <!--        android:layout_alignParentEnd="true"-->
+        <!--        android:layout_alignParentRight="true"-->
+        <!--        android:paddingLeft="25dp"-->
+        <!--        tools:layout_editor_absoluteX="294dp"-->
+        <!--        tools:layout_editor_absoluteY="187dp" />-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

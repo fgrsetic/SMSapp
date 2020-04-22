@@ -1,83 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
-    <TextView
-        android:id="@+id/txtBroj"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:textColor="@color/primaryText"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toRightOf="@+id/contactPhotoPick"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="003859900000" />
+        <variable
+            name="smsData"
+            type="com.franjo.smsapp.data.SmsData" />
+    </data>
 
-    <TextView
-        android:id="@+id/txtPoruka"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:ems="11"
-        android:textColor="@color/secondaryText"
-        android:textSize="14sp"
-        app:layout_constraintLeft_toRightOf="@+id/contactPhotoPick"
-        app:layout_constraintTop_toBottomOf="@+id/txtBroj"
-        tools:text="Lorem ipsum dolor sit amet consectetue" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/txtVrijeme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="4dp"
-        android:paddingLeft="15dp"
-        android:textColor="@color/secondaryText"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/txtMinute"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="16:00" />
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:elevation="4dp"
+            app:cardCornerRadius="8dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true">
 
-    <TextView
-        android:id="@+id/txtMinute"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/txtVrijeme"
-        android:layout_alignBottom="@+id/contactPhotoPick"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="false"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="0dp"
-        android:textColor="@color/secondaryText"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:text="@string/_05_15" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/contactPhotoPick"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentTop="false"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/ic_action_person_pin"
-        android:contentDescription="@string/contact_photo"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/phone_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_small"
+                    android:textColor="@color/primaryText"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toRightOf="@+id/photo_image"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:smsPhoneText="@{smsData}"
+                    tools:text="003859900000" />
 
+                <TextView
+                    android:id="@+id/message"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/secondaryText"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/date_time"
+                    app:layout_constraintStart_toEndOf="@id/photo_image"
+                    app:layout_constraintTop_toBottomOf="@+id/phone_number"
+                    app:smsMessageText="@{smsData}"
+                    tools:text="Lorem ipsum dolor sit amet consectetue" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/date_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:textColor="@color/secondaryText"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toTopOf="@+id/minutes"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:smsDateText="@{smsData}"
+                    tools:text="16:00" />
+
+                <TextView
+                    android:id="@+id/minutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:textColor="@color/secondaryText"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:smsMinuteText="@{smsData}"
+                    tools:text="@string/_05_15" />
+
+                <ImageView
+                    android:id="@+id/photo_image"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:background="@drawable/user_contact_icon"
+                    android:contentDescription="@string/contact_photo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+</layout>

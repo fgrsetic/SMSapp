@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.franjo.smsapp">
 
     <uses-permission android:name="android.permission.READ_SMS" />
@@ -14,24 +13,20 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name=".app.App"
         android:allowBackup="true"
-        android:enabled="true"
-        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.franjo.smsapp.ui.InboxMessagesActivity"
-            android:exported="true"
-            android:label="@string/activity_inbox"
-            android:launchMode="singleTop">
+            android:name=".ui.MainActivity"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.SEARCH" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -45,80 +40,53 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="smsapp.franjo.example.com"
+                    android:host="smsapp.franjo.com"
                     android:pathPrefix="/poruka"
                     android:scheme="http" />
             </intent-filter>
 
         </activity>
 
-        <!-- Activity that allows the user to send new SMS/MMS messages -->
-        <activity
-            android:name="com.franjo.smsapp.ui.NewMessageActivity"
-            android:label="@string/activity_new_message"
-            android:parentActivityName="com.franjo.smsapp.ui.InboxMessagesActivity">
+        <!-- <activity -->
+        <!-- android:name="com.franjo.smsapp.ui.SentMessagesActivity" -->
+        <!-- android:label="@string/activity_sent" -->
+        <!-- android:launchMode="singleTop" -->
+        <!-- android:parentActivityName="com.franjo.smsapp.ui.messages.MessagesFragment" -->
+        <!-- android:theme="@style/AppTheme"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.SEARCH" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
+        <!-- <activity -->
+        <!-- android:name="com.franjo.smsapp.ui.DetailsMessagesSent" -->
+        <!-- android:parentActivityName="com.franjo.smsapp.ui.SentMessagesActivity" /> -->
+        <!-- <activity -->
+        <!-- android:name="com.franjo.smsapp.ui.DetailsMessagesInbox" -->
+        <!-- android:parentActivityName="com.franjo.smsapp.ui.messages.MessagesFragment"> -->
+        <!-- &lt;!&ndash; Parent activity meta-data to support 4.0 and lower &ndash;&gt; -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value="com.franjo.smsapp.ui.messages.MessagesFragment" /> -->
+        <!-- </activity> -->
+        <!-- <activity -->
+        <!-- android:name="com.franjo.smsapp.ui.SettingsActivity" -->
+        <!-- android:label="@string/action_settings" -->
+        <!-- android:parentActivityName="com.franjo.smsapp.ui.messages.MessagesFragment"> -->
+        <!-- &lt;!&ndash; Parent activity meta-data to support 4.0 and lower &ndash;&gt; -->
+        <!-- <meta-data -->
+        <!-- android:name="android.support.PARENT_ACTIVITY" -->
+        <!-- android:value="com.franjo.smsapp.ui.messages.MessagesFragment" /> -->
+        <!-- </activity> -->
 
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <action android:name="android.intent.action.SENDTO" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="sms" />
-                <data android:scheme="smsto" />
-                <data android:scheme="mms" />
-                <data android:scheme="mmsto" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name="com.franjo.smsapp.ui.SentMessagesActivity"
-            android:label="@string/activity_sent"
-            android:theme="@style/AppTheme"
-            android:launchMode="singleTop"
-            android:parentActivityName="com.franjo.smsapp.ui.InboxMessagesActivity">
-
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name="com.franjo.smsapp.ui.DetailsMessagesSent"
-            android:parentActivityName="com.franjo.smsapp.ui.SentMessagesActivity"/>
-
-        <activity
-            android:name="com.franjo.smsapp.ui.DetailsMessagesInbox"
-            android:parentActivityName="com.franjo.smsapp.ui.InboxMessagesActivity" >
-
-        <!-- Parent activity meta-data to support 4.0 and lower -->
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.franjo.smsapp.ui.InboxMessagesActivity" />
-
-        </activity>
-
-        <activity
-            android:name="com.franjo.smsapp.ui.SettingsActivity"
-            android:label="@string/action_settings"
-            android:parentActivityName="com.franjo.smsapp.ui.InboxMessagesActivity" >
-
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.franjo.smsapp.ui.InboxMessagesActivity" />
-        </activity>
 
         <!-- BroadcastReceiver that listens to incoming SMS messages -->
         <receiver
-            android:name="com.franjo.smsapp.receiver.MyReceiver"
+            android:name=".data.SmsReceiver"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BROADCAST_SMS">
 
-            <intent-filter
-                android:priority="999">
-
+            <intent-filter android:priority="999">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
                 <action android:name="android.provider.Telephony.SMS_DELIVER" />
                 <action android:name="android.provider.Telephony.SMS_DELIVER_ACTION" />
@@ -127,7 +95,7 @@
 
         <!-- BroadcastReceiver that listens for incoming MMS messages -->
         <receiver
-            android:name="com.franjo.smsapp.receiver.MMSBroadcastReceiver"
+            android:name=".data.MMSBroadcastReceiver"
             android:permission="android.permission.BROADCAST_WAP_PUSH">
             <intent-filter>
                 <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
@@ -138,20 +106,20 @@
 
         <!-- Service that delivers messages from the phone "quick response" -->
         <service
-            android:name="com.franjo.smsapp.receiver.HeadlessSmsSendService"
+            android:name=".data.HeadlessSmsSendService"
             android:exported="true"
             android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE">
-
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
+
                 <data android:scheme="sms" />
                 <data android:scheme="smsto" />
                 <data android:scheme="mms" />
                 <data android:scheme="mmsto" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>
