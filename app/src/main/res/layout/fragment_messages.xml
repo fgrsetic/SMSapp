@@ -38,6 +38,7 @@
             android:layout_marginBottom="64dp"
             android:clickable="true"
             android:focusable="true"
+            android:onClick="@{() -> viewModel.toNewMessageNavigated()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@android:drawable/ic_menu_edit" />

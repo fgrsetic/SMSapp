@@ -1,19 +1,28 @@
 package com.franjo.smsapp.data;
 
 
-import androidx.annotation.NonNull;
+import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.Keep;
 
 import java.util.Objects;
 
-public class SmsData {
+@Keep
+public class SmsData implements Parcelable {
 
     private String phoneNumber;
     private String name;
     private String messageBody;
     private String date;
     private String minute;
-    private int contactImage;
+    private Bitmap contactImage;
     private boolean isMine;
+
+    public SmsData() {
+
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -55,11 +64,11 @@ public class SmsData {
         this.minute = minute;
     }
 
-    public int getContactImage() {
+    public Bitmap getContactImage() {
         return contactImage;
     }
 
-    public void setContactImage(int contactImage) {
+    public void setContactImage(Bitmap contactImage) {
         this.contactImage = contactImage;
     }
 
@@ -71,10 +80,48 @@ public class SmsData {
         isMine = mine;
     }
 
-    @NonNull
+
+    protected SmsData(Parcel in) {
+        phoneNumber = in.readString();
+        name = in.readString();
+        messageBody = in.readString();
+        date = in.readString();
+        minute = in.readString();
+        contactImage = in.readParcelable(Bitmap.class.getClassLoader());
+        isMine = in.readByte() != 0;
+    }
+
+    public static final Creator<SmsData> CREATOR = new Creator<SmsData>() {
+        @Override
+        public SmsData createFromParcel(Parcel in) {
+            return new SmsData(in);
+        }
+
+        @Override
+        public SmsData[] newArray(int size) {
+            return new SmsData[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(phoneNumber);
+        dest.writeString(name);
+        dest.writeString(messageBody);
+        dest.writeString(date);
+        dest.writeString(minute);
+        dest.writeParcelable(contactImage, flags);
+        dest.writeByte((byte) (isMine ? 1 : 0));
+    }
+
     @Override
     public String toString() {
-        return "SMSData{" +
+        return "SmsData{" +
                 "phoneNumber='" + phoneNumber + '\'' +
                 ", name='" + name + '\'' +
                 ", messageBody='" + messageBody + '\'' +
@@ -90,17 +137,19 @@ public class SmsData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SmsData smsData = (SmsData) o;
-        return contactImage == smsData.contactImage &&
-                isMine == smsData.isMine &&
+        return isMine == smsData.isMine &&
                 Objects.equals(phoneNumber, smsData.phoneNumber) &&
                 Objects.equals(name, smsData.name) &&
                 Objects.equals(messageBody, smsData.messageBody) &&
                 Objects.equals(date, smsData.date) &&
-                Objects.equals(minute, smsData.minute);
+                Objects.equals(minute, smsData.minute) &&
+                Objects.equals(contactImage, smsData.contactImage);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(phoneNumber, name, messageBody, date, minute, contactImage, isMine);
     }
+
+
 }

@@ -2,6 +2,8 @@ package com.franjo.smsapp.ui.messages;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -20,10 +22,16 @@ import java.util.List;
 public class MessagesViewModel extends AndroidViewModel {
 
     private Context context;
+    private String contactPhoneNumber;
     private IMessages databaseMessages;
     private ISmsReceiver receiver;
+
     private MutableLiveData<List<SmsData>> notifiedSmsList;
     private MutableLiveData<List<SmsData>> databaseMessageList;
+    private MutableLiveData<SmsData> navigateToMessageDetails;
+    private MutableLiveData<Boolean> navigateToNewMessage;
+    private MutableLiveData<Boolean> navigateToContactDetails;
+    private MutableLiveData<Bitmap> loadContactPhoto;
 
 
     public MessagesViewModel(@NonNull Application application) {
@@ -33,6 +41,7 @@ public class MessagesViewModel extends AndroidViewModel {
         receiver = new SmsReceiver();
     }
 
+    // Device database
     public LiveData<List<SmsData>> showDatabaseSmsList() {
         if (databaseMessageList == null) {
             databaseMessageList = new MutableLiveData<>();
@@ -45,6 +54,9 @@ public class MessagesViewModel extends AndroidViewModel {
         databaseMessageList.setValue(databaseMessages.getAllMessages(context));
     }
 
+
+
+    // Notification
     public LiveData<List<SmsData>> showSmsListReceived() {
         if (notifiedSmsList == null) {
             notifiedSmsList = new MutableLiveData<>();
@@ -57,8 +69,104 @@ public class MessagesViewModel extends AndroidViewModel {
         notifiedSmsList.setValue(receiver.getSMSList());
     }
 
-    public void showSmsDetails(SmsData smsData) {
+
+
+    // Go to message details
+    LiveData<SmsData> navigateToMessageDetails() {
+        if (navigateToMessageDetails == null) {
+            navigateToMessageDetails = new MutableLiveData<>();
+        }
+        return navigateToMessageDetails;
     }
+
+    void setNavigateToMessageDetails(SmsData smsData) {
+        navigateToMessageDetails.setValue(smsData);
+    }
+
+    void onMessageDetailsNavigated() {
+        navigateToMessageDetails.setValue(null);
+    }
+
+
+
+    // Go to new message
+    LiveData<Boolean> navigateToNewMessage() {
+        if (navigateToNewMessage == null) {
+            navigateToNewMessage = new MutableLiveData<>();
+        }
+        return navigateToNewMessage;
+    }
+
+    public void toNewMessageNavigated() {
+        navigateToNewMessage.setValue(true);
+    }
+
+    void doneNavigationToNewMessage() {
+        navigateToNewMessage.setValue(false);
+    }
+
+
+
+    // Go to contact details
+    LiveData<Boolean> navigateToContactDetails() {
+        if (navigateToContactDetails == null) {
+            navigateToContactDetails = new MutableLiveData<>();
+        }
+        return navigateToContactDetails;
+    }
+
+    public void toContactDetailsNavigated() {
+        navigateToContactDetails.setValue(true);
+    }
+
+    void doneNavigationToContactDetails() {
+        navigateToContactDetails.setValue(false);
+    }
+
+
+
+
+
+//    public LiveData<Bitmap> loadContactPhoto() {
+//        if(loadContactPhoto == null) {
+//            loadContactPhoto = new MutableLiveData<>();
+//            openPhoto();
+//        }
+//        return loadContactPhoto;
+//    }
+//
+//    private void openPhoto() {
+//        loadContactPhoto.setValue(databaseMessages.loadContactPhoto(contactPhoneNumber));
+//    }
+
+//    public void setContactPhoneNumber(SmsData smsData) {
+//        contactPhoneNumber = smsData.getPhoneNumber();
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     //    private PendingIntent contentIntent(Context context) {
@@ -114,6 +222,8 @@ public class MessagesViewModel extends AndroidViewModel {
 //            }
 //        }
 //    }
+
+
 
 
 }

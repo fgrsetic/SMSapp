@@ -1,14 +1,25 @@
 package com.franjo.smsapp.util;
 
+import android.content.ContentUris;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.ContactsContract;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.franjo.smsapp.app.App;
 import com.franjo.smsapp.data.SmsData;
 import com.franjo.smsapp.ui.messages.MessagesAdapter;
 
 import java.util.List;
+import java.util.Random;
 
 public class BindingAdapters {
 
@@ -39,4 +50,10 @@ public class BindingAdapters {
             adapter.submitList(data);
         }
     }
+
+    @BindingAdapter("backgroundImage")
+    public static void randomChangeContactImage(ImageView imageView, SmsData smsData) {
+        imageView.setBackground(ImageUtil.getRandomImage());
+    }
+
 }

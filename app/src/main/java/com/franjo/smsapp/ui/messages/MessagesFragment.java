@@ -2,11 +2,15 @@ package com.franjo.smsapp.ui.messages;
 
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,29 +22,30 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.franjo.smsapp.R;
 import com.franjo.smsapp.data.HeadlessSmsSendService;
 import com.franjo.smsapp.data.SmsData;
 import com.franjo.smsapp.databinding.FragmentMessagesBinding;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
-public class MessagesFragment extends Fragment implements MessagesAdapter.OnClickListener {
+public class MessagesFragment extends Fragment  {
 
     private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
+    private static final int CONTACT_PICKER_RESULT = 1001;
 
     private Context context;
     private FragmentMessagesBinding binding;
     //    private ConversationAdapter arrayAdapter;
 
-//    private ImageView photoImage;
+    //    private ImageView photoImage;
     private MessagesViewModel viewModel;
 
 
@@ -64,17 +69,34 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.OnClic
 
         context.startService(new Intent(context, HeadlessSmsSendService.class));
 
-        MessagesAdapter adapter = new MessagesAdapter(this);
+        MessagesAdapter adapter = new MessagesAdapter(new MessagesAdapter.IClickListener() {
+            @Override
+            public void onClick(SmsData smsData) {
+                viewModel.setNavigateToMessageDetails(smsData);
+            }
+
+            @Override
+            public void onContactIconClicked() {
+                viewModel.toContactDetailsNavigated();
+            }
+        });
+
         binding.messagesList.setAdapter(adapter);
         binding.messagesList.setHasFixedSize(true);
         binding.messagesList.setItemAnimator(new DefaultItemAnimator());
 
-        viewModel.showDatabaseSmsList().observe(getViewLifecycleOwner(), smsData -> {
 
-        });
 
-        binding.floatingActionButton.setOnClickListener(view ->
-                Navigation.findNavController(view).navigate(R.id.action_navigation_messages_to_navigation_new_message));
+//        viewModel.loadContactPhoto().observe(getViewLifecycleOwner(), bitmap -> {
+//
+//        });
+
+
+//
+//        viewModel.showDatabaseSmsList().observe(getViewLifecycleOwner(), smsData -> {
+//
+//        });
+
 
 
 
@@ -89,6 +111,43 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.OnClic
         // setupSharedPreferences();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // List item -> to message details
+        viewModel.navigateToMessageDetails().observe(getViewLifecycleOwner(), smsData -> {
+            if (smsData != null) {
+                MessagesFragmentDirections.MessageDetailsAction action = MessagesFragmentDirections.messageDetailsAction(smsData);
+                NavHostFragment.findNavController(this).navigate(action);
+                viewModel.onMessageDetailsNavigated();
+            }
+        });
+
+        // Fab button -> to new Message fragment
+        viewModel.navigateToNewMessage().observe(getViewLifecycleOwner(), isFabClicked -> {
+            if (isFabClicked) {
+                Navigation.findNavController(binding.floatingActionButton).navigate(R.id.action_navigation_messages_to_navigation_new_message);
+                viewModel.doneNavigationToNewMessage();
+            }
+        });
+
+        // Contact message icon -> open contacts
+        viewModel.navigateToContactDetails().observe(getViewLifecycleOwner(), isContactIconClicked -> {
+            if (isContactIconClicked) {
+                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(intent, CONTACT_PICKER_RESULT);
+                viewModel.doneNavigationToContactDetails();
+            }
+        });
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     private void checkPermission() {
@@ -147,19 +206,6 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.OnClic
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-
-    @Override
-    public void onClick(SmsData smsData) {
-        viewModel.showSmsDetails(smsData);
-    }
-
-
-    //    private void setupSharedPreferences() {
-//        // A reference to the default shared preferences from the PreferenceManager class
-//        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-//
-//    }
-
 
     private void setUpListeners() {
 
@@ -277,85 +323,32 @@ public class MessagesFragment extends Fragment implements MessagesAdapter.OnClic
     }
 
 
-
-
 //    public static boolean showFullText() {
 //       // Getting the value of the full sms checkbox preference
 //       return sharedPreferences.getBoolean(FULL_SMS, true);
 //    }
 
-//
-//    public void pickPhoto(View view) {
-//        Intent intent = new Intent();
-//        // Show only images, no videos or anything else
-//        intent.setType("image/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        // Always show the chooser (if there are multiple options available)
-//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-//
-//    }
-
-
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        Bitmap bitmap = null;
-//        String imagePath = null;
-//
-//        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-//
-//            Uri uri = data.getData();
-//            String[] filePath = { MediaStore.Images.Media.DATA };
-//            Cursor cursor = getContentResolver().query(uri, filePath, null, null, null);
-//
-//            if (cursor != null) {
-//                cursor.moveToFirst();
-//            }
-//            if (cursor != null) {
-//                imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-//            }
-//
-//            if (cursor != null) {
-//                cursor.close();
-//            }
-//
-//            photoImage = (ImageView) findViewById(R.id.contactPhotoPick);
-//            // Resample the saved image to fit the ImageView
-//            bitmap = resamplePic(this, imagePath);
-//            photoImage.setImageBitmap(bitmap);
-//
-//
-//        }
-//    }
-
-//    static Bitmap resamplePic(Context context, String imagePath) {
-//
-//        // Get device screen size information
-//        DisplayMetrics metrics = new DisplayMetrics();
-//        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-//        manager.getDefaultDisplay().getMetrics(metrics);
-//
-//        int targetH = metrics.heightPixels;
-//        int targetW = metrics.widthPixels;
-//
-//        // Get the dimensions of the original bitmap
-//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//        bmOptions.inJustDecodeBounds = true;
-//        BitmapFactory.decodeFile(imagePath, bmOptions);
-//        int photoW = bmOptions.outWidth;
-//        int photoH = bmOptions.outHeight;
-//
-//        // Determine how much to scale down the image
-//        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-//
-//        // Decode the image file into a Bitmap sized to fill the View
-//        bmOptions.inJustDecodeBounds = false;
-//        bmOptions.inSampleSize = scaleFactor;
-//
-//        return BitmapFactory.decodeFile(imagePath);
-//    }
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Uri contactData = data.getData();
+            Cursor c = null;
+            if (contactData != null) {
+                c = context.getContentResolver().query(contactData, null, null, null, null);
+            }
+            if (c != null && c.moveToFirst()) {
+                String name = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+                Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
+                //                Intent intent = new Intent(CurrentActivity.this, NewActivity.class);
+//                intent.putExtra("name", name);
+//                startActivityForResult(intent, 0);
+            }
+            if (c != null) {
+                c.close();
+            }
+        }
+    }
 
 
 }

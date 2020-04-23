@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="icons">
+        <item>@drawable/contact_image_black</item>
+        <item>@drawable/contact_image_green</item>
+        <item>@drawable/contact_image_grey</item>
+        <item>@drawable/contact_image_grey_blue</item>
+        <item>@drawable/contact_image_indigo</item>
+        <item>@drawable/contact_image_light_green</item>
+        <item>@drawable/contact_image_light_orange</item>
+        <item>@drawable/contact_image_orange_red</item>
+        <item>@drawable/contact_image_pink</item>
+        <item>@drawable/contact_image_purple</item>
+        <item>@drawable/contact_image_red</item>
+        <item>@drawable/contact_image_sea_blue</item>
+        <item>@drawable/contact_image_turquoise</item>
+        <item>@drawable/contact_image_yellow</item>
+    </array>
+
+</resources>

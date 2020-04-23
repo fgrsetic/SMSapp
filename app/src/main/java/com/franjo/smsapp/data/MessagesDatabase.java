@@ -1,25 +1,32 @@
 package com.franjo.smsapp.data;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.widget.Toast;
 
 import com.franjo.smsapp.util.ContactName;
 import com.franjo.smsapp.util.DateFormatting;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MessagesDatabase implements IMessages {
 
+    private Context context;
 
-    public MessagesDatabase() {
-
-    }
 
     @Override
     public List<SmsData> getAllMessages(Context context) {
+        this.context = context;
         List<SmsData> smsList = new ArrayList<>();
         // Uri to get messages from the inbox and we’re grabbing the body, address and date
         Uri uri = Uri.parse("content://sms/inbox");
@@ -52,7 +59,6 @@ public class MessagesDatabase implements IMessages {
                 String minuteString = DateFormatting.formatDate("hh:mm", Long.parseLong((minute)));
                 sms.setMinute(minuteString);
 
-                sms.setContactImage(sms.getContactImage());
                 smsList.add(sms);
 
                 smsInboxCursor.moveToNext();
@@ -61,4 +67,52 @@ public class MessagesDatabase implements IMessages {
         }
         return smsList;
     }
+
+    @Override
+    public Bitmap loadContactPhoto(String phoneNumber) {
+        long contactID = getContactIDFromNumber(phoneNumber, context);
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactID);
+        Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+        Cursor cursor = context.getContentResolver().query(
+                photoUri,
+                new String[] {ContactsContract.Contacts.Photo.PHOTO},
+                null,
+                null,
+                null
+        );
+        if (cursor == null) {
+            return null;
+        }
+        try {
+            if (cursor.moveToFirst()) {
+                byte[] data = cursor.getBlob(0);
+                if (data != null) {
+                    return BitmapFactory.decodeStream(new ByteArrayInputStream(data));
+                } else {
+                    Toast.makeText(context, "No image", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
+    }
+
+    // Get contact id by using the phone number
+    private static long getContactIDFromNumber(String contactNumber, Context context) {
+        String UriContactNumber = Uri.encode(contactNumber);
+        long phoneContactID = new Random().nextInt();
+        Cursor contactLookupCursor = context.getContentResolver().query(Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, UriContactNumber),
+                new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME, ContactsContract.PhoneLookup._ID}, null, null, null);
+        if (contactLookupCursor != null) {
+            while (contactLookupCursor.moveToNext()) {
+                phoneContactID = contactLookupCursor.getLong(contactLookupCursor.getColumnIndexOrThrow(ContactsContract.PhoneLookup._ID));
+            }
+        }
+        if (contactLookupCursor != null) {
+            contactLookupCursor.close();
+        }
+        return phoneContactID;
+    }
+
 }

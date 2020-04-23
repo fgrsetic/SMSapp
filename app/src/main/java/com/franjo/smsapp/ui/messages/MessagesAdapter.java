@@ -1,6 +1,7 @@
 package com.franjo.smsapp.ui.messages;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -10,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.franjo.smsapp.data.SmsData;
 import com.franjo.smsapp.databinding.ListRowBinding;
+import com.franjo.smsapp.generated.callback.OnClickListener;
 
 /**
  * Created by Franjo on 18.7.2016..
  */
 public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.MessagesViewHolder> {
 
-    private OnClickListener onClickListener;
+    private IClickListener onClickListener;
 
     private static final DiffUtil.ItemCallback<SmsData> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<SmsData>() {
@@ -32,9 +34,10 @@ public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.Messag
             };
 
 
-    MessagesAdapter(OnClickListener onClickListener) {
+    MessagesAdapter(IClickListener onClickListener) {
         super(DIFF_CALLBACK);
         this.onClickListener = onClickListener;
+
     }
 
     @NonNull
@@ -46,8 +49,7 @@ public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.Messag
     @Override
     public void onBindViewHolder(@NonNull MessagesViewHolder holder, int position) {
         SmsData smsData = getItem(position);
-        holder.itemView.setOnClickListener(view -> onClickListener.onClick(smsData));
-        holder.bind(smsData);
+        holder.bind(smsData, onClickListener);
     }
 
     static class MessagesViewHolder extends RecyclerView.ViewHolder {
@@ -59,8 +61,9 @@ public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.Messag
             this.binding = binding;
         }
 
-        void bind(SmsData smsData) {
+        void bind(SmsData smsData, IClickListener clickListener) {
             binding.setSmsData(smsData);
+            binding.setClickListener(clickListener);
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
             binding.executePendingBindings();
@@ -68,10 +71,10 @@ public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.Messag
 
     }
 
-    interface OnClickListener {
+    public interface IClickListener {
         void onClick(SmsData smsData);
+        void onContactIconClicked();
     }
-
 }
 
 
