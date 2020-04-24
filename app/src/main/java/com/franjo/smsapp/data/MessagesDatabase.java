@@ -14,7 +14,6 @@ import com.franjo.smsapp.util.ContactName;
 import com.franjo.smsapp.util.DateFormatting;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -69,6 +68,49 @@ public class MessagesDatabase implements IMessages {
     }
 
     @Override
+    public SmsData openContactDetails(SmsData data) {
+        SmsData smsData = new SmsData();
+        String phoneNumber = null;
+        Uri contactData = ContactsContract.Contacts.CONTENT_URI;
+        Cursor cursor = null;
+        final ContentResolver contentResolver = context.getContentResolver();
+        if (contactData != null) {
+            cursor = contentResolver.query(contactData, null, smsData.getPhoneNumber(), null, null);
+        }
+        if (cursor != null && cursor.moveToFirst()) {
+            String id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+            int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
+
+            if (hasPhoneNumber > 0) {
+                Cursor cursor2 = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?",
+                        new String[]{id},
+                        null);
+                if (cursor2 != null) {
+                    while (cursor2.moveToNext()) {
+                        phoneNumber = cursor2.getString(cursor2.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    }
+                }
+                if (cursor2 != null) {
+                    cursor2.close();
+                }
+            }
+
+            //                Intent intent = new Intent(CurrentActivity.this, NewActivity.class);
+//                intent.putExtra("name", name);
+//                startActivityForResult(intent, 0);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        Bitmap photo = loadContactPhoto(phoneNumber);
+        smsData.setPhoneNumber(phoneNumber);
+        smsData.setContactImage(photo);
+        return smsData;
+    }
+
     public Bitmap loadContactPhoto(String phoneNumber) {
         long contactID = getContactIDFromNumber(phoneNumber, context);
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactID);

@@ -2,15 +2,11 @@ package com.franjo.smsapp.ui.messages;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -72,12 +66,13 @@ public class MessagesFragment extends Fragment  {
         MessagesAdapter adapter = new MessagesAdapter(new MessagesAdapter.IClickListener() {
             @Override
             public void onClick(SmsData smsData) {
-                viewModel.setNavigateToMessageDetails(smsData);
+                viewModel.toMessageDetailsNavigated(smsData);
             }
 
             @Override
-            public void onContactIconClicked() {
-                viewModel.toContactDetailsNavigated();
+            public void onContactIconClicked(SmsData smsData) {
+                //viewModel.toContactDetailsNavigated();
+                viewModel.contactDetailsLoaded(smsData);
             }
         });
 
@@ -135,11 +130,19 @@ public class MessagesFragment extends Fragment  {
         });
 
         // Contact message icon -> open contacts
-        viewModel.navigateToContactDetails().observe(getViewLifecycleOwner(), isContactIconClicked -> {
-            if (isContactIconClicked) {
-                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(intent, CONTACT_PICKER_RESULT);
-                viewModel.doneNavigationToContactDetails();
+//        viewModel.navigateToContactDetails().observe(getViewLifecycleOwner(), isContactButtonClicked -> {
+//            if (isContactButtonClicked) {
+//                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+//                startActivityForResult(intent, CONTACT_PICKER_RESULT);
+//                viewModel.doneNavigationToContactDetails();
+//            }
+//        });
+
+        viewModel.loadContactDetails().observe(getViewLifecycleOwner(), smsData -> {
+            if (smsData != null) {
+                MessagesFragmentDirections.ContactDetailsAction action = MessagesFragmentDirections.contactDetailsAction(smsData);
+                NavHostFragment.findNavController(this).navigate(action);
+                viewModel.doneLoadingContactDetails();
             }
         });
 
@@ -328,28 +331,13 @@ public class MessagesFragment extends Fragment  {
 //       return sharedPreferences.getBoolean(FULL_SMS, true);
 //    }
 
-    @Override
-    public void onActivityResult(int reqCode, int resultCode, Intent data) {
-        super.onActivityResult(reqCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            Uri contactData = data.getData();
-            Cursor c = null;
-            if (contactData != null) {
-                c = context.getContentResolver().query(contactData, null, null, null, null);
-            }
-            if (c != null && c.moveToFirst()) {
-                String name = c.getString(c.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-                Toast.makeText(context, name, Toast.LENGTH_SHORT).show();
-                //                Intent intent = new Intent(CurrentActivity.this, NewActivity.class);
-//                intent.putExtra("name", name);
-//                startActivityForResult(intent, 0);
-            }
-            if (c != null) {
-                c.close();
-            }
-        }
-    }
-
+//    @Override
+//    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+//        super.onActivityResult(reqCode, resultCode, data);
+//        if (resultCode == Activity.RESULT_OK) {
+//            viewModel.contactDetailsLoaded(data);
+//        }
+//    }
 
 }
 

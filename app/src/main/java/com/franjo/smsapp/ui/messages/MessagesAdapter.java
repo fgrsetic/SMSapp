@@ -1,7 +1,6 @@
 package com.franjo.smsapp.ui.messages;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.franjo.smsapp.data.SmsData;
 import com.franjo.smsapp.databinding.ListRowBinding;
-import com.franjo.smsapp.generated.callback.OnClickListener;
 
 /**
  * Created by Franjo on 18.7.2016..
@@ -73,7 +71,7 @@ public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.Messag
 
     public interface IClickListener {
         void onClick(SmsData smsData);
-        void onContactIconClicked();
+        void onContactIconClicked(SmsData smsData);
     }
 }
 

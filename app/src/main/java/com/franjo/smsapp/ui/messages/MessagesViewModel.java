@@ -2,6 +2,7 @@ package com.franjo.smsapp.ui.messages;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
@@ -31,6 +32,7 @@ public class MessagesViewModel extends AndroidViewModel {
     private MutableLiveData<SmsData> navigateToMessageDetails;
     private MutableLiveData<Boolean> navigateToNewMessage;
     private MutableLiveData<Boolean> navigateToContactDetails;
+    private MutableLiveData<SmsData> loadContactDetails;
     private MutableLiveData<Bitmap> loadContactPhoto;
 
 
@@ -79,7 +81,7 @@ public class MessagesViewModel extends AndroidViewModel {
         return navigateToMessageDetails;
     }
 
-    void setNavigateToMessageDetails(SmsData smsData) {
+    void toMessageDetailsNavigated(SmsData smsData) {
         navigateToMessageDetails.setValue(smsData);
     }
 
@@ -115,13 +117,34 @@ public class MessagesViewModel extends AndroidViewModel {
         return navigateToContactDetails;
     }
 
-    public void toContactDetailsNavigated() {
+    void toContactDetailsNavigated() {
         navigateToContactDetails.setValue(true);
     }
 
     void doneNavigationToContactDetails() {
         navigateToContactDetails.setValue(false);
     }
+
+    // Load contact details
+    LiveData<SmsData> loadContactDetails() {
+        if (loadContactDetails == null) {
+            loadContactDetails = new MutableLiveData<>();
+        }
+        return loadContactDetails;
+    }
+
+//    void contactDetailsLoaded(Intent data) {
+//        loadContactDetails.setValue(databaseMessages.openContactDetails(data));
+//    }
+
+    void contactDetailsLoaded(SmsData smsData) {
+        loadContactDetails.setValue(databaseMessages.openContactDetails(smsData));
+    }
+
+    void doneLoadingContactDetails() {
+        loadContactDetails.setValue(null);
+    }
+
 
 
 
