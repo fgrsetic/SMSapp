@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigationMessages">
+
+    <fragment
+        android:id="@+id/navigationMessages"
+        android:name="com.franjo.smsapp.ui.messages.MessagesFragment"
+        android:label="@string/title_messages"
+        tools:layout="@layout/fragment_messages">
+
+        <action
+            android:id="@+id/newMessageAction"
+            app:destination="@id/navigationNewMessage"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+
+        <action
+            android:id="@+id/messageDetailsAction"
+            app:destination="@id/messageDetailsFragment">
+
+            <argument
+                android:name="smsData"
+                app:argType="com.franjo.smsapp.data.SmsData" />
+        </action>
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigationContacts"
+        android:name="com.franjo.smsapp.ui.contacts.ContactsFragment"
+        android:label="@string/title_contacts"
+        tools:layout="@layout/fragment_contacts" />
+
+    <fragment
+        android:id="@+id/navigationFavorites"
+        android:name="com.franjo.smsapp.ui.favorites.FavoritesFragment"
+        android:label="@string/title_favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+    <fragment
+        android:id="@+id/navigationNewMessage"
+        android:name="com.franjo.smsapp.ui.messages.new_message.NewMessageFragment"
+        android:label="@string/new_message" />
+
+
+    <fragment
+        android:id="@+id/messageDetailsFragment"
+        android:name="com.franjo.smsapp.ui.messages.details.MessageDetailsFragment"
+        android:label="Message details">
+
+        <argument
+            android:name="smsData"
+            android:defaultValue="@null"
+            app:argType="com.franjo.smsapp.data.SmsData"
+            app:nullable="true" />
+    </fragment>
+
+
+</navigation>

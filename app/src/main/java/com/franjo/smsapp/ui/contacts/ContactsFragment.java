@@ -14,9 +14,6 @@ import com.franjo.smsapp.R;
 
 public class ContactsFragment extends Fragment {
 
-    public static ContactsFragment newInstance() {
-        return new ContactsFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,

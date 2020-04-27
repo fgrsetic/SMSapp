@@ -2,11 +2,15 @@ package com.franjo.smsapp.ui.messages;
 
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,9 +31,10 @@ import com.franjo.smsapp.R;
 import com.franjo.smsapp.data.HeadlessSmsSendService;
 import com.franjo.smsapp.data.SmsData;
 import com.franjo.smsapp.databinding.FragmentMessagesBinding;
+import com.franjo.smsapp.ui.SharedViewModel;
 
 
-public class MessagesFragment extends Fragment  {
+public class MessagesFragment extends Fragment {
 
     private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
@@ -37,10 +42,9 @@ public class MessagesFragment extends Fragment  {
 
     private Context context;
     private FragmentMessagesBinding binding;
-    //    private ConversationAdapter arrayAdapter;
 
-    //    private ImageView photoImage;
     private MessagesViewModel viewModel;
+    private SharedViewModel sharedViewModel;
 
 
     @Override
@@ -53,11 +57,15 @@ public class MessagesFragment extends Fragment  {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_messages, container, false);
+        View view = binding.getRoot();
+
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.setLifecycleOwner(this);
 
-        viewModel = new ViewModelProvider(this).get(MessagesViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(MessagesViewModel.class);
         binding.setViewModel(viewModel);
+
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         checkPermission();
 
@@ -71,8 +79,7 @@ public class MessagesFragment extends Fragment  {
 
             @Override
             public void onContactIconClicked(SmsData smsData) {
-                //viewModel.toContactDetailsNavigated();
-                viewModel.contactDetailsLoaded(smsData);
+                viewModel.loadContactDetails(smsData);
             }
         });
 
@@ -80,37 +87,16 @@ public class MessagesFragment extends Fragment  {
         binding.messagesList.setHasFixedSize(true);
         binding.messagesList.setItemAnimator(new DefaultItemAnimator());
 
-
-
-//        viewModel.loadContactPhoto().observe(getViewLifecycleOwner(), bitmap -> {
-//
-//        });
-
-
-//
-//        viewModel.showDatabaseSmsList().observe(getViewLifecycleOwner(), smsData -> {
-//
-//        });
-
-
-
-
-
 //        listViewInbox = findViewById(R.id.listViewInbox);
-////        listViewInbox.setTextFilterEnabled(true); // use to enable search view popup text
-
+//        listViewInbox.setTextFilterEnabled(true); // use to enable search view popup text
 //        listViewInbox.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
 
-        // setInboxAdapter();
-        // setUpListeners();
-        // setupSharedPreferences();
-
-        return binding.getRoot();
+        return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         // List item -> to message details
         viewModel.navigateToMessageDetails().observe(getViewLifecycleOwner(), smsData -> {
@@ -124,29 +110,21 @@ public class MessagesFragment extends Fragment  {
         // Fab button -> to new Message fragment
         viewModel.navigateToNewMessage().observe(getViewLifecycleOwner(), isFabClicked -> {
             if (isFabClicked) {
-                Navigation.findNavController(binding.floatingActionButton).navigate(R.id.action_navigation_messages_to_navigation_new_message);
+                Navigation.findNavController(binding.floatingActionButton).navigate(R.id.newMessageAction);
                 viewModel.doneNavigationToNewMessage();
             }
         });
 
-        // Contact message icon -> open contacts
-//        viewModel.navigateToContactDetails().observe(getViewLifecycleOwner(), isContactButtonClicked -> {
-//            if (isContactButtonClicked) {
-//                Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-//                startActivityForResult(intent, CONTACT_PICKER_RESULT);
-//                viewModel.doneNavigationToContactDetails();
-//            }
-//        });
-
-        viewModel.loadContactDetails().observe(getViewLifecycleOwner(), smsData -> {
-            if (smsData != null) {
-                MessagesFragmentDirections.ContactDetailsAction action = MessagesFragmentDirections.contactDetailsAction(smsData);
-                NavHostFragment.findNavController(this).navigate(action);
-                viewModel.doneLoadingContactDetails();
+        viewModel.navigateToContactDetails().observe(getViewLifecycleOwner(), contactUri -> {
+            if (contactUri != null) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(contactUri);
+                context.startActivity(intent);
+                viewModel.doneNavigationToContactDetails();
             }
         });
-
     }
+
 
     @Override
     public void onStart() {
@@ -331,13 +309,6 @@ public class MessagesFragment extends Fragment  {
 //       return sharedPreferences.getBoolean(FULL_SMS, true);
 //    }
 
-//    @Override
-//    public void onActivityResult(int reqCode, int resultCode, Intent data) {
-//        super.onActivityResult(reqCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK) {
-//            viewModel.contactDetailsLoaded(data);
-//        }
-//    }
 
 }
 

@@ -8,76 +8,59 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="contactDetails">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-1810" />
-                            <option name="y" value="56" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
                   <entry key="messageDetailsFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-1815" />
-                            <option name="y" value="-324" />
+                            <option name="x" value="841" />
+                            <option name="y" value="155" />
                           </Point>
                         </option>
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_contacts">
+                  <entry key="navigationContacts">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-2241" />
-                            <option name="y" value="195" />
+                            <option name="x" value="12" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_favorites">
+                  <entry key="navigationFavorites">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-2244" />
-                            <option name="y" value="-155" />
+                            <option name="x" value="256" />
+                            <option name="y" value="12" />
                           </Point>
                         </option>
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_messages">
+                  <entry key="navigationMessages">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-2246" />
-                            <option name="y" value="-483" />
+                            <option name="x" value="500" />
+                            <option name="y" value="76" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_navigation_messages_to_navigation_new_message">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="contactDetailsAction">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
                             <entry key="messageDetailsAction">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="newMessageAction">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -87,13 +70,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_new_message">
+                  <entry key="navigationNewMessage">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-1811" />
-                            <option name="y" value="-683" />
+                            <option name="x" value="839" />
+                            <option name="y" value="-142" />
                           </Point>
                         </option>
                       </LayoutPositions>

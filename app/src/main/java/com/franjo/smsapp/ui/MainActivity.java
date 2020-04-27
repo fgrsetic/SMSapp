@@ -50,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_messages,
-                R.id.navigation_contacts,
-                R.id.navigation_favorites)
+                R.id.navigationMessages,
+                R.id.navigationContacts,
+                R.id.navigationFavorites)
                 .build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -124,14 +124,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Hide bottom navigation
     private void bottomNavigationVisibility(NavController navController) {
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                if (destination.getId() == R.id.navigation_new_message) {
-                    binding.navView.setVisibility(View.GONE);
-                } else {
-                    binding.navView.setVisibility(View.VISIBLE);
-                }
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.navigationNewMessage) {
+                binding.navView.setVisibility(View.GONE);
+            } else {
+                binding.navView.setVisibility(View.VISIBLE);
             }
         });
     }

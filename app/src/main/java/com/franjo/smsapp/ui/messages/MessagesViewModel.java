@@ -31,8 +31,7 @@ public class MessagesViewModel extends AndroidViewModel {
     private MutableLiveData<List<SmsData>> databaseMessageList;
     private MutableLiveData<SmsData> navigateToMessageDetails;
     private MutableLiveData<Boolean> navigateToNewMessage;
-    private MutableLiveData<Boolean> navigateToContactDetails;
-    private MutableLiveData<SmsData> loadContactDetails;
+    private MutableLiveData<Uri> navigateToContactDetails;
     private MutableLiveData<Bitmap> loadContactPhoto;
 
 
@@ -110,43 +109,20 @@ public class MessagesViewModel extends AndroidViewModel {
 
 
     // Go to contact details
-    LiveData<Boolean> navigateToContactDetails() {
+    LiveData<Uri> navigateToContactDetails() {
         if (navigateToContactDetails == null) {
             navigateToContactDetails = new MutableLiveData<>();
         }
         return navigateToContactDetails;
     }
 
-    void toContactDetailsNavigated() {
-        navigateToContactDetails.setValue(true);
+    void loadContactDetails(SmsData smsData) {
+        navigateToContactDetails.setValue(databaseMessages.openContactDetails(smsData));
     }
 
     void doneNavigationToContactDetails() {
-        navigateToContactDetails.setValue(false);
+        navigateToContactDetails.setValue(null);
     }
-
-    // Load contact details
-    LiveData<SmsData> loadContactDetails() {
-        if (loadContactDetails == null) {
-            loadContactDetails = new MutableLiveData<>();
-        }
-        return loadContactDetails;
-    }
-
-//    void contactDetailsLoaded(Intent data) {
-//        loadContactDetails.setValue(databaseMessages.openContactDetails(data));
-//    }
-
-    void contactDetailsLoaded(SmsData smsData) {
-        loadContactDetails.setValue(databaseMessages.openContactDetails(smsData));
-    }
-
-    void doneLoadingContactDetails() {
-        loadContactDetails.setValue(null);
-    }
-
-
-
 
 
 

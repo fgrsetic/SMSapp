@@ -18,7 +18,6 @@ public class SmsData implements Parcelable {
     private String date;
     private String minute;
     private Bitmap contactImage;
-    private boolean isMine;
 
     public SmsData() {
 
@@ -72,14 +71,6 @@ public class SmsData implements Parcelable {
         this.contactImage = contactImage;
     }
 
-    public boolean isMine() {
-        return isMine;
-    }
-
-    public void setMine(boolean mine) {
-        isMine = mine;
-    }
-
 
     protected SmsData(Parcel in) {
         phoneNumber = in.readString();
@@ -88,7 +79,6 @@ public class SmsData implements Parcelable {
         date = in.readString();
         minute = in.readString();
         contactImage = in.readParcelable(Bitmap.class.getClassLoader());
-        isMine = in.readByte() != 0;
     }
 
     public static final Creator<SmsData> CREATOR = new Creator<SmsData>() {
@@ -116,7 +106,6 @@ public class SmsData implements Parcelable {
         dest.writeString(date);
         dest.writeString(minute);
         dest.writeParcelable(contactImage, flags);
-        dest.writeByte((byte) (isMine ? 1 : 0));
     }
 
     @Override
@@ -128,7 +117,6 @@ public class SmsData implements Parcelable {
                 ", date='" + date + '\'' +
                 ", minute='" + minute + '\'' +
                 ", contactImage=" + contactImage +
-                ", isMine=" + isMine +
                 '}';
     }
 
@@ -137,8 +125,7 @@ public class SmsData implements Parcelable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SmsData smsData = (SmsData) o;
-        return isMine == smsData.isMine &&
-                Objects.equals(phoneNumber, smsData.phoneNumber) &&
+        return  Objects.equals(phoneNumber, smsData.phoneNumber) &&
                 Objects.equals(name, smsData.name) &&
                 Objects.equals(messageBody, smsData.messageBody) &&
                 Objects.equals(date, smsData.date) &&
@@ -148,7 +135,7 @@ public class SmsData implements Parcelable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(phoneNumber, name, messageBody, date, minute, contactImage, isMine);
+        return Objects.hash(phoneNumber, name, messageBody, date, minute, contactImage);
     }
 
 

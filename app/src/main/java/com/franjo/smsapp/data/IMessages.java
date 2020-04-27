@@ -11,5 +11,5 @@ public interface IMessages {
 
     List<SmsData> getAllMessages(Context context);
     Bitmap loadContactPhoto(String phoneNumber);
-    SmsData openContactDetails(SmsData smsData);
+    Uri openContactDetails(SmsData smsData);
 }

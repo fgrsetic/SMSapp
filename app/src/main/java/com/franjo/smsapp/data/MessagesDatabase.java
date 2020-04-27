@@ -3,6 +3,7 @@ package com.franjo.smsapp.data;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,23 +19,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static android.provider.ContactsContract.Contacts.CONTENT_LOOKUP_URI;
+
 public class MessagesDatabase implements IMessages {
 
     private Context context;
-
+    private ContentResolver contentResolver;
 
     @Override
     public List<SmsData> getAllMessages(Context context) {
         this.context = context;
+        // Get Content Resolver object, which will deal with Content Provider
+        contentResolver = context.getContentResolver();
         List<SmsData> smsList = new ArrayList<>();
         // Uri to get messages from the inbox and we’re grabbing the body, address and date
         Uri uri = Uri.parse("content://sms/inbox");
-        // Get Content Resolver object, which will deal with Content Provider
-        ContentResolver cr = context.getContentResolver();
         // List required columns
         String[] projection = new String[]{"address", "body", "date"};
         // Fetch SMS Message from Built-in Content Provider
-        Cursor smsInboxCursor = cr.query(uri, projection, null, null, "date DESC");
+        Cursor smsInboxCursor = contentResolver.query(uri, projection, null, null, "date DESC");
 
         // Read the sms data and store it in the list
         if (smsInboxCursor != null && smsInboxCursor.moveToFirst()) {
@@ -68,48 +71,34 @@ public class MessagesDatabase implements IMessages {
     }
 
     @Override
-    public SmsData openContactDetails(SmsData data) {
-        SmsData smsData = new SmsData();
-        String phoneNumber = null;
-        Uri contactData = ContactsContract.Contacts.CONTENT_URI;
-        Cursor cursor = null;
-        final ContentResolver contentResolver = context.getContentResolver();
-        if (contactData != null) {
-            cursor = contentResolver.query(contactData, null, smsData.getPhoneNumber(), null, null);
-        }
-        if (cursor != null && cursor.moveToFirst()) {
-            String id = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-            String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+    public Uri openContactDetails(SmsData data) {
+        Cursor cursor;
+        Uri contactUri = null;
+        Uri lookupUri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, Uri.encode(data.getPhoneNumber()));
+        String[] phoneNumberProjection = {
+                ContactsContract.CommonDataKinds.Phone._ID,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.Contacts.HAS_PHONE_NUMBER,
+                ContactsContract.Contacts.LOOKUP_KEY
+        };
+
+        cursor = contentResolver.query(lookupUri, phoneNumberProjection, null, null, null);
+
+        if (cursor != null && cursor.moveToNext()) {
             int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
-
             if (hasPhoneNumber > 0) {
-                Cursor cursor2 = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                        null,
-                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " =?",
-                        new String[]{id},
-                        null);
-                if (cursor2 != null) {
-                    while (cursor2.moveToNext()) {
-                        phoneNumber = cursor2.getString(cursor2.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    }
-                }
-                if (cursor2 != null) {
-                    cursor2.close();
-                }
+                String lookupKey = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.LOOKUP_KEY));
+                long contactId = cursor.getLong(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+                contactUri = ContactsContract.Contacts.getLookupUri(contactId, lookupKey);
             }
-
-            //                Intent intent = new Intent(CurrentActivity.this, NewActivity.class);
-//                intent.putExtra("name", name);
-//                startActivityForResult(intent, 0);
         }
         if (cursor != null) {
             cursor.close();
         }
-        Bitmap photo = loadContactPhoto(phoneNumber);
-        smsData.setPhoneNumber(phoneNumber);
-        smsData.setContactImage(photo);
-        return smsData;
+        return contactUri;
+
     }
+
 
     public Bitmap loadContactPhoto(String phoneNumber) {
         long contactID = getContactIDFromNumber(phoneNumber, context);
@@ -117,7 +106,7 @@ public class MessagesDatabase implements IMessages {
         Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
         Cursor cursor = context.getContentResolver().query(
                 photoUri,
-                new String[] {ContactsContract.Contacts.Photo.PHOTO},
+                new String[]{ContactsContract.Contacts.Photo.PHOTO},
                 null,
                 null,
                 null
