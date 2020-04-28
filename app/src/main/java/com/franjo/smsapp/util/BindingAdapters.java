@@ -15,7 +15,9 @@ import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.franjo.smsapp.app.App;
+import com.franjo.smsapp.data.Contact;
 import com.franjo.smsapp.data.SmsData;
+import com.franjo.smsapp.ui.contacts.ContactsAdapter;
 import com.franjo.smsapp.ui.messages.MessagesAdapter;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.Random;
 
 public class BindingAdapters {
 
+    // Sms
     @BindingAdapter("smsPhoneText")
     public static void bindSmsPhoneNumber(TextView textView, SmsData smsData) {
         textView.setText(smsData.getPhoneNumber());
@@ -43,8 +46,8 @@ public class BindingAdapters {
         textView.setText(smsData.getMinute());
     }
 
-    @BindingAdapter("listData")
-    public static void bindRecyclerView(RecyclerView recyclerView, List<SmsData> data) {
+    @BindingAdapter("smsList")
+    public static void bindSmsListRecyclerView(RecyclerView recyclerView, List<SmsData> data) {
         MessagesAdapter adapter = (MessagesAdapter) recyclerView.getAdapter();
         if (adapter != null) {
             adapter.submitList(data);
@@ -55,5 +58,27 @@ public class BindingAdapters {
     public static void randomChangeContactImage(ImageView imageView, SmsData smsData) {
         imageView.setBackground(ImageUtil.getRandomImage());
     }
+
+
+    // Contacts
+    @BindingAdapter("contactsList")
+    public static void bindContactsListRecyclerView(RecyclerView recyclerView, List<Contact> data) {
+        ContactsAdapter adapter = (ContactsAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.submitList(data);
+        }
+    }
+
+    @BindingAdapter("contactsName")
+    public static void bindContactsName(TextView textView, Contact contact) {
+        textView.setText(contact.getName());
+    }
+
+    @BindingAdapter("backgroundImage")
+    public static void randomChangeContactImage(ImageView imageView, Contact Contact) {
+        imageView.setBackground(ImageUtil.getRandomImage());
+    }
+
+
 
 }

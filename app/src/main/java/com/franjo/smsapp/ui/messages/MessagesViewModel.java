@@ -2,7 +2,6 @@ package com.franjo.smsapp.ui.messages;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
@@ -10,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.franjo.smsapp.data.IMessages;
 import com.franjo.smsapp.data.ISmsReceiver;
@@ -43,7 +41,7 @@ public class MessagesViewModel extends AndroidViewModel {
     }
 
     // Device database
-    public LiveData<List<SmsData>> showDatabaseSmsList() {
+    public LiveData<List<SmsData>> showSmsList() {
         if (databaseMessageList == null) {
             databaseMessageList = new MutableLiveData<>();
             loadDatabaseMessages();
@@ -54,7 +52,6 @@ public class MessagesViewModel extends AndroidViewModel {
     private void loadDatabaseMessages() {
         databaseMessageList.setValue(databaseMessages.getAllMessages(context));
     }
-
 
 
     // Notification
@@ -69,7 +66,6 @@ public class MessagesViewModel extends AndroidViewModel {
     private void loadNotifiedSmsList() {
         notifiedSmsList.setValue(receiver.getSMSList());
     }
-
 
 
     // Go to message details
@@ -125,7 +121,6 @@ public class MessagesViewModel extends AndroidViewModel {
     }
 
 
-
 //    public LiveData<Bitmap> loadContactPhoto() {
 //        if(loadContactPhoto == null) {
 //            loadContactPhoto = new MutableLiveData<>();
@@ -141,31 +136,6 @@ public class MessagesViewModel extends AndroidViewModel {
 //    public void setContactPhoneNumber(SmsData smsData) {
 //        contactPhoneNumber = smsData.getPhoneNumber();
 //    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     //    private PendingIntent contentIntent(Context context) {
@@ -221,8 +191,6 @@ public class MessagesViewModel extends AndroidViewModel {
 //            }
 //        }
 //    }
-
-
 
 
 }

@@ -8,18 +8,5 @@
 
         <!-- If we dont add a theme for preference app would crash -->
         <!--        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>-->
-
     </style>
-
-    <style name="MyToolbar" parent="Widget.MaterialComponents.Toolbar">
-        <item name="android:textColorPrimary">@color/toolbarText</item>
-        <item name="android:textColorSecondary">@color/toolbarText</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:elevation">4dp</item>
-        <item name="android:textColorHint">@color/toolbarText</item>
-    </style>
-
-
-
 </resources>

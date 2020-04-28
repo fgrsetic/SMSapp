@@ -2,15 +2,11 @@ package com.franjo.smsapp.ui.messages;
 
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,23 +24,18 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 
 import com.franjo.smsapp.R;
-import com.franjo.smsapp.data.HeadlessSmsSendService;
 import com.franjo.smsapp.data.SmsData;
 import com.franjo.smsapp.databinding.FragmentMessagesBinding;
-import com.franjo.smsapp.ui.SharedViewModel;
 
 
 public class MessagesFragment extends Fragment {
 
     private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
-    private static final int CONTACT_PICKER_RESULT = 1001;
 
     private Context context;
     private FragmentMessagesBinding binding;
-
     private MessagesViewModel viewModel;
-    private SharedViewModel sharedViewModel;
 
 
     @Override
@@ -58,18 +49,13 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_messages, container, false);
         View view = binding.getRoot();
-
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.setLifecycleOwner(this);
 
         viewModel = new ViewModelProvider(requireActivity()).get(MessagesViewModel.class);
         binding.setViewModel(viewModel);
 
-        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
-
         checkPermission();
-
-        context.startService(new Intent(context, HeadlessSmsSendService.class));
 
         MessagesAdapter adapter = new MessagesAdapter(new MessagesAdapter.IClickListener() {
             @Override
@@ -141,7 +127,7 @@ public class MessagesFragment extends Fragment {
                 getPermissionToReadSMS();
             }
         } else {
-            viewModel.showDatabaseSmsList();
+            viewModel.showSmsList();
         }
     }
 
@@ -179,7 +165,7 @@ public class MessagesFragment extends Fragment {
                     grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Our toast message confirms the answer and if it is positive, we’re then using our next new method
                 Toast.makeText(context, R.string.sms_permission_granted, Toast.LENGTH_SHORT).show();
-                viewModel.showDatabaseSmsList();
+                viewModel.showSmsList();
             } else {
                 Toast.makeText(context, R.string.sms_permission_denied, Toast.LENGTH_SHORT).show();
             }

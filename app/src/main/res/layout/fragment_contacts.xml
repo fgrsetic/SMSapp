@@ -6,22 +6,42 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.franjo.smsapp.ui.contacts.ContactsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.contacts.ContactsFragment">
+        tools:context="com.franjo.smsapp.ui.MainActivity">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/contactsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="@dimen/spacing_extra_small"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:contactsList="@{viewModel.showContactList()}"
+            tools:listitem="@layout/contacts_list_item" />
 
-        </androidx.recyclerview.widget.RecyclerView>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="64dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> viewModel.toNewMessageNavigated()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

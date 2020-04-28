@@ -1,58 +1,46 @@
 package com.franjo.smsapp.ui;
 
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.franjo.smsapp.R;
+import com.franjo.smsapp.data.HeadlessSmsSendService;
 import com.franjo.smsapp.databinding.ActivityMainBinding;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private InputMethodManager imm;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-//        Toolbar toolbar = binding.includeToolbar.myToolbar;
-//        setSupportActionBar(toolbar);
-
-//        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        startService(new Intent(this, HeadlessSmsSendService.class));
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigationMessages,
-                R.id.navigationContacts,
-                R.id.navigationFavorites)
+                R.id.navigation_messages,
+                R.id.navigation_contacts,
+                R.id.navigation_favorites)
                 .build();
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -113,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = popupMenu.getMenuInflater();
         inflater.inflate(R.menu.options_popup_menu, popupMenu.getMenu());
         popupMenu.show();
-
     }
 
     @Override
@@ -132,4 +119,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

@@ -27,7 +27,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:listData="@{viewModel.showDatabaseSmsList()}"
+            app:smsList="@{viewModel.showSmsList()}"
             tools:listitem="@layout/list_row" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

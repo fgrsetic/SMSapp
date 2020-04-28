@@ -3,7 +3,6 @@ package com.franjo.smsapp.data;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +10,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.widget.Toast;
 
+import com.franjo.smsapp.app.App;
 import com.franjo.smsapp.util.ContactName;
 import com.franjo.smsapp.util.DateFormatting;
 
@@ -19,18 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static android.provider.ContactsContract.Contacts.CONTENT_LOOKUP_URI;
-
 public class MessagesDatabase implements IMessages {
 
-    private Context context;
-    private ContentResolver contentResolver;
+
 
     @Override
     public List<SmsData> getAllMessages(Context context) {
-        this.context = context;
         // Get Content Resolver object, which will deal with Content Provider
-        contentResolver = context.getContentResolver();
+        ContentResolver contentResolver = context.getContentResolver();
         List<SmsData> smsList = new ArrayList<>();
         // Uri to get messages from the inbox and we’re grabbing the body, address and date
         Uri uri = Uri.parse("content://sms/inbox");
@@ -71,8 +67,31 @@ public class MessagesDatabase implements IMessages {
     }
 
     @Override
+    public List<Contact> openContactList(Context context) {
+        ContentResolver contentResolver = context.getContentResolver();
+        List<Contact> contactList = new ArrayList<>();
+        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+        Cursor cursor = contentResolver.query(uri, null, null, null, null);
+
+        if (cursor != null && cursor.moveToNext()) {
+            String phoneNumber = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
+           // Bitmap photo = loadContactPhoto(phoneNumber, context);
+            Contact contact = new Contact();
+            contact.setName(name);
+            contact.setPhoneNumber(phoneNumber);
+           // contact.setContactPicture(photo);
+            contactList.add(contact);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        return contactList;
+    }
+
+    @Override
     public Uri openContactDetails(SmsData data) {
-        Cursor cursor;
+        ContentResolver contentResolver = App.getAppContext().getContentResolver();
         Uri contactUri = null;
         Uri lookupUri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, Uri.encode(data.getPhoneNumber()));
         String[] phoneNumberProjection = {
@@ -82,13 +101,14 @@ public class MessagesDatabase implements IMessages {
                 ContactsContract.Contacts.LOOKUP_KEY
         };
 
-        cursor = contentResolver.query(lookupUri, phoneNumberProjection, null, null, null);
+        Cursor cursor = contentResolver.query(lookupUri, phoneNumberProjection, null, null, null);
 
         if (cursor != null && cursor.moveToNext()) {
             int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
             if (hasPhoneNumber > 0) {
                 String lookupKey = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.LOOKUP_KEY));
                 long contactId = cursor.getLong(cursor.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+
                 contactUri = ContactsContract.Contacts.getLookupUri(contactId, lookupKey);
             }
         }
@@ -100,7 +120,7 @@ public class MessagesDatabase implements IMessages {
     }
 
 
-    public Bitmap loadContactPhoto(String phoneNumber) {
+    public Bitmap loadContactPhoto(String phoneNumber, Context context) {
         long contactID = getContactIDFromNumber(phoneNumber, context);
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactID);
         Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);

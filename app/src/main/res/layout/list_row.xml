@@ -14,14 +14,6 @@
             name="clickListener"
             type="com.franjo.smsapp.ui.messages.MessagesAdapter.IClickListener" />
 
-        <variable
-            name="viewModel"
-            type="com.franjo.smsapp.ui.messages.MessagesViewModel" />
-
-        <variable
-            name="data"
-            type="android.content.Intent" />
-
     </data>
 
     <RelativeLayout
