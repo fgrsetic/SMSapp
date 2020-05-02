@@ -2,6 +2,7 @@ package com.franjo.smsapp.ui.messages;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
@@ -50,7 +51,7 @@ public class MessagesViewModel extends AndroidViewModel {
     }
 
     private void loadDatabaseMessages() {
-        databaseMessageList.setValue(databaseMessages.getAllMessages(context));
+        databaseMessageList.postValue(databaseMessages.getAllMessages(context));
     }
 
 
@@ -64,7 +65,7 @@ public class MessagesViewModel extends AndroidViewModel {
     }
 
     private void loadNotifiedSmsList() {
-        notifiedSmsList.setValue(receiver.getSMSList());
+        notifiedSmsList.postValue(receiver.getSMSList());
     }
 
 
@@ -113,12 +114,16 @@ public class MessagesViewModel extends AndroidViewModel {
     }
 
     void loadContactDetails(SmsData smsData) {
-        navigateToContactDetails.setValue(databaseMessages.openContactDetails(smsData));
+        navigateToContactDetails.postValue(databaseMessages.openContactDetails(smsData));
     }
 
     void doneNavigationToContactDetails() {
-        navigateToContactDetails.setValue(null);
+        navigateToContactDetails.postValue(null);
     }
+
+
+
+
 
 
 //    public LiveData<Bitmap> loadContactPhoto() {
@@ -162,7 +167,7 @@ public class MessagesViewModel extends AndroidViewModel {
 //        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
 //        builder.setAutoCancel(true)
 //                .setWhen(System.currentTimeMillis())
-//                .setSmallIcon(R.drawable.sms_black_24dp)
+//                .setSmallIcon(R.drawable.text_sms_black_24dp)
 //                .setContentTitle(smsData.getPhoneNumber())
 //                .setDefaults(Notification.DEFAULT_VIBRATE)
 //                //    .setContentIntent(contentIntent(context))

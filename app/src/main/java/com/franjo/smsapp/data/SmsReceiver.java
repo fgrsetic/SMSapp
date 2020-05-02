@@ -71,7 +71,6 @@ public class SmsReceiver extends BroadcastReceiver implements ISmsReceiver {
 
                         smsData.setMessageBody(smsBody);
                         smsData.setDate(formattedDate);
-                        smsData.setMinute(formattedMinute);
                         //smsData.setContactImage();
                         smsList.add(smsData);
                     }

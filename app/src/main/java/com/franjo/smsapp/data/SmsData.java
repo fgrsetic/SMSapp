@@ -16,7 +16,6 @@ public class SmsData implements Parcelable {
     private String name;
     private String messageBody;
     private String date;
-    private String minute;
     private Bitmap contactImage;
 
     public SmsData() {
@@ -55,14 +54,6 @@ public class SmsData implements Parcelable {
         this.date = date;
     }
 
-    public String getMinute() {
-        return minute;
-    }
-
-    public void setMinute(String minute) {
-        this.minute = minute;
-    }
-
     public Bitmap getContactImage() {
         return contactImage;
     }
@@ -77,7 +68,6 @@ public class SmsData implements Parcelable {
         name = in.readString();
         messageBody = in.readString();
         date = in.readString();
-        minute = in.readString();
         contactImage = in.readParcelable(Bitmap.class.getClassLoader());
     }
 
@@ -104,7 +94,6 @@ public class SmsData implements Parcelable {
         dest.writeString(name);
         dest.writeString(messageBody);
         dest.writeString(date);
-        dest.writeString(minute);
         dest.writeParcelable(contactImage, flags);
     }
 
@@ -115,7 +104,6 @@ public class SmsData implements Parcelable {
                 ", name='" + name + '\'' +
                 ", messageBody='" + messageBody + '\'' +
                 ", date='" + date + '\'' +
-                ", minute='" + minute + '\'' +
                 ", contactImage=" + contactImage +
                 '}';
     }
@@ -129,14 +117,12 @@ public class SmsData implements Parcelable {
                 Objects.equals(name, smsData.name) &&
                 Objects.equals(messageBody, smsData.messageBody) &&
                 Objects.equals(date, smsData.date) &&
-                Objects.equals(minute, smsData.minute) &&
                 Objects.equals(contactImage, smsData.contactImage);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(phoneNumber, name, messageBody, date, minute, contactImage);
+        return Objects.hash(phoneNumber, name, messageBody, date, contactImage);
     }
-
 
 }

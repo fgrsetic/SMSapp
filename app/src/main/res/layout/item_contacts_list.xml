@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:elevation="4dp"
-            app:cardCornerRadius="18dp"
+            app:cardCornerRadius="8dp"
             app:cardPreventCornerOverlap="false"
             app:cardUseCompatPadding="true">
 

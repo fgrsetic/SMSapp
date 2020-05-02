@@ -4,64 +4,86 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_messages">
+    app:startDestination="@id/messages_dest">
 
+    <!-- Messages -->
     <fragment
-        android:id="@+id/navigation_messages"
+        android:id="@+id/messages_dest"
         android:name="com.franjo.smsapp.ui.messages.MessagesFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_messages">
 
         <action
-            android:id="@+id/newMessageAction"
-            app:destination="@id/navigationNewMessage"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            android:id="@+id/new_message_action"
+            app:destination="@id/new_message_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
         <action
-            android:id="@+id/messageDetailsAction"
-            app:destination="@id/messageDetailsFragment">
+            android:id="@+id/message_details_action"
+            app:destination="@id/message_details_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
 
             <argument
                 android:name="smsData"
                 app:argType="com.franjo.smsapp.data.SmsData" />
         </action>
 
+<!--        <action-->
+<!--            android:id="@+id/search_action"-->
+<!--            app:destination="@id/search_dest"-->
+<!--            app:enterAnim="@anim/slide_in_right"-->
+<!--            app:exitAnim="@anim/slide_out_left"-->
+<!--            app:launchSingleTop="false"-->
+<!--            app:popEnterAnim="@anim/slide_in_left"-->
+<!--            app:popExitAnim="@anim/slide_out_right"-->
+<!--            app:popUpTo="@id/messages_dest"-->
+<!--            app:popUpToInclusive="false" />-->
+
     </fragment>
 
 
+    <!-- Contacts -->
     <fragment
-        android:id="@+id/navigation_contacts"
+        android:id="@+id/contacts_dest"
         android:name="com.franjo.smsapp.ui.contacts.ContactsFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_contacts" >
+        tools:layout="@layout/fragment_contacts">
 
         <action
-            android:id="@+id/newMessageAction"
-            app:destination="@id/navigationNewMessage"
-            app:enterAnim="@android:anim/fade_in"
-            app:exitAnim="@android:anim/fade_out"
-            app:popEnterAnim="@android:anim/fade_in"
-            app:popExitAnim="@android:anim/fade_out" />
+            android:id="@+id/new_message_action"
+            app:destination="@id/new_message_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
 
+
+    <!-- Favorites -->
     <fragment
-        android:id="@+id/navigation_favorites"
+        android:id="@+id/favorites_dest"
         android:name="com.franjo.smsapp.ui.favorites.FavoritesFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_favorites" />
 
+
+    <!-- New message -->
     <fragment
-        android:id="@+id/navigationNewMessage"
+        android:id="@+id/new_message_dest"
         android:name="com.franjo.smsapp.ui.messages.new_message.NewMessageFragment"
         android:label="@string/new_message" />
 
 
+    <!-- Message details-->
     <fragment
-        android:id="@+id/messageDetailsFragment"
+        android:id="@+id/message_details_dest"
         android:name="com.franjo.smsapp.ui.messages.details.MessageDetailsFragment"
         android:label="Message details">
 
@@ -70,7 +92,17 @@
             android:defaultValue="@null"
             app:argType="com.franjo.smsapp.data.SmsData"
             app:nullable="true" />
+
     </fragment>
+    <activity
+        android:id="@+id/searchableActivity"
+        android:name="com.franjo.smsapp.ui.search.SearchableActivity"
+        tools:layout="@layout/activity_searchable" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.franjo.smsapp.ui.MainActivity" />
+
+    <!-- Search -->
 
 
 </navigation>

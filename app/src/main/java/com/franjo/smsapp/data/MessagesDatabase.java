@@ -22,7 +22,6 @@ import java.util.Random;
 public class MessagesDatabase implements IMessages {
 
 
-
     @Override
     public List<SmsData> getAllMessages(Context context) {
         // Get Content Resolver object, which will deal with Content Provider
@@ -53,10 +52,6 @@ public class MessagesDatabase implements IMessages {
                 String dateString = DateFormatting.formatDate("dd.MM", Long.parseLong((date)));
                 sms.setDate(dateString);
 
-                String minute = smsInboxCursor.getString(smsInboxCursor.getColumnIndexOrThrow("date"));
-                String minuteString = DateFormatting.formatDate("hh:mm", Long.parseLong((minute)));
-                sms.setMinute(minuteString);
-
                 smsList.add(sms);
 
                 smsInboxCursor.moveToNext();
@@ -76,11 +71,11 @@ public class MessagesDatabase implements IMessages {
         if (cursor != null && cursor.moveToNext()) {
             String phoneNumber = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.HAS_PHONE_NUMBER));
             String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));
-           // Bitmap photo = loadContactPhoto(phoneNumber, context);
+            // Bitmap photo = loadContactPhoto(phoneNumber, context);
             Contact contact = new Contact();
             contact.setName(name);
             contact.setPhoneNumber(phoneNumber);
-           // contact.setContactPicture(photo);
+            // contact.setContactPicture(photo);
             contactList.add(contact);
         }
         if (cursor != null) {
@@ -165,5 +160,70 @@ public class MessagesDatabase implements IMessages {
         }
         return phoneContactID;
     }
+
+
+    // Search
+    @Override
+    public  List<SmsData> performSearch(Context context, String query) {
+        return querySmsMessages(context, query);
+    }
+
+    private Cursor getListOfContactNames(Context context, String searchText) {
+        Cursor cursor;
+        ContentResolver cr = context.getContentResolver();
+        Uri uri = ContactsContract.Contacts.CONTENT_URI;
+        String[] mProjection = {
+                ContactsContract.Contacts._ID,
+                ContactsContract.Contacts.LOOKUP_KEY,
+                ContactsContract.Contacts.HAS_PHONE_NUMBER,
+                ContactsContract.Contacts.DISPLAY_NAME_PRIMARY};
+        String selection = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + searchText + "%"};
+        cursor = cr.query(uri, mProjection, selection, selectionArgs, null);
+//        if (cursor != null) {
+//            cursor.close();
+//        }
+        return cursor;
+    }
+
+    private List<SmsData> querySmsMessages(Context context, String searchText) {
+        List<SmsData> searchedList = new ArrayList<>();
+        Cursor cursor;
+        ContentResolver contentResolver = context.getContentResolver();
+        // Uri to get messages from the inbox and we’re grabbing the body, address and date
+        Uri uri = Uri.parse("content://sms/");
+        // List required columns
+        String[] projection = new String[]{"_id, address", "body", "date"};
+        String selection = "body LIKE?";
+        String[] selectionArgs = new String[]{"%" + searchText + "%"};
+        // Fetch SMS Message from Built-in Content Provider
+        cursor = contentResolver.query(uri, projection, selection, selectionArgs, "date DESC");
+        // Read the sms data and store it in the list
+        if (cursor != null && cursor.moveToFirst()) {
+            // Cursor to go through each message
+            for (int i = 0; i < cursor.getCount(); i++) {
+                SmsData sms = new SmsData();
+                String number = cursor.getString(cursor.getColumnIndexOrThrow("address"));
+                String name = ContactName.getContactName(context, number);
+                String body = cursor.getString(cursor.getColumnIndexOrThrow("body"));
+                sms.setMessageBody(body);
+                if (name == null)
+                    sms.setPhoneNumber(number);
+                else
+                    sms.setPhoneNumber(name);
+
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                String dateString = DateFormatting.formatDate("dd.MM", Long.parseLong((date)));
+                sms.setDate(dateString);
+
+                searchedList.add(sms);
+
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        return searchedList;
+    }
+
 
 }

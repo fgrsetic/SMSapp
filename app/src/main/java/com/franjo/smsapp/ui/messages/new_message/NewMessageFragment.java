@@ -188,7 +188,7 @@ public class NewMessageFragment extends Fragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem itemSearch = menu.findItem(R.id.search);
+        MenuItem itemSearch = menu.findItem(R.id.search_main);
         itemSearch.setVisible(false);
     }
 

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.franjo.smsapp.data.Contact;
-import com.franjo.smsapp.databinding.ContactsListItemBinding;
+import com.franjo.smsapp.databinding.ItemContactsListBinding;
 
 /**
  * Created by Franjo on 18.7.2016..
@@ -41,7 +41,7 @@ public class ContactsAdapter extends ListAdapter<Contact, ContactsAdapter.Contac
     @NonNull
     @Override
     public ContactsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ContactsViewHolder(ContactsListItemBinding.inflate(LayoutInflater.from(parent.getContext())));
+        return new ContactsViewHolder(ItemContactsListBinding.inflate(LayoutInflater.from(parent.getContext())));
     }
 
     @Override
@@ -52,9 +52,9 @@ public class ContactsAdapter extends ListAdapter<Contact, ContactsAdapter.Contac
 
     static class ContactsViewHolder extends RecyclerView.ViewHolder {
 
-        private ContactsListItemBinding binding;
+        private ItemContactsListBinding binding;
 
-        private ContactsViewHolder(ContactsListItemBinding binding) {
+        private ContactsViewHolder(ItemContactsListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

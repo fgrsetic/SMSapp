@@ -12,4 +12,6 @@ public interface IMessages {
     Uri openContactDetails(SmsData smsData);
 
     List<Contact> openContactList(Context context);
+
+    List<SmsData> performSearch (Context context, String query);
 }

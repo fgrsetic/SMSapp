@@ -26,9 +26,11 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import com.franjo.smsapp.R;
 import com.franjo.smsapp.data.SmsData;
 import com.franjo.smsapp.databinding.FragmentMessagesBinding;
+import com.franjo.smsapp.ui.search.SearchViewModel;
 
 
 public class MessagesFragment extends Fragment {
+
 
     private static final int READ_SMS_PERMISSIONS_REQUEST = 1;
     private static final int READ_CONTACTS_PERMISSIONS_REQUEST = 1;
@@ -42,6 +44,12 @@ public class MessagesFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -96,7 +104,7 @@ public class MessagesFragment extends Fragment {
         // Fab button -> to new Message fragment
         viewModel.navigateToNewMessage().observe(getViewLifecycleOwner(), isFabClicked -> {
             if (isFabClicked) {
-                Navigation.findNavController(binding.floatingActionButton).navigate(R.id.newMessageAction);
+                Navigation.findNavController(binding.floatingActionButton).navigate(R.id.new_message_action);
                 viewModel.doneNavigationToNewMessage();
             }
         });
@@ -109,12 +117,6 @@ public class MessagesFragment extends Fragment {
                 viewModel.doneNavigationToContactDetails();
             }
         });
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     private void checkPermission() {
@@ -294,7 +296,6 @@ public class MessagesFragment extends Fragment {
 //       // Getting the value of the full sms checkbox preference
 //       return sharedPreferences.getBoolean(FULL_SMS, true);
 //    }
-
 
 }
 

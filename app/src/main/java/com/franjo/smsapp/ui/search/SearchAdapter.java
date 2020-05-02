@@ -1,4 +1,4 @@
-package com.franjo.smsapp.ui.messages;
+package com.franjo.smsapp.ui.search;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,12 +9,13 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.franjo.smsapp.data.SmsData;
+import com.franjo.smsapp.databinding.ItemSearchListBinding;
 import com.franjo.smsapp.databinding.ItemSmsListBinding;
 
 /**
  * Created by Franjo on 18.7.2016..
  */
-public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.MessagesViewHolder> {
+public class SearchAdapter extends ListAdapter<SmsData, SearchAdapter.SearchResultViewHolder> {
 
     private IClickListener onClickListener;
 
@@ -32,7 +33,7 @@ public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.Messag
             };
 
 
-    MessagesAdapter(IClickListener onClickListener) {
+    SearchAdapter(IClickListener onClickListener) {
         super(DIFF_CALLBACK);
         this.onClickListener = onClickListener;
 
@@ -40,21 +41,21 @@ public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.Messag
 
     @NonNull
     @Override
-    public MessagesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MessagesViewHolder(ItemSmsListBinding.inflate(LayoutInflater.from(parent.getContext())));
+    public SearchResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new SearchResultViewHolder(ItemSearchListBinding.inflate(LayoutInflater.from(parent.getContext())));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MessagesViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
         SmsData smsData = getItem(position);
         holder.bind(smsData, onClickListener);
     }
 
-    static class MessagesViewHolder extends RecyclerView.ViewHolder {
+    static class SearchResultViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemSmsListBinding binding;
+        private ItemSearchListBinding binding;
 
-        private MessagesViewHolder(ItemSmsListBinding binding) {
+        private SearchResultViewHolder(ItemSearchListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -71,7 +72,6 @@ public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.Messag
 
     public interface IClickListener {
         void onClick(SmsData smsData);
-
         void onContactIconClicked(SmsData smsData);
     }
 }

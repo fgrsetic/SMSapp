@@ -8,17 +8,21 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.franjo.smsapp.R;
 import com.franjo.smsapp.app.App;
 import com.franjo.smsapp.data.Contact;
 import com.franjo.smsapp.data.SmsData;
 import com.franjo.smsapp.ui.contacts.ContactsAdapter;
 import com.franjo.smsapp.ui.messages.MessagesAdapter;
+import com.franjo.smsapp.ui.search.SearchAdapter;
 
 import java.util.List;
 import java.util.Random;
@@ -41,11 +45,6 @@ public class BindingAdapters {
         textView.setText(smsData.getDate());
     }
 
-    @BindingAdapter("smsMinuteText")
-    public static void bindSmsMinutes(TextView textView, SmsData smsData) {
-        textView.setText(smsData.getMinute());
-    }
-
     @BindingAdapter("smsList")
     public static void bindSmsListRecyclerView(RecyclerView recyclerView, List<SmsData> data) {
         MessagesAdapter adapter = (MessagesAdapter) recyclerView.getAdapter();
@@ -57,6 +56,15 @@ public class BindingAdapters {
     @BindingAdapter("backgroundImage")
     public static void randomChangeContactImage(ImageView imageView, SmsData smsData) {
         imageView.setBackground(ImageUtil.getRandomImage());
+    }
+
+    // Search
+    @BindingAdapter("searchedList")
+    public static void bindSearchListRecyclerView(RecyclerView recyclerView, List<SmsData> data) {
+        SearchAdapter adapter = (SearchAdapter) recyclerView.getAdapter();
+        if (adapter != null) {
+            adapter.submitList(data);
+        }
     }
 
 
@@ -78,7 +86,5 @@ public class BindingAdapters {
     public static void randomChangeContactImage(ImageView imageView, Contact Contact) {
         imageView.setBackground(ImageUtil.getRandomImage());
     }
-
-
 
 }

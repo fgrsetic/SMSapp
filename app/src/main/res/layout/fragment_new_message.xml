@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -15,85 +14,98 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/addRecipient"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
-            android:layout_height="38dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing_normal"
             android:layout_marginTop="@dimen/spacing_normal"
-            android:layout_marginEnd="16dp"
-            android:autofillHints="@string/enter_recipients"
-            android:background="@drawable/edit_text_rounded"
+            android:layout_marginEnd="@dimen/spacing_small"
             android:hint="@string/enter_recipients"
-            android:inputType="phone|textPersonName"
-            android:paddingStart="@dimen/spacing_normal"
-            android:paddingLeft="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_extra_small"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:paddingRight="@dimen/spacing_normal"
-            android:paddingBottom="@dimen/spacing_extra_small"
-            android:textColor="@color/primaryText"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton"
+            app:boxCornerRadiusBottomEnd="4dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusTopEnd="4dp"
+            app:boxCornerRadiusTopStart="16dp"
+            app:endIconCheckable="true"
+            app:endIconDrawable="@drawable/clear_all_24dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/colorPrimaryDark"
+            app:hintAnimationEnabled="true"
+            app:layout_constraintEnd_toStartOf="@+id/addContact"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/user_contact_icon">
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone|textPersonName"
+                android:maxLength="20"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addContact"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/add_contact"
-            android:contentDescription="@string/recipent_button"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_weight="1"
+            app:backgroundTint="@color/colorAccent"
+            app:cornerRadius="4dp"
+            app:icon="@drawable/person_add_white_24dp"
+            app:iconGravity="end"
             app:layout_constraintBottom_toBottomOf="@+id/addRecipient"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/addRecipient" />
 
-
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/enterMessage"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-
-            android:layout_marginBottom="16dp"
-            android:layout_toStartOf="@+id/imageButton"
-            android:autofillHints="@string/enter_message"
-            android:background="@drawable/edit_text_rounded"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center|start"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_normal"
             android:hint="@string/enter_message"
-            android:inputType="textMultiLine"
-            android:maxLength="160"
-            android:minHeight="38dp"
-            android:paddingStart="@dimen/spacing_normal"
-            android:paddingLeft="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_extra_small"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:paddingRight="@dimen/spacing_normal"
-            android:paddingBottom="@dimen/spacing_extra_small"
-            android:textColor="#FF424242"
-            android:visibility="visible"
-            android:windowSoftInputMode="adjustPan|adjustResize"
+            app:boxCornerRadiusBottomEnd="4dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusTopEnd="4dp"
+            app:boxCornerRadiusTopStart="16dp"
+            app:endIconCheckable="true"
+            app:endIconDrawable="@drawable/clear_all_24dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/colorPrimaryDark"
+            app:hintAnimationEnabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/sendMessage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:startIconDrawable="@drawable/text_sms_black_24dp">
 
-        <ImageButton
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:maxLength="160" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendMessage"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/message_send"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!--    <requestFocus />-->
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_weight="1"
+            app:backgroundTint="@color/colorAccent"
+            app:cornerRadius="4dp"
+            app:icon="@drawable/send_icon"
+            app:iconGravity="end"
+            app:layout_constraintBottom_toBottomOf="@+id/enterMessage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/enterMessage" />
 
 
         <!--    <TextView-->

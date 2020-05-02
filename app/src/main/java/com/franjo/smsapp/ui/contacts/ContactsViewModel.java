@@ -2,6 +2,7 @@ package com.franjo.smsapp.ui.contacts;
 
 import android.app.Application;
 import android.content.Context;
+import android.database.Cursor;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -22,6 +23,8 @@ public class ContactsViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> navigateToContactList;
     private MutableLiveData<Boolean> navigateToNewMessage;
 
+    private MutableLiveData<Cursor> searchSubmittedTextQuery;
+    private MutableLiveData<Cursor> searchChangedTextQuery;
 
     public ContactsViewModel(@NonNull Application application) {
         super(application);
@@ -62,4 +65,40 @@ public class ContactsViewModel extends AndroidViewModel {
     void doneNavigationToNewMessage() {
         navigateToNewMessage.setValue(false);
     }
+
+
+
+    // Submit search
+    public LiveData<Cursor> observeSubmittedQuery() {
+        if (searchSubmittedTextQuery == null) {
+            searchSubmittedTextQuery = new MutableLiveData<>();
+        }
+        return searchSubmittedTextQuery;
+    }
+
+    public void submittedTextQuery(String query) {
+       // searchSubmittedTextQuery.setValue(databaseMessages.performSubmittedQueryTextSearch(context, query));
+    }
+
+    public void closeSubmittedTextSearchList() {
+        searchSubmittedTextQuery.setValue(null);
+    }
+
+
+    // Change query search
+    public LiveData<Cursor> observeQueryChanged() {
+        if (searchChangedTextQuery == null) {
+            searchChangedTextQuery = new MutableLiveData<>();
+        }
+        return searchChangedTextQuery;
+    }
+
+    public void changedTextQuery(String query) {
+       // searchChangedTextQuery.setValue(databaseMessages.performChangedQueryTextSearch(context, query));
+    }
+
+    public void closeChangedQuerySearchList() {
+        searchChangedTextQuery.setValue(null);
+    }
+
 }
