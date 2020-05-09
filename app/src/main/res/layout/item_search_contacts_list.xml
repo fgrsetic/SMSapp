@@ -11,7 +11,7 @@
 
         <variable
             name="clickListener"
-            type="com.franjo.smsapp.ui.contacts.ContactsAdapter.IClickListener" />
+            type="com.franjo.smsapp.ui.contacts.search.SearchContactsAdapter.IClickListener" />
     </data>
 
     <RelativeLayout

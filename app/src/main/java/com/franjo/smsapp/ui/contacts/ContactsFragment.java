@@ -1,8 +1,8 @@
 package com.franjo.smsapp.ui.contacts;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,26 +12,18 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 
 import com.franjo.smsapp.R;
 import com.franjo.smsapp.databinding.FragmentContactsBinding;
-import com.franjo.smsapp.ui.search.SearchViewModel;
+
 
 public class ContactsFragment extends Fragment {
 
-    private Context context;
     private FragmentContactsBinding binding;
     private ContactsViewModel viewModel;
-    private ContactsAdapter adapter;
-    private SearchViewModel searchViewModel;
 
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        this.context = context;
-    }
 
     @Nullable
     @Override
@@ -47,9 +39,7 @@ public class ContactsFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(ContactsViewModel.class);
         binding.setViewModel(viewModel);
 
-        searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-
-        adapter = new ContactsAdapter(contact -> {
+        ContactsAdapter adapter = new ContactsAdapter(contact -> {
 
         });
 
@@ -73,22 +63,21 @@ public class ContactsFragment extends Fragment {
             }
         });
 
-//        // Search widget -> open search fragment
-//        viewModel.observeSubmittedQuery().observe(this, cursor -> {
-//            if (cursor != null) {
-//                shareViewModel.setSubmittedCursor(cursor);
-//                NavHostFragment.findNavController(this).navigate(ContactsFragmentDirections.searchAction());
-//                viewModel.closeSubmittedTextSearchList();
-//            }
-//        });
-//
-//        viewModel.observeQueryChanged().observe(getViewLifecycleOwner(), cursor -> {
-//            if (cursor != null) {
-//                shareViewModel.setChangedTextCursor(cursor);
-//                NavHostFragment.findNavController(this).navigate(ContactsFragmentDirections.searchAction());
-//                viewModel.closeChangedQuerySearchList();
-//            }
-//        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.search_main) {
+            onSearchClicked(item);
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    private void onSearchClicked(MenuItem item) {
+        NavHostFragment.findNavController(this).navigate(R.id.search_contacts_dest);
     }
 
 }

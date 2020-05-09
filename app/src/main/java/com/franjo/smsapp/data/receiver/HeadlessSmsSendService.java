@@ -1,4 +1,4 @@
-package com.franjo.smsapp.data;
+package com.franjo.smsapp.data.receiver;
 
 import android.app.Service;
 import android.content.Intent;

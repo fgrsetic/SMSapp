@@ -76,7 +76,7 @@
 //        if (convertView == null) {
 //            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //            // inflate the layout for each list row
-//            convertView = inflater.inflate(R.layout.item_sms_list, parent, false);
+//            convertView = inflater.inflate(R.layout.item_messages_list, parent, false);
 //
 //            convertView.setTag(holder);
 //

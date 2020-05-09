@@ -8,25 +8,23 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.franjo.smsapp.data.SmsData;
-import com.franjo.smsapp.databinding.ItemSmsListBinding;
+import com.franjo.smsapp.data.model.Message;
+import com.franjo.smsapp.databinding.ItemMessagesListBinding;
 
-/**
- * Created by Franjo on 18.7.2016..
- */
-public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.MessagesViewHolder> {
+
+public class MessagesAdapter extends ListAdapter<Message, MessagesAdapter.MessagesViewHolder> {
 
     private IClickListener onClickListener;
 
-    private static final DiffUtil.ItemCallback<SmsData> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<SmsData>() {
+    private static final DiffUtil.ItemCallback<Message> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Message>() {
                 @Override
-                public boolean areItemsTheSame(@NonNull SmsData oldItem, @NonNull SmsData newItem) {
+                public boolean areItemsTheSame(@NonNull Message oldItem, @NonNull Message newItem) {
                     return oldItem.getPhoneNumber().equals(newItem.getPhoneNumber());
                 }
 
                 @Override
-                public boolean areContentsTheSame(@NonNull SmsData oldItem, @NonNull SmsData newItem) {
+                public boolean areContentsTheSame(@NonNull Message oldItem, @NonNull Message newItem) {
                     return oldItem.equals(newItem);
                 }
             };
@@ -41,26 +39,26 @@ public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.Messag
     @NonNull
     @Override
     public MessagesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MessagesViewHolder(ItemSmsListBinding.inflate(LayoutInflater.from(parent.getContext())));
+        return new MessagesViewHolder(ItemMessagesListBinding.inflate(LayoutInflater.from(parent.getContext())));
     }
 
     @Override
     public void onBindViewHolder(@NonNull MessagesViewHolder holder, int position) {
-        SmsData smsData = getItem(position);
-        holder.bind(smsData, onClickListener);
+        Message message = getItem(position);
+        holder.bind(message, onClickListener);
     }
 
     static class MessagesViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemSmsListBinding binding;
+        private ItemMessagesListBinding binding;
 
-        private MessagesViewHolder(ItemSmsListBinding binding) {
+        private MessagesViewHolder(ItemMessagesListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
-        void bind(SmsData smsData, IClickListener clickListener) {
-            binding.setSmsData(smsData);
+        void bind(Message message, IClickListener clickListener) {
+            binding.setMessage(message);
             binding.setClickListener(clickListener);
             // This is important, because it forces the data binding to execute immediately,
             // which allows the RecyclerView to make the correct view size measurements
@@ -70,9 +68,9 @@ public class MessagesAdapter extends ListAdapter<SmsData, MessagesAdapter.Messag
     }
 
     public interface IClickListener {
-        void onClick(SmsData smsData);
+        void onClick(Message message);
 
-        void onContactIconClicked(SmsData smsData);
+        void onContactIconClicked(Message message);
     }
 }
 

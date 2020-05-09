@@ -25,9 +25,9 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <!--                <action android:name="android.intent.action.SEARCH" />-->
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
             <intent-filter>
@@ -41,23 +41,29 @@
 
             </intent-filter>
 
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".ui.SearchableActivity" />
-
-        </activity>
-
-        <activity android:name=".ui.search.SearchableActivity">
+<!--            <meta-data-->
+<!--                android:name="android.app.default_searchable"-->
+<!--                android:value=".ui.SearchableActivity" />-->
 
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
         </activity>
+
+
+<!--        <activity-->
+<!--            android:name=".ui.search.SearchableActivity">-->
+
+<!--            <meta-data-->
+<!--                android:name="android.app.searchable"-->
+<!--                android:resource="@xml/searchable" />-->
+
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.SEARCH" />-->
+<!--            </intent-filter>-->
+
+<!--        </activity>-->
 
 
         <!-- <activity -->
@@ -92,7 +98,7 @@
         <!-- </activity> -->
         <!-- BroadcastReceiver that listens to incoming SMS messages -->
         <receiver
-            android:name=".data.SmsReceiver"
+            android:name=".data.receiver.Receiver"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BROADCAST_SMS">
@@ -104,7 +110,7 @@
         </receiver> <!-- BroadcastReceiver that listens for incoming MMS messages -->
 
         <receiver
-            android:name=".data.MMSBroadcastReceiver"
+            android:name=".data.receiver.MMSBroadcastReceiver"
             android:permission="android.permission.BROADCAST_WAP_PUSH">
             <intent-filter>
                 <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
@@ -114,7 +120,7 @@
         </receiver> <!-- Service that delivers messages from the phone "quick response" -->
 
         <service
-            android:name=".data.HeadlessSmsSendService"
+            android:name=".data.receiver.HeadlessSmsSendService"
             android:exported="true"
             android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.franjo.smsapp.data;
+package com.franjo.smsapp.data.model;
 
 import android.graphics.Bitmap;
 

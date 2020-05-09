@@ -1,56 +1,61 @@
 package com.franjo.smsapp.ui.contacts;
 
-import android.app.Application;
-import android.content.Context;
-import android.database.Cursor;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
-import com.franjo.smsapp.data.Contact;
-import com.franjo.smsapp.data.IMessages;
-import com.franjo.smsapp.data.MessagesDatabase;
+import com.franjo.smsapp.app.AppExecutors;
+import com.franjo.smsapp.data.database.DatabaseContactsDataSource;
+import com.franjo.smsapp.data.database.IContactsDataSource;
+import com.franjo.smsapp.data.model.Contact;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class ContactsViewModel extends AndroidViewModel {
+public class ContactsViewModel extends ViewModel {
 
-    private Context context;
-    private IMessages databaseMessages;
-
+    private IContactsDataSource databaseContacts;
     private MutableLiveData<List<Contact>> navigateToContactList;
     private MutableLiveData<Boolean> navigateToNewMessage;
 
-    private MutableLiveData<Cursor> searchSubmittedTextQuery;
-    private MutableLiveData<Cursor> searchChangedTextQuery;
 
-    public ContactsViewModel(@NonNull Application application) {
-        super(application);
-        this.context = application;
-        databaseMessages = new MessagesDatabase();
+    public ContactsViewModel() {
+        databaseContacts = new DatabaseContactsDataSource();
     }
 
-    // Go to contact details
+    // 1) All contacts
     public LiveData<List<Contact>> showContactList() {
         if (navigateToContactList == null) {
             navigateToContactList = new MutableLiveData<>();
-            loadContactList();
+            AppExecutors.getInstance().mainThread().execute(this::loadContactList);
         }
         return navigateToContactList;
     }
 
     private void loadContactList() {
-        navigateToContactList.setValue(databaseMessages.openContactList(context));
-    }
-
-    void doneNavigationToContactLists() {
-        navigateToContactList.setValue(null);
+        List<Contact> contactsList = databaseContacts.getAllContacts();
+        AppExecutors.getInstance().diskIO().execute(() -> navigateToContactList.postValue(removedDuplicatesList(contactsList)));
     }
 
 
-    // Go to new message
+    private List<Contact> removedDuplicatesList(List<Contact> listWithDuplicates) {
+        Set<String> attributes = new HashSet<>();
+        List<Contact> duplicates = new ArrayList<>();
+
+        for (Contact contact : listWithDuplicates) {
+            if (attributes.contains(contact.getPhoneNumber())) {
+                duplicates.add(contact);
+            }
+            attributes.add(contact.getPhoneNumber());
+        }
+        listWithDuplicates.removeAll(duplicates);
+        return new ArrayList<>(listWithDuplicates);
+    }
+
+
+    // 2) New message
     LiveData<Boolean> navigateToNewMessage() {
         if (navigateToNewMessage == null) {
             navigateToNewMessage = new MutableLiveData<>();
@@ -64,41 +69,6 @@ public class ContactsViewModel extends AndroidViewModel {
 
     void doneNavigationToNewMessage() {
         navigateToNewMessage.setValue(false);
-    }
-
-
-
-    // Submit search
-    public LiveData<Cursor> observeSubmittedQuery() {
-        if (searchSubmittedTextQuery == null) {
-            searchSubmittedTextQuery = new MutableLiveData<>();
-        }
-        return searchSubmittedTextQuery;
-    }
-
-    public void submittedTextQuery(String query) {
-       // searchSubmittedTextQuery.setValue(databaseMessages.performSubmittedQueryTextSearch(context, query));
-    }
-
-    public void closeSubmittedTextSearchList() {
-        searchSubmittedTextQuery.setValue(null);
-    }
-
-
-    // Change query search
-    public LiveData<Cursor> observeQueryChanged() {
-        if (searchChangedTextQuery == null) {
-            searchChangedTextQuery = new MutableLiveData<>();
-        }
-        return searchChangedTextQuery;
-    }
-
-    public void changedTextQuery(String query) {
-       // searchChangedTextQuery.setValue(databaseMessages.performChangedQueryTextSearch(context, query));
-    }
-
-    public void closeChangedQuerySearchList() {
-        searchChangedTextQuery.setValue(null);
     }
 
 }

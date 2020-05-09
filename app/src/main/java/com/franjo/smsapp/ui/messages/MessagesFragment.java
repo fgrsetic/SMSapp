@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -21,12 +22,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 
 import com.franjo.smsapp.R;
-import com.franjo.smsapp.data.SmsData;
+import com.franjo.smsapp.data.model.Message;
 import com.franjo.smsapp.databinding.FragmentMessagesBinding;
-import com.franjo.smsapp.ui.search.SearchViewModel;
 
 
 public class MessagesFragment extends Fragment {
@@ -67,19 +66,18 @@ public class MessagesFragment extends Fragment {
 
         MessagesAdapter adapter = new MessagesAdapter(new MessagesAdapter.IClickListener() {
             @Override
-            public void onClick(SmsData smsData) {
-                viewModel.toMessageDetailsNavigated(smsData);
+            public void onClick(Message message) {
+                viewModel.toMessageDetailsNavigated(message);
             }
 
             @Override
-            public void onContactIconClicked(SmsData smsData) {
-                viewModel.loadContactDetails(smsData);
+            public void onContactIconClicked(Message message) {
+                viewModel.loadContactDetails(message);
             }
         });
 
         binding.messagesList.setAdapter(adapter);
         binding.messagesList.setHasFixedSize(true);
-        binding.messagesList.setItemAnimator(new DefaultItemAnimator());
 
 //        listViewInbox = findViewById(R.id.listViewInbox);
 //        listViewInbox.setTextFilterEnabled(true); // use to enable search view popup text
@@ -93,9 +91,9 @@ public class MessagesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // List item -> to message details
-        viewModel.navigateToMessageDetails().observe(getViewLifecycleOwner(), smsData -> {
-            if (smsData != null) {
-                MessagesFragmentDirections.MessageDetailsAction action = MessagesFragmentDirections.messageDetailsAction(smsData);
+        viewModel.navigateToMessageDetails().observe(getViewLifecycleOwner(), message -> {
+            if (message != null) {
+                MessagesFragmentDirections.MessageDetailsAction action = MessagesFragmentDirections.messageDetailsAction(message);
                 NavHostFragment.findNavController(this).navigate(action);
                 viewModel.onMessageDetailsNavigated();
             }
@@ -117,6 +115,7 @@ public class MessagesFragment extends Fragment {
                 viewModel.doneNavigationToContactDetails();
             }
         });
+
     }
 
     private void checkPermission() {
@@ -297,6 +296,21 @@ public class MessagesFragment extends Fragment {
 //       return sharedPreferences.getBoolean(FULL_SMS, true);
 //    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.search_main) {
+            onSearchClicked(item);
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
+    private void onSearchClicked(MenuItem item) {
+        NavHostFragment.findNavController(this).navigate(R.id.search_messages_action);
+    }
 }
 
 

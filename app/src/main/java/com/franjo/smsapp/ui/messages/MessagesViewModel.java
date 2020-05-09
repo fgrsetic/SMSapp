@@ -1,62 +1,72 @@
 package com.franjo.smsapp.ui.messages;
 
-import android.app.Application;
-import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
-import com.franjo.smsapp.data.IMessages;
-import com.franjo.smsapp.data.ISmsReceiver;
-import com.franjo.smsapp.data.MessagesDatabase;
-import com.franjo.smsapp.data.SmsData;
-import com.franjo.smsapp.data.SmsReceiver;
+import com.franjo.smsapp.app.AppExecutors;
+import com.franjo.smsapp.data.database.DatabaseMessagesDataSource;
+import com.franjo.smsapp.data.database.IMessagesDataSource;
+import com.franjo.smsapp.data.model.Message;
+import com.franjo.smsapp.data.receiver.IReceiver;
+import com.franjo.smsapp.data.receiver.Receiver;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class MessagesViewModel extends AndroidViewModel {
+public class MessagesViewModel extends ViewModel {
 
-    private Context context;
-    private String contactPhoneNumber;
-    private IMessages databaseMessages;
-    private ISmsReceiver receiver;
+    private IMessagesDataSource databaseMessages;
+    private IReceiver receiver;
 
-    private MutableLiveData<List<SmsData>> notifiedSmsList;
-    private MutableLiveData<List<SmsData>> databaseMessageList;
-    private MutableLiveData<SmsData> navigateToMessageDetails;
+    private MutableLiveData<List<Message>> notifiedSmsList;
+    private MutableLiveData<List<Message>> databaseMessageList;
+    private MutableLiveData<Message> navigateToMessageDetails;
     private MutableLiveData<Boolean> navigateToNewMessage;
+
     private MutableLiveData<Uri> navigateToContactDetails;
-    private MutableLiveData<Bitmap> loadContactPhoto;
 
 
-    public MessagesViewModel(@NonNull Application application) {
-        super(application);
-        this.context = application;
-        databaseMessages = new MessagesDatabase();
-        receiver = new SmsReceiver();
+    public MessagesViewModel() {
+        databaseMessages = new DatabaseMessagesDataSource();
+        receiver = new Receiver();
     }
 
-    // Device database
-    public LiveData<List<SmsData>> showSmsList() {
+    // 1) All sms list
+    public LiveData<List<Message>> showSmsList() {
         if (databaseMessageList == null) {
             databaseMessageList = new MutableLiveData<>();
-            loadDatabaseMessages();
+            AppExecutors.getInstance().mainThread().execute(this::loadDatabaseMessages);
         }
         return databaseMessageList;
     }
 
     private void loadDatabaseMessages() {
-        databaseMessageList.postValue(databaseMessages.getAllMessages(context));
+        List<Message> messageList = databaseMessages.getReceivedMessages();
+        AppExecutors.getInstance().diskIO().execute(() -> databaseMessageList.postValue(removedDuplicatesList(messageList)));
+    }
+
+    private List<Message> removedDuplicatesList(List<Message> listWithDuplicates) {
+        Set<String> attributes = new HashSet<>();
+        List<Message> duplicates = new ArrayList<>();
+
+        for (Message message : listWithDuplicates) {
+            if (attributes.contains(message.getPhoneNumber())) {
+                duplicates.add(message);
+            }
+            attributes.add(message.getPhoneNumber());
+        }
+        listWithDuplicates.removeAll(duplicates);
+        return new ArrayList<>(listWithDuplicates);
     }
 
 
-    // Notification
-    public LiveData<List<SmsData>> showSmsListReceived() {
+    // 2) Notification
+    public LiveData<List<Message>> showSmsListReceived() {
         if (notifiedSmsList == null) {
             notifiedSmsList = new MutableLiveData<>();
             loadNotifiedSmsList();
@@ -69,16 +79,16 @@ public class MessagesViewModel extends AndroidViewModel {
     }
 
 
-    // Go to message details
-    LiveData<SmsData> navigateToMessageDetails() {
+    // 3) Message details
+    LiveData<Message> navigateToMessageDetails() {
         if (navigateToMessageDetails == null) {
             navigateToMessageDetails = new MutableLiveData<>();
         }
         return navigateToMessageDetails;
     }
 
-    void toMessageDetailsNavigated(SmsData smsData) {
-        navigateToMessageDetails.setValue(smsData);
+    void toMessageDetailsNavigated(Message message) {
+        navigateToMessageDetails.setValue(message);
     }
 
     void onMessageDetailsNavigated() {
@@ -86,8 +96,7 @@ public class MessagesViewModel extends AndroidViewModel {
     }
 
 
-
-    // Go to new message
+    // 4) New message
     LiveData<Boolean> navigateToNewMessage() {
         if (navigateToNewMessage == null) {
             navigateToNewMessage = new MutableLiveData<>();
@@ -104,8 +113,7 @@ public class MessagesViewModel extends AndroidViewModel {
     }
 
 
-
-    // Go to contact details
+    // 5) Contact details
     LiveData<Uri> navigateToContactDetails() {
         if (navigateToContactDetails == null) {
             navigateToContactDetails = new MutableLiveData<>();
@@ -113,17 +121,13 @@ public class MessagesViewModel extends AndroidViewModel {
         return navigateToContactDetails;
     }
 
-    void loadContactDetails(SmsData smsData) {
-        navigateToContactDetails.postValue(databaseMessages.openContactDetails(smsData));
+    void loadContactDetails(Message message) {
+        navigateToContactDetails.postValue(databaseMessages.openContactDetails(message));
     }
 
     void doneNavigationToContactDetails() {
         navigateToContactDetails.postValue(null);
     }
-
-
-
-
 
 
 //    public LiveData<Bitmap> loadContactPhoto() {

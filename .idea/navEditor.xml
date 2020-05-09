@@ -8,18 +8,28 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="contacts_action">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="contacts_dest">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-466" />
-                            <option name="y" value="189" />
+                            <option name="x" value="-957" />
+                            <option name="y" value="268" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
                             <entry key="new_message_action">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="search_contacts_action">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -34,20 +44,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-461" />
-                            <option name="y" value="-471" />
-                          </Point>
-                        </option>
-                      </LayoutPositions>
-                    </value>
-                  </entry>
-                  <entry key="mainActivity">
-                    <value>
-                      <LayoutPositions>
-                        <option name="myPosition">
-                          <Point>
-                            <option name="x" value="-857" />
-                            <option name="y" value="-372" />
+                            <option name="x" value="-938" />
+                            <option name="y" value="-523" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -65,13 +63,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="messages_action">
+                    <value>
+                      <LayoutPositions />
+                    </value>
+                  </entry>
                   <entry key="messages_dest">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-460" />
-                            <option name="y" value="-166" />
+                            <option name="x" value="-959" />
+                            <option name="y" value="-163" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -82,6 +85,11 @@
                               </value>
                             </entry>
                             <entry key="new_message_action">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="search_messages_action">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -103,13 +111,25 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="searchableActivity">
+                  <entry key="search_contacts_dest">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-857" />
-                            <option name="y" value="69" />
+                            <option name="x" value="-175" />
+                            <option name="y" value="260" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="search_messages_dest">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-329" />
+                            <option name="y" value="-700" />
                           </Point>
                         </option>
                       </LayoutPositions>

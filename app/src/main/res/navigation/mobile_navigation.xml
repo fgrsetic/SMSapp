@@ -6,6 +6,28 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/messages_dest">
 
+
+    <action
+        android:id="@+id/messages_action"
+        app:destination="@id/messages_dest"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:popUpTo="@id/messages_dest"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/contacts_action"
+        app:destination="@id/contacts_dest"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        app:popUpTo="@id/contacts_dest"
+        app:popUpToInclusive="true" />
+
+
     <!-- Messages -->
     <fragment
         android:id="@+id/messages_dest"
@@ -30,20 +52,18 @@
             app:popExitAnim="@anim/slide_out_right">
 
             <argument
-                android:name="smsData"
-                app:argType="com.franjo.smsapp.data.SmsData" />
+                android:name="message"
+                app:argType="com.franjo.smsapp.data.model.Message" />
         </action>
 
-<!--        <action-->
-<!--            android:id="@+id/search_action"-->
-<!--            app:destination="@id/search_dest"-->
-<!--            app:enterAnim="@anim/slide_in_right"-->
-<!--            app:exitAnim="@anim/slide_out_left"-->
-<!--            app:launchSingleTop="false"-->
-<!--            app:popEnterAnim="@anim/slide_in_left"-->
-<!--            app:popExitAnim="@anim/slide_out_right"-->
-<!--            app:popUpTo="@id/messages_dest"-->
-<!--            app:popUpToInclusive="false" />-->
+        <action
+            android:id="@+id/search_messages_action"
+            app:destination="@id/search_messages_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="false" />
 
     </fragment>
 
@@ -58,6 +78,14 @@
         <action
             android:id="@+id/new_message_action"
             app:destination="@id/new_message_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/search_contacts_action"
+            app:destination="@id/search_contacts_dest"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -88,21 +116,22 @@
         android:label="Message details">
 
         <argument
-            android:name="smsData"
+            android:name="message"
             android:defaultValue="@null"
-            app:argType="com.franjo.smsapp.data.SmsData"
+            app:argType="com.franjo.smsapp.data.model.Message"
             app:nullable="true" />
 
     </fragment>
-    <activity
-        android:id="@+id/searchableActivity"
-        android:name="com.franjo.smsapp.ui.search.SearchableActivity"
-        tools:layout="@layout/activity_searchable" />
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.franjo.smsapp.ui.MainActivity" />
+
 
     <!-- Search -->
+    <fragment
+        android:id="@+id/search_messages_dest"
+        android:name="com.franjo.smsapp.ui.messages.search.SearchMessagesFragment" />
+
+    <fragment
+        android:id="@+id/search_contacts_dest"
+        android:name="com.franjo.smsapp.ui.contacts.search.SearchContactsFragment" />
 
 
 </navigation>

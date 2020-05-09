@@ -3,13 +3,9 @@ package com.franjo.smsapp.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
@@ -18,14 +14,16 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.franjo.smsapp.R;
-import com.franjo.smsapp.data.HeadlessSmsSendService;
+import com.franjo.smsapp.data.receiver.HeadlessSmsSendService;
 import com.franjo.smsapp.databinding.ActivityMainBinding;
-import com.franjo.smsapp.ui.search.SearchableActivity;
+
+import static android.view.View.GONE;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private SearchView searchView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,7 +58,11 @@ public class MainActivity extends AppCompatActivity {
     private void bottomNavigationVisibility(NavController navController) {
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.new_message_dest) {
-                binding.navView.setVisibility(View.GONE);
+                binding.navView.setVisibility(GONE);
+            } else if(destination.getId() == R.id.search_contacts_dest) {
+                binding.navView.setVisibility(GONE);
+            } else if(destination.getId() == R.id.search_messages_dest) {
+                binding.navView.setVisibility(GONE);
             } else {
                 binding.navView.setVisibility(View.VISIBLE);
             }
@@ -69,33 +71,28 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        getMenuInflater().inflate(R.menu.activity_menu, menu);
+        searchView = (SearchView) menu.findItem(R.id.search_main).getActionView();
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.menu) {
-            showPopupMenu(item);
-        } else if (id == R.id.search_main) {
-            onSearchClicked(item);
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-        return false;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        if (id == R.id.menu) {
+//            showPopupMenu(item);
+//        } else {
+//            return super.onOptionsItemSelected(item);
+//        }
+//        return false;
+//    }
 
-    public void showPopupMenu(MenuItem item) {
-        final View menuItemView = findViewById(item.getItemId());
-        PopupMenu popupMenu = new PopupMenu(this, menuItemView);
-        MenuInflater inflater = popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.options_popup_menu, popupMenu.getMenu());
-        popupMenu.show();
-    }
+//    public void showPopupMenu(MenuItem item) {
+//        final View menuItemView = findViewById(item.getItemId());
+//        PopupMenu popupMenu = new PopupMenu(this, menuItemView);
+//        MenuInflater inflater = popupMenu.getMenuInflater();
+//        inflater.inflate(R.menu.options_popup_menu, popupMenu.getMenu());
+//        popupMenu.show();
+//    }
 
-    public void onSearchClicked(MenuItem item) {
-        startActivity(new Intent(this, SearchableActivity.class));
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
 }

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.franjo.smsapp.data.Contact;
+import com.franjo.smsapp.data.model.Contact;
 import com.franjo.smsapp.databinding.ItemContactsListBinding;
 
 /**

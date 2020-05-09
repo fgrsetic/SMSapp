@@ -1,17 +1,14 @@
-package com.franjo.smsapp.data;
+package com.franjo.smsapp.data.receiver;
 
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-import com.franjo.smsapp.util.ContactName;
+import com.franjo.smsapp.data.model.Message;
+import com.franjo.smsapp.util.ContactsName;
 import com.franjo.smsapp.util.DateFormatting;
 
 import java.util.ArrayList;
@@ -21,7 +18,7 @@ import java.util.List;
 /* MyReceiver enables application to receive intents that are broadcast by the system
 or by other applications, even when other components of the application are not running
 */
-public class SmsReceiver extends BroadcastReceiver implements ISmsReceiver {
+public class Receiver extends BroadcastReceiver implements IReceiver {
 
     // A PDU is a "protocol data unit". This is the industrial standard for SMS message
     private static final String SMS_BUNDLE = "pdus";
@@ -33,16 +30,16 @@ public class SmsReceiver extends BroadcastReceiver implements ISmsReceiver {
     private static final int SMS_PENDING_INTENT = 3417;
     private static final String NOTIFICATION_CHANNEL_ID = "999";
 
-    private List<SmsData> smsList;
+    private List<Message> smsList;
 
-    public SmsReceiver() {
+    public Receiver() {
         smsList = new ArrayList<>();
     }
 
     // onReceive is called when this BroadcastReceiver receives an Intent broadcast
     @Override
     public void onReceive(Context context, Intent intent) {
-        final SmsData smsData = new SmsData();
+        final Message message = new Message();
         // Get the SMS message received
         final Bundle bundle = intent.getExtras();
         try {
@@ -56,23 +53,23 @@ public class SmsReceiver extends BroadcastReceiver implements ISmsReceiver {
                         String address = sms.getOriginatingAddress();
                         String formattedDate = DateFormatting.formatDate("dd.MM.", System.currentTimeMillis());
                         String formattedMinute = DateFormatting.formatDate("hh:mm", System.currentTimeMillis());
-                        String name = ContactName.getContactName(context, address);
+                        String name = ContactsName.getContactName(context, address);
                         String smsBody = sms.getMessageBody();
 
                         if (name == null)
-                            smsData.setPhoneNumber(address);
+                            message.setPhoneNumber(address);
                         else
-                           smsData.setPhoneNumber(name);
+                           message.setPhoneNumber(name);
 
                         StringBuilder sb = new StringBuilder();
                         String smsMessageStr = sb.append(address).append("\n").toString();
 //                        smsMessageStr += address + "\n";
 //                        smsMessageStr += smsBody + "\n";
 
-                        smsData.setMessageBody(smsBody);
-                        smsData.setDate(formattedDate);
+                        message.setMessageBody(smsBody);
+                        message.setDate(formattedDate);
                         //smsData.setContactImage();
-                        smsList.add(smsData);
+                        smsList.add(message);
                     }
 
                //     setNotification(context);
@@ -89,7 +86,7 @@ public class SmsReceiver extends BroadcastReceiver implements ISmsReceiver {
 
 
     @Override
-    public List<SmsData> getSMSList() {
+    public List<Message> getSMSList() {
         return smsList;
     }
 
