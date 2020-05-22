@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.franjo.smsapp.app.AppExecutors;
-import com.franjo.smsapp.data.database.DatabaseContactsDataSource;
-import com.franjo.smsapp.data.database.IContactsDataSource;
+import com.franjo.smsapp.data.device_storage.contacts.ContactsDeviceStorageSource;
+import com.franjo.smsapp.data.device_storage.contacts.IContactsDataSource;
 
 public class SearchContactsViewModel extends ViewModel {
 
@@ -17,7 +17,7 @@ public class SearchContactsViewModel extends ViewModel {
 
 
     public SearchContactsViewModel() {
-        dataSource = new DatabaseContactsDataSource();
+        dataSource = new ContactsDeviceStorageSource();
     }
 
     public LiveData<Cursor> observeSearch() {
@@ -28,8 +28,7 @@ public class SearchContactsViewModel extends ViewModel {
     }
 
     void loadSearch(String searchText) {
-        AppExecutors.getInstance().diskIO().execute(() ->
-                searchResult.postValue(dataSource.performSearch(searchText)));
+        AppExecutors.getInstance().diskIO().execute(() -> searchResult.postValue(dataSource.performSearch(searchText)));
 
     }
 

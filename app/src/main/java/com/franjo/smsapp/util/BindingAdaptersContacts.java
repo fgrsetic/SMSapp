@@ -11,11 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.franjo.smsapp.app.App;
 import com.franjo.smsapp.data.model.Contact;
-import com.franjo.smsapp.data.model.Message;
 import com.franjo.smsapp.ui.contacts.ContactsAdapter;
 import com.franjo.smsapp.ui.contacts.search.SearchContactsAdapter;
-import com.franjo.smsapp.ui.messages.MessagesAdapter;
-import com.franjo.smsapp.ui.messages.search.SearchMessagesAdapter;
 
 import java.util.List;
 
@@ -36,7 +33,11 @@ public class BindingAdaptersContacts {
 
     @BindingAdapter("contactsImage")
     public static void randomChangeContactImage(ImageView imageView, Contact contact) {
-        imageView.setBackground(ImageUtil.getRandomImage());
+        if (contact.getName() == null) {
+            imageView.setBackground(ImageUtil.getRandomImage("XXX"));
+        } else {
+            imageView.setBackground(ImageUtil.getRandomImage(contact.getName()));
+        }
     }
 
     // Search

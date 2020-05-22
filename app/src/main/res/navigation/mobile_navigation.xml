@@ -31,7 +31,7 @@
     <!-- Messages -->
     <fragment
         android:id="@+id/messages_dest"
-        android:name="com.franjo.smsapp.ui.messages.MessagesFragment"
+        android:name="com.franjo.smsapp.ui.messages.inbox.InboxMessageFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_messages">
 
@@ -43,18 +43,18 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-        <action
-            android:id="@+id/message_details_action"
-            app:destination="@id/message_details_dest"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right">
+<!--        <action-->
+<!--            android:id="@+id/message_details_action"-->
+<!--            app:destination="@id/message_details_dest"-->
+<!--            app:enterAnim="@anim/slide_in_right"-->
+<!--            app:exitAnim="@anim/slide_out_left"-->
+<!--            app:popEnterAnim="@anim/slide_in_left"-->
+<!--            app:popExitAnim="@anim/slide_out_right">-->
 
-            <argument
-                android:name="message"
-                app:argType="com.franjo.smsapp.data.model.Message" />
-        </action>
+<!--            <argument-->
+<!--                android:name="message"-->
+<!--                app:argType="com.franjo.smsapp.data.model.MessageDTODTO" />-->
+<!--        </action>-->
 
         <action
             android:id="@+id/search_messages_action"
@@ -109,19 +109,19 @@
         android:label="@string/new_message" />
 
 
-    <!-- Message details-->
-    <fragment
-        android:id="@+id/message_details_dest"
-        android:name="com.franjo.smsapp.ui.messages.details.MessageDetailsFragment"
-        android:label="Message details">
+    <!-- MessageDTO details-->
+<!--    <fragment-->
+<!--        android:id="@+id/message_details_dest"-->
+<!--        android:name="com.franjo.smsapp.ui.messages.details.MessageDetailsFragment"-->
+<!--        android:label="MessageDTO details">-->
 
-        <argument
-            android:name="message"
-            android:defaultValue="@null"
-            app:argType="com.franjo.smsapp.data.model.Message"
-            app:nullable="true" />
+<!--        <argument-->
+<!--            android:name="message"-->
+<!--            android:defaultValue="@null"-->
+<!--            app:argType="com.franjo.smsapp.data.model.MessageDTODTO"-->
+<!--            app:nullable="true" />-->
 
-    </fragment>
+<!--    </fragment>-->
 
 
     <!-- Search -->

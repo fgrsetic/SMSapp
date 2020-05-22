@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.franjo.smsapp.ui.messages.MessagesViewModel" />
+            type="com.franjo.smsapp.ui.messages.inbox.InboxMessageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,10 +24,9 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:messagesList="@{viewModel.showSmsList()}"
+            app:messagesList="@{viewModel.showMessages}"
             tools:listitem="@layout/item_messages_list" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

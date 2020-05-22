@@ -3,19 +3,15 @@ package com.franjo.smsapp.ui.contacts.search;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.ContactsContract;
-import android.provider.Telephony;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.cursoradapter.widget.CursorAdapter;
 
-import com.franjo.smsapp.app.App;
-import com.franjo.smsapp.data.database.DatabaseMessagesDataSource;
 import com.franjo.smsapp.data.model.Contact;
-import com.franjo.smsapp.databinding.ItemContactsListBinding;
 import com.franjo.smsapp.databinding.ItemSearchContactsListBinding;
-import com.franjo.smsapp.util.ContactsName;
+import com.franjo.smsapp.util.ColumnIndexCache;
 
 public class SearchContactsAdapter extends CursorAdapter {
 
@@ -38,7 +34,7 @@ public class SearchContactsAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         Contact contact = new Contact();
-        String number = cursor.getString(DatabaseMessagesDataSource.ColumnIndexCache.getColumnIndexOrThrow(cursor, ContactsContract.Contacts.HAS_PHONE_NUMBER));
+        String number = cursor.getString(ColumnIndexCache.getColumnIndexOrThrow(cursor, ContactsContract.Contacts.HAS_PHONE_NUMBER));
         contact.setPhoneNumber(number);
 
         String name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.Contacts.DISPLAY_NAME));

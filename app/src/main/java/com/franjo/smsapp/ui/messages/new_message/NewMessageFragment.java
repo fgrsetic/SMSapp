@@ -35,21 +35,11 @@ public class NewMessageFragment extends Fragment {
 
     private static final int CONTACT_PICKER_RESULT = 1;
 
-    private Context context;
-    private ImageButton imageButton;
-    private EditText etRecepient;
-    private EditText etMessage;
-    private TextView sms_count;
 
     private FragmentNewMessageBinding binding;
     private NewMessageViewModel viewModel;
     private InputMethodManager imm;
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        this.context = context;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,44 +56,43 @@ public class NewMessageFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_new_message, container, false);
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.setLifecycleOwner(this);
+
         viewModel = new ViewModelProvider(this).get(NewMessageViewModel.class);
         binding.setViewModel(viewModel);
 
         binding.addRecipient.requestFocus();
 
         // Open soft keyboard
-        if (imm != null) {
-            imm.showSoftInput(etMessage, InputMethodManager.SHOW_IMPLICIT);
-        }
+//        if (imm != null) {
+//            imm.showSoftInput(etMessage, InputMethodManager.SHOW_IMPLICIT);
+//        }
+
+        sendMessage();
 
         return binding.getRoot();
     }
 
-    private void setupListeners() {
-        imageButton.setOnClickListener(v -> {
+    private void sendMessage() {
+        binding.sendMessage.setOnClickListener(v -> {
             if (hasNumber() && hasText()) {
-                String phoneNumber = etRecepient.getText().toString();
-                String poruka = etMessage.getText().toString();
-                getActivity().finish();
-
-                try {
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(phoneNumber, null, poruka, null, null);
-
-                    Toast.makeText(getContext(), R.string.message_sent, Toast.LENGTH_LONG).show();
-
-                } catch (Exception e) {
-                    Toast.makeText(getContext(), R.string.sending_failed, Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
+                if (binding.addRecipientText.getText() != null && binding.enterMessageText.getText() != null) {
+                    String phoneNumber = binding.addRecipientText.getText().toString();
+                    String messageEntered = binding.enterMessageText.getText().toString();
+                    try {
+                        SmsManager sms = SmsManager.getDefault();
+                        sms.sendTextMessage(phoneNumber, null, messageEntered, null, null);
+                        Toast.makeText(getContext(), R.string.message_sent, Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
                 }
             }
         });
-
-
     }
 
     private boolean hasText() {
-        if (etMessage.getText().length() == 0) {
+        if (binding.enterMessageText.getText() != null && binding.enterMessageText.getText().length() == 0) {
             Toast.makeText(getContext(), R.string.message_is_missing, Toast.LENGTH_LONG).show();
             return false;
         }
@@ -111,33 +100,33 @@ public class NewMessageFragment extends Fragment {
     }
 
     private boolean hasNumber() {
-        if (etRecepient.getText().length() == 0) {
+        if (binding.addRecipientText.getText() != null && binding.addRecipientText.getText().length() == 0) {
             Toast.makeText(getContext(), R.string.enter_recipients, Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
     }
 
-    private void countSms() {
-
-        etMessage.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int aft) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                // This will show characters remaining
-                sms_count.setText(160 - s.toString().length() + getString(R.string.last_letter_count));
-            }
-        });
-
-    }
+//    private void countSms() {
+//
+//        binding.enterMessageText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int aft) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//                // This will show characters remaining
+//                sms_count.setText(160 - s.toString().length() + getString(R.string.last_letter_count));
+//            }
+//        });
+//
+//    }
 
     public void pickContacts(View view) {
 
@@ -169,16 +158,11 @@ public class NewMessageFragment extends Fragment {
                             String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                             String name = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
 
-                            etRecepient.setText(phone);
-
-
+                            binding.addRecipientText.setText(phone);
                         }
                         cursor.close();
                         pCur.close();
-
-
                     }
-
                 }
 
             }
@@ -206,6 +190,4 @@ public class NewMessageFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }

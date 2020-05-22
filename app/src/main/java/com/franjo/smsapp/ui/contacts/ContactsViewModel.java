@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.franjo.smsapp.app.AppExecutors;
-import com.franjo.smsapp.data.database.DatabaseContactsDataSource;
-import com.franjo.smsapp.data.database.IContactsDataSource;
+import com.franjo.smsapp.data.device_storage.contacts.ContactsDeviceStorageSource;
+import com.franjo.smsapp.data.device_storage.contacts.IContactsDataSource;
 import com.franjo.smsapp.data.model.Contact;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class ContactsViewModel extends ViewModel {
 
 
     public ContactsViewModel() {
-        databaseContacts = new DatabaseContactsDataSource();
+        databaseContacts = new ContactsDeviceStorageSource();
     }
 
     // 1) All contacts
@@ -35,8 +35,11 @@ public class ContactsViewModel extends ViewModel {
     }
 
     private void loadContactList() {
-        List<Contact> contactsList = databaseContacts.getAllContacts();
-        AppExecutors.getInstance().diskIO().execute(() -> navigateToContactList.postValue(removedDuplicatesList(contactsList)));
+
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            List<Contact> contactsList = databaseContacts.getAllContacts();
+            navigateToContactList.postValue(removedDuplicatesList(contactsList));
+        });
     }
 
 

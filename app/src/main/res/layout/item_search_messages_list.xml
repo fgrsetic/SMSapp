@@ -8,7 +8,7 @@
 
         <variable
             name="message"
-            type="com.franjo.smsapp.data.model.Message" />
+            type="com.franjo.smsapp.domain.Message" />
 
         <variable
             name="clickListener"

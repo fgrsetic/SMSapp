@@ -4,4 +4,10 @@
     <dimen name="spacing_small">8dp</dimen>
     <dimen name="spacing_normal">16dp</dimen>
     <dimen name="spacing_large">32dp</dimen>
+
+    <!-- The default letter tile text size -->
+    <dimen name="tile_letter_font_size">33sp</dimen>
+    <!-- The default tile size -->
+    <dimen name="letter_tile_size">64dp</dimen>
+
 </resources>

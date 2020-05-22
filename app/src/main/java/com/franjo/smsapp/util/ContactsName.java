@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 
-import com.franjo.smsapp.data.database.DatabaseMessagesDataSource;
-
 public class ContactsName {
 
     public static String getContactName(Context context, String phoneNumber) {
@@ -20,12 +18,13 @@ public class ContactsName {
         }
         String contactName = null;
         if (cursor.moveToNext()) {
-            contactName = cursor.getString(DatabaseMessagesDataSource.ColumnIndexCache.getColumnIndexOrThrow(cursor, ContactsContract.PhoneLookup.DISPLAY_NAME));
+            contactName = cursor.getString(ColumnIndexCache.getColumnIndexOrThrow(cursor, ContactsContract.PhoneLookup.DISPLAY_NAME));
         }
         if (!cursor.isClosed()) {
             cursor.close();
         }
-        DatabaseMessagesDataSource.ColumnIndexCache.clear();
+        ColumnIndexCache.clear();
         return contactName;
     }
+
 }

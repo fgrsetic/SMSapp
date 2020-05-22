@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import androidx.cursoradapter.widget.CursorAdapter;
 
 import com.franjo.smsapp.app.App;
-import com.franjo.smsapp.data.database.DatabaseMessagesDataSource;
-import com.franjo.smsapp.data.model.Message;
+import com.franjo.smsapp.domain.Message;
 import com.franjo.smsapp.databinding.ItemSearchMessagesListBinding;
+import com.franjo.smsapp.util.ColumnIndexCache;
 import com.franjo.smsapp.util.ContactsName;
 import com.franjo.smsapp.util.DateFormatting;
 
@@ -36,27 +36,25 @@ public class SearchMessagesAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Message message = new Message();
-        String number = cursor.getString(DatabaseMessagesDataSource.ColumnIndexCache.getColumnIndexOrThrow(cursor, Telephony.Sms.ADDRESS));
-        message.setPhoneNumber(number);
 
+        String number = cursor.getString(ColumnIndexCache.getColumnIndexOrThrow(cursor, Telephony.Sms.ADDRESS));
+        //String number = cursor.getString(DatabaseMessagesDataSource.ColumnIndexCache.getColumnIndexOrThrow(cursor, Telephony.Sms.ADDRESS));
         String name = ContactsName.getContactName(App.getAppContext(), number);
-        message.setName(name);
+        String body = cursor.getString(ColumnIndexCache.getColumnIndexOrThrow(cursor, Telephony.Sms.BODY));
+        String date = cursor.getString(ColumnIndexCache.getColumnIndexOrThrow(cursor, Telephony.Sms.DATE));
+        String dateString = DateFormatting.formatDate(date);
 
-        if (name == null)
-            binding.phoneNumber.setText(message.getPhoneNumber());
-        else
-            binding.phoneNumber.setText(message.getName());
-
-        String body = cursor.getString(DatabaseMessagesDataSource.ColumnIndexCache.getColumnIndexOrThrow(cursor, Telephony.Sms.BODY));
-        message.setMessageBody(body);
-        binding.message.setText(message.getMessageBody());
-
-        String date = cursor.getString(DatabaseMessagesDataSource.ColumnIndexCache.getColumnIndexOrThrow(cursor, Telephony.Sms.DATE));
-        String dateString = DateFormatting.formatDate("dd.MM", Long.parseLong((date)));
-        message.setDate(dateString);
-        binding.date.setText(message.getDate());
-
+        Message message = null;
+        if (name != null) {
+            message = new Message(number, name, body, date);
+        }
+        if (name == null) {
+            binding.phoneNumber.setText(number);
+        } else {
+            binding.phoneNumber.setText(name);
+        }
+        binding.message.setText(body);
+        binding.date.setText(dateString);
         binding.setMessage(message);
         binding.setClickListener(onClickListener);
     }

@@ -30,16 +30,18 @@
 
     <string name="sms_message">SMS message</string>
 
-    <string name="message_is_missing">Message is missing!</string>
+    <string name="message_is_missing">MessageDTO is missing!</string>
     <string name="sending_failed">Sending failed</string>
-    <string name="message_sent">Message sent</string>
+    <string name="message_sent">MessageDTO sent</string>
 
 
     <string name="_05_15">05:15</string>
 
     <string name="allow_permission">Please allow permission!</string>
-    <string name="sms_permission_granted">Read SMS permission granted</string>
-    <string name="sms_permission_denied">Read SMS permission denied</string>
+    <string name="permission_already_granted">Permission already granted</string>
+    <string name="permission_granted">Permission GRANTED</string>
+    <string name="permission_denied">Permission DENIED</string>
+
     <string name="last_letter_count">/1</string>
     <string name="select_picture">Select picture</string>
     <string name="messages">Messages</string>

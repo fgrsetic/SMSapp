@@ -73,7 +73,7 @@ public class SearchMessagesFragment extends Fragment implements SearchView.OnQue
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        searchMessagesViewModel.loadSearch(newText);
+       // searchMessagesViewModel.loadSearch(newText);
         return true;
     }
 
