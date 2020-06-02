@@ -55,7 +55,7 @@ public class ContactsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Fab button -> to new Message fragment
+        // Fab button -> to new Conversation fragment
         viewModel.navigateToNewMessage().observe(getViewLifecycleOwner(), isFabClicked -> {
             if (isFabClicked) {
                 Navigation.findNavController(binding.floatingActionButton).navigate(R.id.new_message_action);

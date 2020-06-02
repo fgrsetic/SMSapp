@@ -1,5 +1,6 @@
 package com.franjo.smsapp.ui;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -14,9 +15,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.franjo.smsapp.R;
-import com.franjo.smsapp.data.database.AppDatabase;
 import com.franjo.smsapp.databinding.ActivityMainBinding;
-import com.wajahatkarim3.roomexplorer.RoomExplorer;
+import com.franjo.smsapp.receiver.HeadlessSmsSendService;
 
 import static android.view.View.GONE;
 
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.messages_dest,
+                R.id.conversations_dest,
                 R.id.contacts_dest,
                 R.id.favorites_dest)
                 .build();
@@ -42,8 +42,10 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-
         bottomNavigationVisibility(navController);
+
+        startService(new Intent(this, HeadlessSmsSendService.class));
+
     }
 
     @Override

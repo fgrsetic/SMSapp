@@ -7,15 +7,11 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
 
-import com.franjo.smsapp.domain.Message;
+import com.franjo.smsapp.domain.Conversation;
 import com.franjo.smsapp.util.ContactsName;
-import com.franjo.smsapp.util.DateFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.franjo.smsapp.util.DateFormatting.DATE_FORMAT_MESSAGES;
-import static com.franjo.smsapp.util.DateFormatting.TIME_FORMAT_MESSAGES_DETAILS_;
 
 
 /* MyReceiver enables application to receive intents that are broadcast by the system
@@ -33,7 +29,7 @@ public class MessageReceiver extends BroadcastReceiver implements IReceiver {
     private static final int SMS_PENDING_INTENT = 3417;
     private static final String NOTIFICATION_CHANNEL_ID = "999";
 
-    private List<Message> smsList;
+    private List<Conversation> smsList;
 
     public MessageReceiver() {
         smsList = new ArrayList<>();
@@ -42,7 +38,7 @@ public class MessageReceiver extends BroadcastReceiver implements IReceiver {
     // onReceive is called when this BroadcastReceiver receives an Intent broadcast
     @Override
     public void onReceive(Context context, Intent intent) {
-//        final Message message = new Message();
+        //final Conversation message = new Conversation();
         // Get the SMS message received
         final Bundle bundle = intent.getExtras();
         try {
@@ -52,13 +48,11 @@ public class MessageReceiver extends BroadcastReceiver implements IReceiver {
                     for (Object pdus : pdusObj) {
                         // This will create an SmsMessage object from the received pdu
                         SmsMessage sms = SmsMessage.createFromPdu((byte[]) pdus);
-
                         String address = sms.getDisplayOriginatingAddress();
-                        String formattedDate = DateFormatting.formattedStringFromMillis(DATE_FORMAT_MESSAGES, System.currentTimeMillis());
-                        String formattedMinute = DateFormatting.formattedStringFromMillis(TIME_FORMAT_MESSAGES_DETAILS_, System.currentTimeMillis());
+//                        String formattedDate = DateFormatting.formattedStringFromMillis(DATE_FORMAT_MESSAGES, System.currentTimeMillis());
+//                        String formattedMinute = DateFormatting.formattedStringFromMillis(TIME_FORMAT_MESSAGES_DETAILS_, System.currentTimeMillis());
                         String name = ContactsName.getContactName(context, address);
                         String smsBody = sms.getMessageBody();
-
 //                        if (name == null)
 //                            message.setPhoneNumber(address);
 //                        else
@@ -90,7 +84,7 @@ public class MessageReceiver extends BroadcastReceiver implements IReceiver {
 
 
     @Override
-    public List<Message> getSMSList() {
+    public List<Conversation> getSMSList() {
         return smsList;
     }
 

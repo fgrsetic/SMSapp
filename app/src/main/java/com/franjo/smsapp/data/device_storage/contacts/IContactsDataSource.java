@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.franjo.smsapp.data.model.Contact;
-import com.franjo.smsapp.domain.Message;
+import com.franjo.smsapp.domain.Conversation;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ public interface IContactsDataSource {
 
     Cursor performSearch(String searchText);
 
-    Uri openContactDetails(Message message);
+    Uri openContactDetails(Conversation conversation);
 }

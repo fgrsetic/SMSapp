@@ -79,7 +79,7 @@
                 <action android:name="android.provider.Telephony.SMS_DELIVER_ACTION" />
                 <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
 
-                <data android:mimeType="application/vnd.wap.mms-message" />
+                <data android:mimeType="application/vnd.wap.mms-conversation" />
             </intent-filter>
 
         </receiver>
@@ -92,7 +92,7 @@
 
             <intent-filter>
                 <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
-                <data android:mimeType="application/vnd.wap.mms-message" />
+                <data android:mimeType="application/vnd.wap.mms-conversation" />
             </intent-filter>
 
         </receiver>

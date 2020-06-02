@@ -59,7 +59,7 @@ public class SearchMessagesFragment extends Fragment implements SearchView.OnQue
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                NavHostFragment.findNavController(SearchMessagesFragment.this).navigate(R.id.messages_action);
+                NavHostFragment.findNavController(SearchMessagesFragment.this).navigate(R.id.search_messages_action);
                 return true;
             }
         });

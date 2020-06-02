@@ -1,17 +1,19 @@
 package com.franjo.smsapp.data.repository;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.franjo.smsapp.app.App;
 import com.franjo.smsapp.data.database.AppDatabase;
-import com.franjo.smsapp.data.database.MMSMessageDao;
+import com.franjo.smsapp.data.database.ConversationsDao;
 import com.franjo.smsapp.data.database.MessageDao;
-import com.franjo.smsapp.data.device_storage.mms.IMMSDeviceStorageSource;
-import com.franjo.smsapp.data.device_storage.mms.MMSDeviceStorageSource;
-import com.franjo.smsapp.data.device_storage.sms.ISMSDeviceStorageSource;
-import com.franjo.smsapp.data.device_storage.sms.SMSDeviceStorageSource;
+import com.franjo.smsapp.data.device_storage.conversations.IMessagesDeviceStorageSource;
+import com.franjo.smsapp.data.device_storage.conversations.MessagesDeviceStorageSource;
+import com.franjo.smsapp.data.model.entity.DatabaseConversation;
 import com.franjo.smsapp.data.model.entity.DatabaseMessage;
-import com.franjo.smsapp.data.model.entity.MMSMessage;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -19,21 +21,16 @@ public class MessageRepository {
 
     private static MessageRepository INSTANCE = null;
 
-    private ISMSDeviceStorageSource smsDeviceStorageSource;
-    private IMMSDeviceStorageSource mmsDeviceStorageSource;
+    private IMessagesDeviceStorageSource deviceStorageSource;
 
+    private ConversationsDao conversationsDao;
     private MessageDao messageDao;
-    private MMSMessageDao mmsMessageDao;
-
-    private LiveData<List<DatabaseMessage>> allSMSMessages;
-    private LiveData<List<MMSMessage>> allMMSMessages;
 
     private MessageRepository() {
         AppDatabase appDatabase = AppDatabase.getInstance(App.getAppContext());
-        smsDeviceStorageSource = SMSDeviceStorageSource.getInstance();
-        mmsDeviceStorageSource = MMSDeviceStorageSource.getInstance();
+        deviceStorageSource = MessagesDeviceStorageSource.getInstance();
+        conversationsDao = appDatabase.conversationsDao();
         messageDao = appDatabase.messageDao();
-        mmsMessageDao = appDatabase.mmsMessageDao();
     }
 
     public static MessageRepository getInstance() {
@@ -44,31 +41,19 @@ public class MessageRepository {
     }
 
 
-    // Device storage data source SMS/MMS
-    public void loadMessages() {
-        smsDeviceStorageSource.getSMSMessages();
-    }
-
-    public void loadMMMSMessages(int messageType) {
-        mmsDeviceStorageSource.getMMSMessages(messageType);
+    // Device storage data source Conversations, SMS/MMS messages
+    public void loadAndSaveStorageMessages() {
+        deviceStorageSource.loadAndSaveStorageMessages();
     }
 
 
-    // Local database dta source
-    public LiveData<List<DatabaseMessage>> getAllMessagesGroupedByName() {
-        return messageDao.getAllMessagesGroupedByName();
+    // Local database source
+    public LiveData<List<DatabaseConversation>> getConversations() {
+        return conversationsDao.getConversations();
     }
 
-//    public void insertMessage(SMSMessage SMSMessage) {
-//        SMSMessageDao.insertMessage(SMSMessage);
-//    }
-//
-//    public void deleteMessage(SMSMessage SMSMessage) {
-//        SMSMessageDao.deleteMessage(SMSMessage);
-//    }
-//
-//    public SMSMessage loadMessageById(int id) {
-//        return SMSMessageDao.loadMessageById(id);
-//    }
+    public LiveData<List<DatabaseMessage>> loadMessagesById(int id) {
+        return messageDao.loadMessagesById(id);
+    }
 
 }

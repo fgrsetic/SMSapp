@@ -1,39 +1,34 @@
 package com.franjo.smsapp.util;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.Date;
-import java.util.Locale;
 
 public class DateFormatting {
 
-    public static final String DATE_FORMAT_MESSAGES = "MMM F YYYY";
-    private static final String DATE_FORMAT_MESSAGES_CURRENT_YEAR = "MMM F";
+    public static final String DATE_FORMAT_MESSAGES = "MMM d YYYY";
+    private static final String DATE_FORMAT_MESSAGES_CURRENT_YEAR = "MMM d";
+    private static final String DATE_FORMAT_MESSAGES_CURRENT_YEAR_TODAY = "H:m";
 
     public static final String HEADER_FORMAT_MESSAGES_DETAILS = "EEEE, MMMM d, y";
     public static final String TIME_FORMAT_MESSAGES_DETAILS_ = "hh:mm";
 
-    public static String formatDate (String dateString) {
-        Calendar cal1 = Calendar.getInstance();
-        cal1.setTimeInMillis(Long.parseLong(dateString));
-
-        Calendar cal2 = Calendar.getInstance();
-        // Current date
-        cal2.setTime(new Date());
-
-        // Compare years
-        if (cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)) {
-            return formattedStringFromMillis(DATE_FORMAT_MESSAGES_CURRENT_YEAR, Long.parseLong(dateString));
+    public static String formatDate(long dateInMillis) {
+        String date;
+        DateTimeZone zone = DateTimeZone.getDefault();
+        // java.util.Date to Joda-Time, and assign time zone to adjust
+        DateTime dateTime = new DateTime(new Date(dateInMillis), zone);
+        DateTime now = DateTime.now(zone);
+        if (dateTime.getYear() == now.getYear()) {
+            DateTimeFormatter fmt = DateTimeFormat.forPattern(DATE_FORMAT_MESSAGES_CURRENT_YEAR);
+            date = fmt.print(dateTime);
         } else {
-            return formattedStringFromMillis(DATE_FORMAT_MESSAGES, Long.parseLong(dateString));
+            DateTimeFormatter fmt = DateTimeFormat.forPattern(DATE_FORMAT_MESSAGES);
+            date = fmt.print(dateTime);
         }
+        return date;
     }
-
-    public static String formattedStringFromMillis(String format, long millis) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(millis);
-        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
-        return sdf.format(cal.getTime());
-    }
-
 }

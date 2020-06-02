@@ -1,12 +1,6 @@
 package com.franjo.smsapp.ui.messages.search;
 
-import android.database.Cursor;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.franjo.smsapp.app.AppExecutors;
 
 public class SearchMessagesViewModel extends ViewModel {
 

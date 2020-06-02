@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.franjo.smsapp.R;
+import com.franjo.smsapp.app.App;
+
 import static com.franjo.smsapp.util.DpAndPxConverter.convertDpToPx;
 
 public class ItemDividerDecoration extends RecyclerView.ItemDecoration {
@@ -36,7 +39,7 @@ public class ItemDividerDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(@NonNull Canvas c, RecyclerView parent, @NonNull RecyclerView.State state) {
-        int left = convertDpToPx(72);
+        int left = convertDpToPx(80);
         int right = parent.getWidth() - convertDpToPx(16);
 
         int childCount = parent.getChildCount();
@@ -50,6 +53,8 @@ public class ItemDividerDecoration extends RecyclerView.ItemDecoration {
             int bottom = top + divider.getIntrinsicHeight();
 
             divider.setBounds(left, top, right, bottom);
+            divider.setTint(App.getAppContext().getResources().getColor(R.color.colorAccent));
+            divider.setAlpha(150);
             divider.draw(c);
         }
     }

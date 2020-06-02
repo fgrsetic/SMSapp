@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.franjo.smsapp.app.App;
 import com.franjo.smsapp.data.model.Contact;
-import com.franjo.smsapp.domain.Message;
+import com.franjo.smsapp.domain.Conversation;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
@@ -65,10 +65,10 @@ public class ContactsDeviceStorageSource implements IContactsDataSource {
     }
 
     @Override
-    public Uri openContactDetails(Message data) {
+    public Uri openContactDetails(Conversation data) {
         ContentResolver contentResolver = App.getAppContext().getContentResolver();
         Uri contactUri = null;
-        Uri lookupUri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, Uri.encode(data.getPhoneNumber()));
+        Uri lookupUri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, Uri.encode(data.getRecipient()));
         String[] phoneNumberProjection = {
                 ContactsContract.CommonDataKinds.Phone._ID,
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
