@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.franjo.smsapp.R;
 import com.franjo.smsapp.data.database.AppDatabase;
@@ -69,6 +70,8 @@ public class ConversationsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         showMessages();
+        showFabVisibility();
+
 
         // List item -> to message details
         viewModel.getNavigateToConversationDetails().observe(getViewLifecycleOwner(), conversation -> {
@@ -180,6 +183,25 @@ public class ConversationsFragment extends Fragment {
 
     private void onSearchClicked(MenuItem item) {
         NavHostFragment.findNavController(this).navigate(R.id.search_messages_action);
+    }
+
+    private void showFabVisibility() {
+        binding.conversationsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && binding.floatingActionButton.isShown()) {
+                    binding.floatingActionButton.hide();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    binding.floatingActionButton.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
     }
 }
 

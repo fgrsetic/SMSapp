@@ -21,12 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="56dp"
+            app:conversationsList="@{viewModel.showConversationsList}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:conversationsList="@{viewModel.showConversationsList}"
             tools:listitem="@layout/item_conversations_list" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
