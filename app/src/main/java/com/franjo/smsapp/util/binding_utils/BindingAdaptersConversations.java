@@ -1,4 +1,4 @@
-package com.franjo.smsapp.util;
+package com.franjo.smsapp.util.binding_utils;
 
 import android.database.Cursor;
 import android.widget.ImageView;
@@ -13,6 +13,8 @@ import com.franjo.smsapp.app.App;
 import com.franjo.smsapp.domain.Conversation;
 import com.franjo.smsapp.ui.messages.conversations.ConversationsAdapter;
 import com.franjo.smsapp.ui.messages.search.SearchMessagesAdapter;
+import com.franjo.smsapp.util.DateFormatting;
+import com.franjo.smsapp.util.ImageUtil;
 
 import java.util.List;
 

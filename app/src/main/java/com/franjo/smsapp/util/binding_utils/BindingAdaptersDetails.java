@@ -1,4 +1,4 @@
-package com.franjo.smsapp.util;
+package com.franjo.smsapp.util.binding_utils;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.franjo.smsapp.app.App;
 import com.franjo.smsapp.domain.Message;
 import com.franjo.smsapp.ui.messages.conversations_details.DetailsAdapter;
+import com.franjo.smsapp.util.DateFormatting;
 
 import java.util.List;
 

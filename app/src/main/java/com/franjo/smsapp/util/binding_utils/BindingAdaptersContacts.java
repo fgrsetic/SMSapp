@@ -1,4 +1,4 @@
-package com.franjo.smsapp.util;
+package com.franjo.smsapp.util.binding_utils;
 
 import android.database.Cursor;
 import android.widget.ImageView;
@@ -13,6 +13,7 @@ import com.franjo.smsapp.app.App;
 import com.franjo.smsapp.data.model.Contact;
 import com.franjo.smsapp.ui.contacts.ContactsAdapter;
 import com.franjo.smsapp.ui.contacts.search.SearchContactsAdapter;
+import com.franjo.smsapp.util.ImageUtil;
 
 import java.util.List;
 

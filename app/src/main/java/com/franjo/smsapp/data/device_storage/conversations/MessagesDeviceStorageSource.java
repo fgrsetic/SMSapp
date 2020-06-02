@@ -82,6 +82,7 @@ public class MessagesDeviceStorageSource implements IMessagesDeviceStorageSource
                 databaseConversation.setRecipient(getContactByRecipientId(Long.parseLong(recipientId)));
                 databaseConversation.setSnippet(snippet); // last message
                 databaseConversation.setDateMsgCreated(timestamp);
+
                 mDB.conversationsDao().insertConversation(databaseConversation);
 
             } while (cursor.moveToNext());

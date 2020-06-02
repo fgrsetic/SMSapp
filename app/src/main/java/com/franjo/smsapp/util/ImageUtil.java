@@ -12,7 +12,7 @@ public class ImageUtil {
 
     private static final Resources res = App.getAppContext().getResources();
 
-    static Drawable getRandomImage(String name) {
+    public static Drawable getRandomImage(String name) {
         final int tileSize = res.getDimensionPixelSize(R.dimen.letter_tile_size);
         final LetterTileProvider tileProvider = new LetterTileProvider(App.getAppContext());
         final Bitmap letterTile = tileProvider.getLetterTile(name, getColorKey(name), tileSize, tileSize);
