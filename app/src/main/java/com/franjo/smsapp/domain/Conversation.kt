@@ -13,7 +13,7 @@ data class Conversation (
         var threadId: Int,
         var recipient: String,
         var snippet: String?,
-        var dateMsgCreated: Long?
+        var dateMsgCreated: Long
 ) : Parcelable
 
 

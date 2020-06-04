@@ -39,7 +39,7 @@ public class ItemDividerDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(@NonNull Canvas c, RecyclerView parent, @NonNull RecyclerView.State state) {
-        int left = convertDpToPx(80);
+        int left = convertDpToPx(72);
         int right = parent.getWidth() - convertDpToPx(16);
 
         int childCount = parent.getChildCount();

@@ -1,23 +1,24 @@
 package com.franjo.smsapp.ui.messages.conversations
 
+import android.app.Application
+import android.content.SharedPreferences
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.franjo.smsapp.app.AppExecutors
 import com.franjo.smsapp.data.model.entity.asDomainModel
 import com.franjo.smsapp.data.repository.MessageRepository
 import com.franjo.smsapp.domain.Conversation
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 
 
-class ConversationsViewModel : ViewModel() {
+class ConversationsViewModel(context: Application) : AndroidViewModel(context) {
 
     // Internally, we use a MutableLiveData to handle navigation to the selected conversation
-    private val _navigateToConversationDetails = MutableLiveData<Conversation>()
+    private val _navigateToConversationDetails = MutableLiveData<Int>()
     // The external immutable LiveData for the navigation conversation
-    val navigateToConversationDetails: LiveData<Conversation> get() = _navigateToConversationDetails
-
+    val navigateToConversationDetails: LiveData<Int> get() = _navigateToConversationDetails
 
 
     private var navigateToNewMessage: MutableLiveData<Boolean>? = null
@@ -27,6 +28,7 @@ class ConversationsViewModel : ViewModel() {
 
 
     // 1. Load and save messages from storage to local DB
+    // App Executors instead of coroutines -> just learning executors
     fun loadMessagesFromStorage() {
         AppExecutors.getInstance().diskIO().execute {
             messageRepository.loadAndSaveStorageMessages()
@@ -39,8 +41,8 @@ class ConversationsViewModel : ViewModel() {
     }
 
     // 3) Conversation details
-    fun toConversationsDetailsNavigated(conversation: Conversation) {
-        _navigateToConversationDetails.value = conversation
+    fun toConversationsDetailsNavigated(threadID: Int) {
+        _navigateToConversationDetails.value = threadID
     }
 
     fun onConversationsDetailsNavigated() {

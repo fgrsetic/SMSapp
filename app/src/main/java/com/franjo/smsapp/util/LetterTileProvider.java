@@ -25,7 +25,7 @@ class LetterTileProvider {
     /**
      * The number of available tile colors (see R.array.letter_tile_colors)
      */
-    private static final int NUM_OF_TILE_COLORS = 14;
+    private static final int NUM_OF_TILE_COLORS = 18;
 
     /**
      * The {@link TextPaint} used to draw the letter onto the tile

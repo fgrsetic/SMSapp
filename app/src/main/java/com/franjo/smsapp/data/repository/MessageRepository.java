@@ -1,7 +1,6 @@
 package com.franjo.smsapp.data.repository;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.franjo.smsapp.app.App;
 import com.franjo.smsapp.data.database.AppDatabase;
@@ -11,9 +10,6 @@ import com.franjo.smsapp.data.device_storage.conversations.IMessagesDeviceStorag
 import com.franjo.smsapp.data.device_storage.conversations.MessagesDeviceStorageSource;
 import com.franjo.smsapp.data.model.entity.DatabaseConversation;
 import com.franjo.smsapp.data.model.entity.DatabaseMessage;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 

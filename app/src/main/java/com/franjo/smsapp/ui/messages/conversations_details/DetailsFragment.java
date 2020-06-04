@@ -17,29 +17,31 @@ import com.franjo.smsapp.domain.Conversation;
 
 public class DetailsFragment extends Fragment {
 
-    private Conversation conversation;
-    private int conversationsThreadId;
+    private FragmentDetailsBinding binding;
+    private int threadID;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        FragmentDetailsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false);
-        binding.setLifecycleOwner(this);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false);
 
         if (getArguments() != null) {
-            conversation = DetailsFragmentArgs.fromBundle(getArguments()).getConversation();
-        }
-        if (conversation != null) {
-            conversationsThreadId = conversation.getThreadId();
+            threadID = DetailsFragmentArgs.fromBundle(getArguments()).getThreadID();
         }
 
-        DetailsViewModelFactory viewModelFactory = new DetailsViewModelFactory(conversationsThreadId);
-        DetailsViewModel viewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(DetailsViewModel.class);
+        DetailsViewModelFactory viewModelFactory = new DetailsViewModelFactory(threadID);
+        DetailsViewModel viewModel = new ViewModelProvider(this, viewModelFactory).get(DetailsViewModel.class);
+        binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
-
-        binding.detailsList.setAdapter(new DetailsAdapter());
-        binding.detailsList.setHasFixedSize(true);
 
         return binding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        DetailsAdapter detailsAdapter = new DetailsAdapter();
+        binding.detailsList.setAdapter(detailsAdapter);
+        binding.detailsList.setHasFixedSize(true);
+    }
 }

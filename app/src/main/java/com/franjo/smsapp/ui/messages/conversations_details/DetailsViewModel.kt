@@ -7,7 +7,7 @@ import com.franjo.smsapp.data.model.entity.asDomainModel
 import com.franjo.smsapp.data.repository.MessageRepository
 import com.franjo.smsapp.domain.Message
 
-class DetailsViewModel(threadId: Int) : ViewModel() {
+class DetailsViewModel(val threadId: Int) : ViewModel() {
 
     private val messageRepository = MessageRepository.getInstance()
 

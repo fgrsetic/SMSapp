@@ -25,15 +25,16 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.franjo.smsapp.R;
-import com.franjo.smsapp.data.database.AppDatabase;
 import com.franjo.smsapp.databinding.FragmentConversationsBinding;
 import com.franjo.smsapp.domain.Conversation;
+import com.franjo.smsapp.ui.OnItemClickListener;
 import com.franjo.smsapp.util.ItemDividerDecoration;
 import com.franjo.smsapp.util.Permissions;
-import com.wajahatkarim3.roomexplorer.RoomExplorer;
+
+import java.util.List;
 
 
-public class ConversationsFragment extends Fragment {
+public class ConversationsFragment extends Fragment implements OnItemClickListener {
 
     private Context context;
     private FragmentConversationsBinding binding;
@@ -72,11 +73,10 @@ public class ConversationsFragment extends Fragment {
         showMessages();
         showFabVisibility();
 
-
         // List item -> to message details
-        viewModel.getNavigateToConversationDetails().observe(getViewLifecycleOwner(), conversation -> {
-            if (conversation != null) {
-                ConversationsFragmentDirections.ConversationsDetailsAction action = ConversationsFragmentDirections.conversationsDetailsAction(conversation);
+        viewModel.getNavigateToConversationDetails().observe(getViewLifecycleOwner(), threadID -> {
+            if (threadID != null) {
+                ConversationsFragmentDirections.ConversationsDetailsAction action = ConversationsFragmentDirections.conversationsDetailsAction(threadID);
                 NavHostFragment.findNavController(this).navigate(action);
                 viewModel.onConversationsDetailsNavigated();
             }
@@ -109,7 +109,7 @@ public class ConversationsFragment extends Fragment {
             }
         } else {
             loadMessagesFromStorage();
-            RoomExplorer.show(context, AppDatabase.class, "message local database");
+           // RoomExplorer.show(context, AppDatabase.class, "message local database");
             setAdapter();
         }
 
@@ -118,6 +118,12 @@ public class ConversationsFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        List<Fragment> fragments = getChildFragmentManager().getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null) {
+                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
+        }
         if (requestCode == Permissions.PERMISSION_REQUEST) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showMessages();
@@ -145,22 +151,21 @@ public class ConversationsFragment extends Fragment {
     }
 
     private void setAdapter() {
-        ConversationsAdapter adapter = new ConversationsAdapter(new ConversationsAdapter.IClickListener() {
-            @Override
-            public void onClick(Conversation conversation) {
-                viewModel.toConversationsDetailsNavigated(conversation);
-            }
-
-            @Override
-            public void onContactIconClicked(Conversation conversation) {
-                //viewModel.loadContactDetails(conversation);
-            }
-        });
-
+        ConversationsAdapter adapter = new ConversationsAdapter(this);
         binding.conversationsList.setAdapter(adapter);
         binding.conversationsList.setHasFixedSize(true);
         ItemDividerDecoration itemDecorator = new ItemDividerDecoration(context, R.drawable.item_divider);
         binding.conversationsList.addItemDecoration(itemDecorator);
+    }
+
+    @Override
+    public void onItemClick(Conversation item, int position) {
+        viewModel.toConversationsDetailsNavigated(item.getThreadId());
+    }
+
+    @Override
+    public void onContactIconClicked(Conversation item) {
+        //viewModel.loadContactDetails(item);
     }
 
 

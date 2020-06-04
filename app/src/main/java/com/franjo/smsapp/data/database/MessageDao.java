@@ -14,13 +14,13 @@ import java.util.List;
 @Dao
 public interface MessageDao {
 
-    @Query("SELECT * FROM MessageTable ")
+    @Query("SELECT * FROM MessageTable")
     LiveData<List<DatabaseMessage>> getAllMessages();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMessage(DatabaseMessage message);
 
-    @Query("SELECT * FROM MessageTable WHERE threadId = :threadId")
+    @Query("SELECT * FROM MessageTable WHERE threadId = :threadId ORDER BY id DESC")
     LiveData<List<DatabaseMessage>> loadMessagesById(int threadId);
 
     @Delete

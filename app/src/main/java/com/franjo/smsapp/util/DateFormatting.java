@@ -16,7 +16,7 @@ public class DateFormatting {
     public static final String HEADER_FORMAT_MESSAGES_DETAILS = "EEEE, MMMM d, y";
     public static final String TIME_FORMAT_MESSAGES_DETAILS_ = "hh:mm";
 
-    public static String formatDate(long dateInMillis) {
+    public static String formatConversationsDate(long dateInMillis) {
         String date;
         DateTimeZone zone = DateTimeZone.getDefault();
         // java.util.Date to Joda-Time, and assign time zone to adjust
@@ -29,6 +29,16 @@ public class DateFormatting {
             DateTimeFormatter fmt = DateTimeFormat.forPattern(DATE_FORMAT_MESSAGES);
             date = fmt.print(dateTime);
         }
+        return date;
+    }
+
+    public static String formatDetailsDate(long dateInMillis, String pattern) {
+        String date;
+        DateTimeZone zone = DateTimeZone.getDefault();
+        // java.util.Date to Joda-Time, and assign time zone to adjust
+        DateTime dateTime = new DateTime(new Date(dateInMillis), zone);
+        DateTimeFormatter fmt = DateTimeFormat.forPattern(pattern);
+        date = fmt.print(dateTime);
         return date;
     }
 }

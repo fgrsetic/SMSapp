@@ -7,34 +7,39 @@
     <data>
 
         <variable
-            name="conversation"
+            name="position"
+            type="Integer" />
+
+        <variable
+            name="obj"
             type="com.franjo.smsapp.domain.Conversation" />
 
         <variable
-            name="clickListener"
-            type="com.franjo.smsapp.ui.messages.conversations.ConversationsAdapter.IClickListener" />
+            name="listener"
+            type="com.franjo.smsapp.ui.OnItemClickListener" />
 
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> clickListener.onClick(conversation)}">
+        android:onClick="@{() -> listener.onItemClick(obj, position)}">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/conversationContactImage"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:contentDescription="@string/contact_photo"
-            android:onClick="@{() -> clickListener.onContactIconClicked(conversation)}"
+            android:onClick="@{() -> listener.onContactIconClicked(obj)}"
+            app:conversationContactImage="@{obj}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:conversationContactImage="@{conversation}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/conversationPhoneNumber"
@@ -50,7 +55,7 @@
             android:textColor="@color/primaryText"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:conversationPhoneNumber="@{conversation}"
+            app:conversationPhoneNumber="@{obj}"
             tools:text="0038598596114" />
 
         <TextView
@@ -71,7 +76,7 @@
             android:minLines="1"
             android:textColor="@color/secondaryText"
             android:textSize="16sp"
-            app:snippet="@{conversation}"
+            app:snippet="@{obj}"
             tools:text="Lorem ipsum dolor sit amet consectetue" />
 
         <TextView
@@ -88,7 +93,7 @@
             android:singleLine="true"
             android:textColor="@color/secondaryText"
             android:textSize="14sp"
-            app:dateCreated="@{conversation}"
+            app:dateCreated="@{obj}"
             tools:text="May 05 2020" />
 
         </RelativeLayout>

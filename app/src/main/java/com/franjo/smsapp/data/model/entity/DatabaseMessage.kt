@@ -7,16 +7,17 @@ import com.franjo.smsapp.domain.Message
 
 @Entity(tableName = "MessageTable")
 class DatabaseMessage {
+
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
-    var contentType: String? = null
+    var contentType: String = ""
     var threadId: Int = 0
-    var address: String? = null
-    var messageBody: String? = null
-    var messageType: Int? = null
-    var mmsType: String? = null
-    var dateMsgReceived: Long? = null
-    var dateMsgSent: Long? = null
+    var address: String = ""
+    var messageBody: String = ""
+    var messageType: Int = 0
+    var mmsType: String = ""
+    var dateMsgReceived: Long = 0L
+    var dateMsgSent: Long = 0L
     var bodyMessageAttachment: String? = null
 }
 
@@ -32,7 +33,7 @@ fun List<DatabaseMessage>.asDomainModel(): List<Message> {
                 mmsType = it.mmsType,
                 dateMsgReceived = it.dateMsgReceived,
                 dateMsgSent = it.dateMsgSent,
-                bodyMessageAttachment = it.bodyMessageAttachment
+                bodyMessageAttachment = it.bodyMessageAttachment.toString()
         )
     }
 }

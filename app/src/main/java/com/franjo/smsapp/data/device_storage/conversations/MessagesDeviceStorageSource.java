@@ -68,7 +68,7 @@ public class MessagesDeviceStorageSource implements IMessagesDeviceStorageSource
                 Telephony.Threads.HAS_ATTACHMENT
         };
 
-        Cursor cursor = contentResolver.query(uri, ALL_THREADS_PROJECTION, null, null, DATE);
+        Cursor cursor = contentResolver.query(uri, ALL_THREADS_PROJECTION, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -76,14 +76,20 @@ public class MessagesDeviceStorageSource implements IMessagesDeviceStorageSource
                 long timestamp = cursor.getLong(cursor.getColumnIndex(DATE));
                 String recipientId = cursor.getString(cursor.getColumnIndex(Telephony.Threads.RECIPIENT_IDS));
                 String snippet = cursor.getString(cursor.getColumnIndex(Telephony.Threads.SNIPPET));
+                int attachment = cursor.getInt(cursor.getColumnIndex(Telephony.Threads.HAS_ATTACHMENT));
 
                 DatabaseConversation databaseConversation = new DatabaseConversation();
                 databaseConversation.setThreadId(threadId);
                 databaseConversation.setRecipient(getContactByRecipientId(Long.parseLong(recipientId)));
                 databaseConversation.setSnippet(snippet); // last message
+                databaseConversation.setAttachment(attachment); // 0(no) 1(yes)
                 databaseConversation.setDateMsgCreated(timestamp);
 
-                mDB.conversationsDao().insertConversation(databaseConversation);
+                if (databaseConversation.getRecipient().contains("UNKNOWN_SENDER!")) {
+                    mDB.conversationsDao().deleteConversation(databaseConversation);
+                } else {
+                    mDB.conversationsDao().insertConversation(databaseConversation);
+                }
 
             } while (cursor.moveToNext());
         }
@@ -129,6 +135,8 @@ public class MessagesDeviceStorageSource implements IMessagesDeviceStorageSource
     }
 
 
+
+
     // SMS Messages
     private void loadAndSaveSMSMessages() {
 //        String selection = "thread_id = ?";
@@ -144,14 +152,15 @@ public class MessagesDeviceStorageSource implements IMessagesDeviceStorageSource
                 long dateMsgReceived = cursor.getLong(cursor.getColumnIndex(Telephony.Sms.DATE));
                 long dateMsgSent = cursor.getLong(cursor.getColumnIndex(Telephony.Sms.DATE_SENT));
 
-                DatabaseMessage databaseSMSMessage = new DatabaseMessage();
-                databaseSMSMessage.setThreadId(threadId);
-                databaseSMSMessage.setAddress(address);
-                databaseSMSMessage.setMessageBody(messageBody);
-                databaseSMSMessage.setMessageType(messageType);
-                databaseSMSMessage.setDateMsgReceived(dateMsgReceived);
-                databaseSMSMessage.setDateMsgSent(dateMsgSent);
-                mDB.messageDao().insertMessage(databaseSMSMessage);
+                DatabaseMessage databaseMessage = new DatabaseMessage();
+                databaseMessage.setThreadId(threadId);
+                databaseMessage.setAddress(address);
+                databaseMessage.setMessageBody(messageBody);
+                databaseMessage.setMessageType(messageType);
+                databaseMessage.setDateMsgReceived(dateMsgReceived);
+                databaseMessage.setDateMsgSent(dateMsgSent);
+
+                mDB.messageDao().insertMessage(databaseMessage);
             }
         }
         if (cursor != null) {
@@ -166,26 +175,32 @@ public class MessagesDeviceStorageSource implements IMessagesDeviceStorageSource
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 String id = cursor.getString(cursor.getColumnIndexOrThrow(_ID));
-                String contentType = cursor.getString(cursor.getColumnIndexOrThrow(CONTENT_TYPE));
-                int threadId = cursor.getInt(cursor.getColumnIndexOrThrow(Telephony.Mms.THREAD_ID));
-                int messageType = cursor.getInt(cursor.getColumnIndexOrThrow(Telephony.Mms.MESSAGE_TYPE));
                 String messageNumber = getAddressNumber(id);
                 String mmsType = getMmsType(id);
                 String mmsMessageBody = getMmsMessageBodyText(id);
+
+                String contentType = cursor.getString(cursor.getColumnIndexOrThrow(CONTENT_TYPE));
+                int threadId = cursor.getInt(cursor.getColumnIndexOrThrow(Telephony.Mms.THREAD_ID));
+                int messageType = cursor.getInt(cursor.getColumnIndexOrThrow(Telephony.Mms.MESSAGE_BOX));
                 long dateMsgReceived = cursor.getLong(cursor.getColumnIndexOrThrow(Telephony.Mms.DATE));
                 long dateMsgSent = cursor.getLong(cursor.getColumnIndexOrThrow(Telephony.Mms.DATE_SENT));
 
-                DatabaseMessage databaseMMSMessage = new DatabaseMessage();
-                databaseMMSMessage.setContentType(contentType);
-                databaseMMSMessage.setThreadId(threadId);
-                databaseMMSMessage.setAddress(messageNumber);
-                databaseMMSMessage.setMessageBody(mmsMessageBody);
-                databaseMMSMessage.setMessageType(messageType);
-                databaseMMSMessage.setMmsType(mmsType);
-                databaseMMSMessage.setDateMsgReceived(dateMsgReceived);
-                databaseMMSMessage.setDateMsgSent(dateMsgSent);
-                databaseMMSMessage.setBodyMessageAttachment(getMMSBodyImageType(id));
-                mDB.messageDao().insertMessage(databaseMMSMessage);
+                DatabaseMessage databaseMessage = new DatabaseMessage();
+                databaseMessage.setContentType(contentType);
+                databaseMessage.setThreadId(threadId);
+                databaseMessage.setAddress(messageNumber);
+                if (mmsMessageBody != null) {
+                    databaseMessage.setMessageBody(mmsMessageBody);
+                }
+                databaseMessage.setMessageType(messageType);
+                if (mmsType != null) {
+                    databaseMessage.setMmsType(mmsType);
+                }
+                databaseMessage.setDateMsgReceived(dateMsgReceived);
+                databaseMessage.setDateMsgSent(dateMsgSent);
+                databaseMessage.setBodyMessageAttachment(getMMSBodyImageType(id));
+
+                mDB.messageDao().insertMessage(databaseMessage);
 
             } while (cursor.moveToNext());
         }

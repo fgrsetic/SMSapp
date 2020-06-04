@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 binding.navView.setVisibility(GONE);
             } else if (destination.getId() == R.id.search_messages_dest) {
                 binding.navView.setVisibility(GONE);
+            } else if (destination.getId() == R.id.conversations_details_dest) {
+                binding.navView.setVisibility(GONE);
             } else {
                 binding.navView.setVisibility(View.VISIBLE);
             }

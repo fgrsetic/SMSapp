@@ -15,6 +15,8 @@ import com.franjo.smsapp.util.DateFormatting;
 import java.util.List;
 
 import static com.franjo.smsapp.data.device_storage.conversations.MessagesDeviceStorageSource.getMmsImage;
+import static com.franjo.smsapp.util.DateFormatting.DATE_FORMAT_MESSAGES;
+import static com.franjo.smsapp.util.DateFormatting.TIME_FORMAT_MESSAGES_DETAILS_;
 
 
 public class BindingAdaptersDetails {
@@ -23,7 +25,9 @@ public class BindingAdaptersDetails {
     public static void bindMessageListRecyclerView(RecyclerView recyclerView, List<Message> messageList) {
         DetailsAdapter adapter = (DetailsAdapter) recyclerView.getAdapter();
         if (adapter != null) {
-            adapter.submitMessagesList(messageList);
+            if (messageList != null) {
+                adapter.submitMessagesList(messageList);
+            }
         }
     }
 
@@ -31,7 +35,7 @@ public class BindingAdaptersDetails {
     public static void bindMessageBody(TextView textView, Message message) {
         if ("application/vnd.wap.multipart.related".equals(message.getContentType())) {
             // MMS
-            if (message.getBodyMessageAttachment() != null) {
+            if (!message.getBodyMessageAttachment().isEmpty()) {
                 Bitmap bitmap = getMmsImage(String.valueOf(message.getId()));
                 textView.setBackground(new BitmapDrawable(App.getAppContext().getResources(), bitmap));
             } else {
@@ -43,34 +47,28 @@ public class BindingAdaptersDetails {
         }
     }
 
-    @BindingAdapter("detailsDateReceived")
-    public static void bindMessageDateReceived(TextView textView, Message message) {
-        if (message.getDateMsgReceived() != null) {
-            String dateFormatted = DateFormatting.formatDate(message.getDateMsgReceived());
-            textView.setText(dateFormatted);
-        }
-    }
-
-    @BindingAdapter("detailsDateSent")
-    public static void bindMessageDateSent(TextView textView, Message message) {
-        if (message.getDateMsgSent() != null) {
-            String dateFormatted = DateFormatting.formatDate(message.getDateMsgSent());
-            textView.setText(dateFormatted);
-        }
-    }
-
-    // TODO
     @BindingAdapter("detailsHeaderDate")
-    public static void bindMessageDateDetails(TextView textView, Message message) {
-        if (message.getDateMsgSent() != null) {
-            String dateFormatted = DateFormatting.formatDate(message.getDateMsgSent());
+    public static void bindMessageReceivedDateDetails(TextView textView, Message message) {
+        if (message.getMessageType() == 1) {
+            String dateFormatted = DateFormatting.formatDetailsDate(message.getDateMsgReceived(), DATE_FORMAT_MESSAGES);
+            textView.setText(dateFormatted);
+        }
+        if (message.getMessageType() == 2) {
+            String dateFormatted = DateFormatting.formatDetailsDate(message.getDateMsgSent(), DATE_FORMAT_MESSAGES);
             textView.setText(dateFormatted);
         }
     }
 
-    @BindingAdapter("conversationsDetailsTime")
+    @BindingAdapter("detailsTime")
     public static void bindMessageTime(TextView textView, Message message) {
-        //    textView.setText(formattedTime);
+        if (message.getMessageType() == 1) {
+            String dateFormatted = DateFormatting.formatDetailsDate(message.getDateMsgReceived(), TIME_FORMAT_MESSAGES_DETAILS_);
+            textView.setText(dateFormatted);
+        }
+        if (message.getMessageType() == 2) {
+            String dateFormatted = DateFormatting.formatDetailsDate(message.getDateMsgSent(), TIME_FORMAT_MESSAGES_DETAILS_);
+            textView.setText(dateFormatted);
+        }
     }
 
 

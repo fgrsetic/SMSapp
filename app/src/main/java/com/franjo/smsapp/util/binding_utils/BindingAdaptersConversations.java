@@ -35,17 +35,13 @@ public class BindingAdaptersConversations {
 
     @BindingAdapter("snippet")
     public static void bindSnippet(TextView textView, Conversation conversation) {
-        if (conversation.getSnippet() != null) {
-            textView.setText(conversation.getSnippet());
-        }
+        textView.setText(conversation.getSnippet());
     }
 
     @BindingAdapter("dateCreated")
     public static void bindConversationsDate(TextView textView, Conversation conversation) {
-        if (conversation.getDateMsgCreated() != null) {
-            String dateFormatted = DateFormatting.formatDate(conversation.getDateMsgCreated());
-            textView.setText(dateFormatted);
-        }
+        String dateFormatted = DateFormatting.formatConversationsDate(conversation.getDateMsgCreated());
+        textView.setText(dateFormatted);
     }
 
     @BindingAdapter("conversationContactImage")

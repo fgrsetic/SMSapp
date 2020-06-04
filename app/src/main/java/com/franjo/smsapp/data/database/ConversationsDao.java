@@ -11,7 +11,6 @@ import com.franjo.smsapp.data.model.entity.DatabaseConversation;
 
 import java.util.List;
 
-// Interface for accessing DB with methods we need
 @Dao
 public interface ConversationsDao {
 
@@ -24,6 +23,4 @@ public interface ConversationsDao {
     @Delete
     void deleteConversation(DatabaseConversation conversation);
 
-    @Query("SELECT * FROM ConversationTable WHERE id = :id")
-    DatabaseConversation loadConversationById(int id);
 }

@@ -4,23 +4,24 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.AsyncListDiffer;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.franjo.smsapp.databinding.ItemDetailsHeaderBinding;
-import com.franjo.smsapp.databinding.ItemDetailsReceivedBinding;
-import com.franjo.smsapp.databinding.ItemDetailsSentBinding;
+import com.franjo.smsapp.R;
 import com.franjo.smsapp.domain.Message;
+import com.franjo.smsapp.ui.BaseViewHolder;
 
 import java.util.List;
 
 
-public class DetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class DetailsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
-    private static final int HEADER = 0;
-    private static final int SENT = 1;
-    private static final int INBOX = 2;
+    public static final int MESSAGE_TYPE_INBOX = 1;
+    public static final int MESSAGE_TYPE_SENT = 2;
+
 
     private final AsyncListDiffer<Message> mDiffer = new AsyncListDiffer<>(this, DIFF_CALLBACK);
 
@@ -37,8 +38,9 @@ public class DetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             };
 
-    public void submitMessagesList(List<Message> list) {
-        mDiffer.submitList(list);
+
+    public void submitMessagesList(List<Message> newList) {
+        mDiffer.submitList(newList);
     }
 
     @Override
@@ -48,106 +50,43 @@ public class DetailsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
-            case HEADER:
-                ItemDetailsHeaderBinding bindingHeader = ItemDetailsHeaderBinding.inflate(layoutInflater, parent, false);
-                return new HeaderViewHolder(bindingHeader);
-            case SENT:
-                ItemDetailsSentBinding bindingSent = ItemDetailsSentBinding.inflate(layoutInflater, parent, false);
-                return new SentMessageViewHolder(bindingSent);
-            case INBOX:
-                ItemDetailsReceivedBinding bindingInbox = ItemDetailsReceivedBinding.inflate(layoutInflater, parent, false);
-                return new ReceivedMessageViewHolder(bindingInbox);
+            case MESSAGE_TYPE_INBOX:
+                ViewDataBinding bindingInbox = DataBindingUtil.inflate(layoutInflater, R.layout.item_details_received, parent, false);
+                return new BaseViewHolder(bindingInbox);
+            case MESSAGE_TYPE_SENT:
+                ViewDataBinding bindingSent = DataBindingUtil.inflate(layoutInflater, R.layout.item_details_sent, parent, false);
+                return new BaseViewHolder(bindingSent);
             default:
                 throw new IllegalStateException("Unexpected value: " + viewType);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int listPosition) {
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int listPosition) {
         Message message = mDiffer.getCurrentList().get(listPosition);
-        if (message.getMessageType() != null) {
-            switch (message.getMessageType()) {
-                case HEADER:
-                    ((HeaderViewHolder) holder).bind(message);
-                    break;
-                case SENT:
-                    ((SentMessageViewHolder) holder).bind(message);
-                    break;
-                case INBOX:
-                    ((ReceivedMessageViewHolder) holder).bind(message);
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + getItemViewType(listPosition));
-            }
+        switch (message.getMessageType()) {
+            case MESSAGE_TYPE_INBOX:
+            case MESSAGE_TYPE_SENT:
+                holder.bind(message);
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + getItemViewType(listPosition));
         }
     }
 
     @Override
     public int getItemViewType(int position) {
         Message message = mDiffer.getCurrentList().get(position);
-        if (message.getMessageType() != null) {
-            switch (message.getMessageType()) {
-                case 0:
-                    return HEADER;
-                case 1:
-                case 132:
-                    return SENT;
-                case 2:
-                case 128:
-                    return INBOX;
-            }
-        }
-        return -1;
-    }
-
-
-    static class HeaderViewHolder extends RecyclerView.ViewHolder {
-
-        private ItemDetailsHeaderBinding binding;
-
-        private HeaderViewHolder(ItemDetailsHeaderBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        void bind(Message message) {
-            binding.setMessage(message);
-            binding.executePendingBindings();
+        int type = message.getMessageType();
+        if (type == 1) {
+            return MESSAGE_TYPE_INBOX;
+        } else if (type == 2) {
+            return MESSAGE_TYPE_SENT;
+        } else {
+            return -1;
         }
     }
-
-    static class SentMessageViewHolder extends RecyclerView.ViewHolder {
-
-        private ItemDetailsSentBinding binding;
-
-        private SentMessageViewHolder(ItemDetailsSentBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        void bind(Message message) {
-            binding.setMessage(message);
-            binding.executePendingBindings();
-        }
-
-    }
-
-    static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
-
-        private ItemDetailsReceivedBinding binding;
-
-        private ReceivedMessageViewHolder(ItemDetailsReceivedBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
-        }
-
-        void bind(Message message) {
-            binding.setMessage(message);
-            binding.executePendingBindings();
-        }
-    }
-
 }

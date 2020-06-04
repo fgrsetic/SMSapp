@@ -10,9 +10,11 @@ class DatabaseConversation {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
     var threadId: Int = 0
-    var recipient: String? = null
+    var recipient: String = ""
     var snippet: String? = null
-    var dateMsgCreated: Long? = null
+    var attachment: Int? = null
+    var dateMsgCreated: Long = 0L
+
 }
 
 
@@ -21,8 +23,8 @@ fun List<DatabaseConversation>.asDomainModel(): List<Conversation> {
         Conversation(
                 id = it.id,
                 threadId = it.threadId,
-                recipient = it.recipient.toString(),
-                snippet = it.snippet,
+                recipient = it.recipient,
+                snippet = it.snippet.toString(),
                 dateMsgCreated = it.dateMsgCreated
         )
     }
