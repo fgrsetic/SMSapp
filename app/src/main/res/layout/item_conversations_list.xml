@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="position"
+            type="Integer" />
+
+        <variable
+            name="obj"
+            type="com.franjo.smsapp.domain.Conversation" />
+
+        <variable
+            name="listener"
+            type="com.franjo.smsapp.ui.OnItemClickListener" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> listener.onItemClick(obj, position)}">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/conversationContactImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:contentDescription="@string/contact_photo"
+            android:onClick="@{() -> listener.onContactIconClicked(obj)}"
+            app:conversationContactImage="@{obj}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/conversationPhoneNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@id/conversationContactImage"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLength="25"
+            android:maxLines="1"
+            android:textColor="@color/primaryText"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:conversationPhoneNumber="@{obj}"
+            tools:text="0038598596114" />
+
+        <TextView
+            android:id="@+id/snippet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/conversationPhoneNumber"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentBottom="false"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/conversationContactImage"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="2"
+            android:minLines="1"
+            android:textColor="@color/secondaryText"
+            android:textSize="16sp"
+            app:snippet="@{obj}"
+            tools:text="Lorem ipsum dolor sit amet consectetue" />
+
+        <TextView
+            android:id="@+id/lastSnippetDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_toEndOf="@id/conversationPhoneNumber"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:lines="1"
+            android:singleLine="true"
+            android:textColor="@color/secondaryText"
+            android:textSize="14sp"
+            app:dateCreated="@{obj}"
+            tools:text="May 05 2020" />
+
+        </RelativeLayout>
+
+</layout>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="obj"
+            type="com.franjo.smsapp.domain.Message" />
+
+        <variable
+            name="obj2"
+            type="com.franjo.smsapp.domain.Message" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tv_header_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="false"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            app:message="@{obj}"
+            app:previousMessageDateVisibility="@{obj2}"
+            tools:text="Tuesday, November 28, 2020" />
+
+        <TextView
+            android:id="@+id/message_body_received"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_header_date"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="false"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bubble_message_received"
+            android:gravity="center"
+            android:maxWidth="330dp"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp"
+            android:textSize="16sp"
+            app:detailsBody="@{obj}"
+            android:autoLink="web"
+            android:textColorLink="@color/colorPrimary"
+            tools:text="How are you doing? Lorem ipsum dolor sit amet consectetue" />
+
+        <TextView
+            android:id="@+id/time_msg_received"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/message_body_received"
+            android:layout_alignParentBottom="false"
+            android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/message_body_received"
+            app:detailsTime="@{obj}"
+            tools:text="15:25" />
+
+    </RelativeLayout>
+</layout>

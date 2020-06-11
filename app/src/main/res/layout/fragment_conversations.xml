@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.franjo.smsapp.ui.messages.conversations.ConversationsViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.franjo.smsapp.ui.MainActivity">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/conversationsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="56dp"
+            app:conversationsList="@{viewModel.showConversationsList}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_conversations_list" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            style="@style/Widget.MaterialComponents.FloatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="64dp"
+            android:backgroundTint="@color/colorAccent"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> viewModel.toNewMessageNavigated()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_edit"
+            app:tint="@color/colorPrimaryDark"
+            tools:targetApi="lollipop" />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_go_to_list_end"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="64dp"
+            android:backgroundTint="@color/activity_background"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:fabCustomSize="28dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/last_page" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.franjo.smsapp.ui.messages.new_message.NewMessageViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addRecipient"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/addContact"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:background="#FFFFFF"
+            app:endIconCheckable="true"
+            app:endIconDrawable="@drawable/clear_all_24dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/colorPrimary"
+            app:hintAnimationEnabled="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconTint="@color/colorPrimary"
+            app:startIconDrawable="@drawable/user_contact_icon">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addRecipientText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/enter_recipients"
+                android:background="@drawable/round_corner_new_message"
+                android:inputType="phone|textPersonName"
+                android:maxLength="20"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/addContact"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_weight="1"
+            app:backgroundTint="@color/colorAccent"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/person_add_white_24dp"
+            app:iconGravity="end"
+            app:layout_constraintBottom_toBottomOf="@+id/addRecipient"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/addRecipient" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/enterMessage_full"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_small"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:background="#FFFFFF"
+            android:hint="@string/enter_message"
+            app:boxBackgroundColor="#FFF6F6F6"
+            app:endIconCheckable="true"
+            app:endIconDrawable="@drawable/clear_all_24dp"
+            app:endIconMode="clear_text"
+            app:endIconTint="@color/colorPrimary"
+            app:hintAnimationEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sendMessage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:startIconDrawable="@drawable/text_sms_black_24dp"
+            app:startIconTint="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/enterMessageText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingEnd="16dp"
+                android:background="@drawable/round_corner_new_message"
+                android:inputType="textMultiLine" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendMessage"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_weight="1"
+            app:backgroundTint="@color/colorAccent"
+            app:cornerRadius="8dp"
+            app:icon="@drawable/send_icon"
+            app:iconGravity="end"
+            app:layout_constraintBottom_toBottomOf="@+id/enterMessage_full"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/enterMessage_full" />
+
+
+        <!--    <TextView-->
+        <!--        android:id="@+id/sms_count"-->
+        <!--        android:layout_width="80dp"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        android:layout_below="@+id/imageButton"-->
+        <!--        android:layout_alignParentEnd="true"-->
+        <!--        android:layout_alignParentRight="true"-->
+        <!--        android:paddingLeft="25dp"-->
+        <!--        tools:layout_editor_absoluteX="294dp"-->
+        <!--        tools:layout_editor_absoluteY="187dp" />-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
