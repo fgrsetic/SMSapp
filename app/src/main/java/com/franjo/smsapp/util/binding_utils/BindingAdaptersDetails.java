@@ -2,6 +2,7 @@ package com.franjo.smsapp.util.binding_utils;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
@@ -47,28 +48,34 @@ public class BindingAdaptersDetails {
         }
     }
 
-    @BindingAdapter("detailsHeaderDate")
-    public static void bindMessageReceivedDateDetails(TextView textView, Message message) {
-        if (message.getMessageType() == 1) {
-            String dateFormatted = DateFormatting.formatDetailsDate(message.getDateMsgReceived(), DATE_FORMAT_MESSAGES);
+    @BindingAdapter({"message", "previousMessageDateVisibility"})
+    public static void bindMessageReceivedDateDetails(TextView textView, Message message, Message previousMsg) {
+        long timeStampPrevious = previousMsg.getDateMsgReceived();
+        setTimeTextVisibility(message.getDateMsgReceived(), timeStampPrevious, textView);
+    }
+
+    private static void setTimeTextVisibility(long dateMsgReceived, long timeStampPrevious, TextView textView) {
+        if (timeStampPrevious == 0) {
+            textView.setVisibility(View.VISIBLE);
+            String dateFormatted = DateFormatting.formatDetailsDate(dateMsgReceived, DATE_FORMAT_MESSAGES);
             textView.setText(dateFormatted);
-        }
-        if (message.getMessageType() == 2) {
-            String dateFormatted = DateFormatting.formatDetailsDate(message.getDateMsgSent(), DATE_FORMAT_MESSAGES);
-            textView.setText(dateFormatted);
+        } else {
+            if (DateFormatting.isSameDate(timeStampPrevious, dateMsgReceived)) {
+                textView.setVisibility(View.GONE);
+                textView.setText("");
+            } else {
+                textView.setVisibility(View.VISIBLE);
+                String dateFormatted = DateFormatting.formatDetailsDate(dateMsgReceived, DATE_FORMAT_MESSAGES);
+                textView.setText(dateFormatted);
+            }
         }
     }
 
+
     @BindingAdapter("detailsTime")
     public static void bindMessageTime(TextView textView, Message message) {
-        if (message.getMessageType() == 1) {
-            String dateFormatted = DateFormatting.formatDetailsDate(message.getDateMsgReceived(), TIME_FORMAT_MESSAGES_DETAILS_);
-            textView.setText(dateFormatted);
-        }
-        if (message.getMessageType() == 2) {
-            String dateFormatted = DateFormatting.formatDetailsDate(message.getDateMsgSent(), TIME_FORMAT_MESSAGES_DETAILS_);
-            textView.setText(dateFormatted);
-        }
+        String dateFormatted = DateFormatting.formatDetailsDate(message.getDateMsgReceived(), TIME_FORMAT_MESSAGES_DETAILS_);
+        textView.setText(dateFormatted);
     }
 
 

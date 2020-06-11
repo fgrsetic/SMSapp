@@ -25,11 +25,13 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.franjo.smsapp.R;
+import com.franjo.smsapp.data.database.AppDatabase;
 import com.franjo.smsapp.databinding.FragmentConversationsBinding;
 import com.franjo.smsapp.domain.Conversation;
 import com.franjo.smsapp.ui.OnItemClickListener;
 import com.franjo.smsapp.util.ItemDividerDecoration;
 import com.franjo.smsapp.util.Permissions;
+import com.wajahatkarim3.roomexplorer.RoomExplorer;
 
 import java.util.List;
 
@@ -70,13 +72,14 @@ public class ConversationsFragment extends Fragment implements OnItemClickListen
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.fabGoToListEnd.hide();
         showMessages();
         showFabVisibility();
 
         // List item -> to message details
-        viewModel.getNavigateToConversationDetails().observe(getViewLifecycleOwner(), threadID -> {
-            if (threadID != null) {
-                ConversationsFragmentDirections.ConversationsDetailsAction action = ConversationsFragmentDirections.conversationsDetailsAction(threadID);
+        viewModel.getNavigateToConversationDetails().observe(getViewLifecycleOwner(), conversation -> {
+            if (conversation != null) {
+                ConversationsFragmentDirections.ConversationsDetailsAction action = ConversationsFragmentDirections.conversationsDetailsAction(conversation);
                 NavHostFragment.findNavController(this).navigate(action);
                 viewModel.onConversationsDetailsNavigated();
             }
@@ -109,7 +112,7 @@ public class ConversationsFragment extends Fragment implements OnItemClickListen
             }
         } else {
             loadMessagesFromStorage();
-           // RoomExplorer.show(context, AppDatabase.class, "message local database");
+         //   RoomExplorer.show(context, AppDatabase.class, "message local database");
             setAdapter();
         }
 
@@ -159,8 +162,8 @@ public class ConversationsFragment extends Fragment implements OnItemClickListen
     }
 
     @Override
-    public void onItemClick(Conversation item, int position) {
-        viewModel.toConversationsDetailsNavigated(item.getThreadId());
+    public void onItemClick(Conversation conversation, int position) {
+        viewModel.toConversationsDetailsNavigated(conversation);
     }
 
     @Override
@@ -204,6 +207,24 @@ public class ConversationsFragment extends Fragment implements OnItemClickListen
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     binding.floatingActionButton.show();
                 }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
+    }
+
+    private void showScrollFabVisibility() {
+        binding.conversationsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    binding.fabGoToListEnd.hide();
+                } else if (dy < 0) {
+                    binding.fabGoToListEnd.show();
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });

@@ -18,7 +18,7 @@ data class Message(
         var messageType: Int,
         var mmsType: String,
         var dateMsgReceived: Long,
-        var dateMsgSent: Long,
+   //     var dateMsgSent: Long,
         var bodyMessageAttachment: String
 
 ) : Parcelable

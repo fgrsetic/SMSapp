@@ -53,7 +53,7 @@ public class ItemDividerDecoration extends RecyclerView.ItemDecoration {
             int bottom = top + divider.getIntrinsicHeight();
 
             divider.setBounds(left, top, right, bottom);
-            divider.setTint(App.getAppContext().getResources().getColor(R.color.colorAccent));
+            divider.setTint(App.getAppContext().getResources().getColor(R.color.activity_background));
             divider.setAlpha(150);
             divider.draw(c);
         }

@@ -20,7 +20,7 @@ public interface MessageDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertMessage(DatabaseMessage message);
 
-    @Query("SELECT * FROM MessageTable WHERE threadId = :threadId ORDER BY id DESC")
+    @Query("SELECT * FROM MessageTable WHERE threadId = :threadId ORDER BY dateMsgReceived ASC")
     LiveData<List<DatabaseMessage>> loadMessagesById(int threadId);
 
     @Delete

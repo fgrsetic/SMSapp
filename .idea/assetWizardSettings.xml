@@ -24,7 +24,7 @@
                                             <option name="values">
                                               <map>
                                                 <entry key="color" value="000000" />
-                                                <entry key="imagePath" value="C:\Users\DELL\AppData\Local\Temp\baseline_apps_24.xml" />
+                                                <entry key="imagePath" value="C:\Users\DELL\AppData\Local\Temp\baseline_last_page_24.xml" />
                                                 <entry key="opacityPercent" value="60" />
                                               </map>
                                             </option>
@@ -36,7 +36,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/apps/baseline_apps_24.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/last_page/baseline_last_page_24.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -68,7 +68,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="apps_icon" />
+                                      <entry key="outputName" value="last_page" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>
                                   </option>
@@ -322,7 +322,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/edit/baseline_edit_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialiconssharp/last_page/sharp_last_page_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -332,9 +332,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffffff" />
+                            <entry key="autoMirrored" value="true" />
                             <entry key="opacityPercent" value="57" />
-                            <entry key="outputName" value="fab_pencil" />
+                            <entry key="outputName" value="last_page" />
                             <entry key="sourceFile" value="C:\Users\DELL" />
                           </map>
                         </option>

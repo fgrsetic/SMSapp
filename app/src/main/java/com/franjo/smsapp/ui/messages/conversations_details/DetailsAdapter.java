@@ -71,6 +71,10 @@ public class DetailsAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             case MESSAGE_TYPE_INBOX:
             case MESSAGE_TYPE_SENT:
                 holder.bind(message);
+                if (listPosition >= 1) {
+                    Message previousMsg = mDiffer.getCurrentList().get(listPosition - 1);
+                    holder.bind(message, previousMsg);
+                }
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + getItemViewType(listPosition));

@@ -62,7 +62,7 @@
             app:layout_constraintTop_toTopOf="@+id/addRecipient" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/enterMessage"
+            android:id="@+id/enterMessage_full"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -89,8 +89,7 @@
                 android:layout_height="wrap_content"
                 android:paddingEnd="16dp"
                 android:background="@drawable/round_corner_new_message"
-                android:inputType="textMultiLine"
-                android:maxLength="160" />
+                android:inputType="textMultiLine" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,9 +104,9 @@
             app:cornerRadius="8dp"
             app:icon="@drawable/send_icon"
             app:iconGravity="end"
-            app:layout_constraintBottom_toBottomOf="@+id/enterMessage"
+            app:layout_constraintBottom_toBottomOf="@+id/enterMessage_full"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/enterMessage" />
+            app:layout_constraintTop_toTopOf="@+id/enterMessage_full" />
 
 
         <!--    <TextView-->

@@ -19,6 +19,7 @@ import com.franjo.smsapp.databinding.ActivityMainBinding;
 import com.franjo.smsapp.receiver.HeadlessSmsSendService;
 
 import static android.view.View.GONE;
+import static com.franjo.smsapp.util.SoftKeyboard.hideSoftKeyboard;
 
 
 public class MainActivity extends AppCompatActivity {

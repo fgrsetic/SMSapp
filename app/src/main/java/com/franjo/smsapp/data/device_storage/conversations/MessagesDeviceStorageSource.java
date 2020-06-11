@@ -150,15 +150,16 @@ public class MessagesDeviceStorageSource implements IMessagesDeviceStorageSource
                 String messageBody = cursor.getString(cursor.getColumnIndex(Telephony.Sms.BODY));
                 int messageType = cursor.getInt(cursor.getColumnIndex(Telephony.Sms.TYPE));
                 long dateMsgReceived = cursor.getLong(cursor.getColumnIndex(Telephony.Sms.DATE));
-                long dateMsgSent = cursor.getLong(cursor.getColumnIndex(Telephony.Sms.DATE_SENT));
+              //  long dateMsgSent = cursor.getLong(cursor.getColumnIndex(Telephony.Sms.DATE_SENT));
 
                 DatabaseMessage databaseMessage = new DatabaseMessage();
                 databaseMessage.setThreadId(threadId);
                 databaseMessage.setAddress(address);
                 databaseMessage.setMessageBody(messageBody);
                 databaseMessage.setMessageType(messageType);
+
                 databaseMessage.setDateMsgReceived(dateMsgReceived);
-                databaseMessage.setDateMsgSent(dateMsgSent);
+            //    databaseMessage.setDateMsgSent(dateMsgSent);
 
                 mDB.messageDao().insertMessage(databaseMessage);
             }
@@ -178,12 +179,13 @@ public class MessagesDeviceStorageSource implements IMessagesDeviceStorageSource
                 String messageNumber = getAddressNumber(id);
                 String mmsType = getMmsType(id);
                 String mmsMessageBody = getMmsMessageBodyText(id);
+                String part = getPartOfMMS(id);
 
                 String contentType = cursor.getString(cursor.getColumnIndexOrThrow(CONTENT_TYPE));
                 int threadId = cursor.getInt(cursor.getColumnIndexOrThrow(Telephony.Mms.THREAD_ID));
                 int messageType = cursor.getInt(cursor.getColumnIndexOrThrow(Telephony.Mms.MESSAGE_BOX));
                 long dateMsgReceived = cursor.getLong(cursor.getColumnIndexOrThrow(Telephony.Mms.DATE));
-                long dateMsgSent = cursor.getLong(cursor.getColumnIndexOrThrow(Telephony.Mms.DATE_SENT));
+           //     long dateMsgSent = cursor.getLong(cursor.getColumnIndexOrThrow(Telephony.Mms.DATE_SENT));
 
                 DatabaseMessage databaseMessage = new DatabaseMessage();
                 databaseMessage.setContentType(contentType);
@@ -197,8 +199,9 @@ public class MessagesDeviceStorageSource implements IMessagesDeviceStorageSource
                     databaseMessage.setMmsType(mmsType);
                 }
                 databaseMessage.setDateMsgReceived(dateMsgReceived);
-                databaseMessage.setDateMsgSent(dateMsgSent);
+             //   databaseMessage.setDateMsgSent(dateMsgSent);
                 databaseMessage.setBodyMessageAttachment(getMMSBodyImageType(id));
+                databaseMessage.setPart(part);
 
                 mDB.messageDao().insertMessage(databaseMessage);
 

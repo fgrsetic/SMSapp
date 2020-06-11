@@ -16,9 +16,9 @@ import kotlinx.coroutines.Job
 class ConversationsViewModel(context: Application) : AndroidViewModel(context) {
 
     // Internally, we use a MutableLiveData to handle navigation to the selected conversation
-    private val _navigateToConversationDetails = MutableLiveData<Int>()
+    private val _navigateToConversationDetails = MutableLiveData<Conversation>()
     // The external immutable LiveData for the navigation conversation
-    val navigateToConversationDetails: LiveData<Int> get() = _navigateToConversationDetails
+    val navigateToConversationDetails: LiveData<Conversation> get() = _navigateToConversationDetails
 
 
     private var navigateToNewMessage: MutableLiveData<Boolean>? = null
@@ -41,8 +41,8 @@ class ConversationsViewModel(context: Application) : AndroidViewModel(context) {
     }
 
     // 3) Conversation details
-    fun toConversationsDetailsNavigated(threadID: Int) {
-        _navigateToConversationDetails.value = threadID
+    fun toConversationsDetailsNavigated(conversation: Conversation) {
+        _navigateToConversationDetails.value = conversation
     }
 
     fun onConversationsDetailsNavigated() {

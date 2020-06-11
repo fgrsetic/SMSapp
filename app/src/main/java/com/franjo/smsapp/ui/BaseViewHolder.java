@@ -1,14 +1,10 @@
 package com.franjo.smsapp.ui;
 
-import android.view.View;
-
 import androidx.databinding.ViewDataBinding;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.franjo.smsapp.BR;
-import com.franjo.smsapp.domain.Conversation;
-import com.franjo.smsapp.ui.OnItemClickListener;
-import com.franjo.smsapp.ui.messages.conversations.ConversationsAdapter;
+import com.franjo.smsapp.domain.Message;
 
 public class BaseViewHolder extends RecyclerView.ViewHolder {
 
@@ -23,6 +19,15 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
     public void bind(Object obj) {
         // BR.obj as the key in setVariable() layout tag "obj"
         binding.setVariable(BR.obj, obj);
+        // This is important, because it forces the data binding to execute immediately,
+        // which allows the RecyclerView to make the correct view size measurements
+        binding.executePendingBindings();
+    }
+
+    public void bind(Object obj, Object obj2) {
+        // BR.obj as the key in setVariable() layout tag "obj"
+        binding.setVariable(BR.obj, obj);
+        binding.setVariable(BR.obj2, obj2);
         // This is important, because it forces the data binding to execute immediately,
         // which allows the RecyclerView to make the correct view size measurements
         binding.executePendingBindings();

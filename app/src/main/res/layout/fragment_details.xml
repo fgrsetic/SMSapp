@@ -6,95 +6,156 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <variable
+            name="isVisible"
+            type="java.lang.Boolean" />
+
         <variable
             name="viewModel"
             type="com.franjo.smsapp.ui.messages.conversations_details.DetailsViewModel" />
+
+        <variable
+            name="clickListener"
+            type="View.OnClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_details_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="com.franjo.smsapp.ui.MainActivity">
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/detailsList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="12dp"
             app:detailsList="@{viewModel.showMessagesList}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/enterMessage"
+            app:layout_constraintBottom_toTopOf="@+id/sendMessage"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <EditText
             android:id="@+id/enterMessage"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="16dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="12dp"
-            android:background="#FFFFFF"
-            app:boxBackgroundColor="#FFF6F6F6"
+            android:autofillHints="@string/enter_message"
+            android:background="@drawable/round_corner_details"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:hint="@string/enter_message"
+            android:inputType="textMultiLine"
+            android:paddingStart="16dp"
+            android:textSize="14sp"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/sendMessage"
-            app:layout_constraintStart_toEndOf="@+id/imageView4">
+            app:layout_constraintStart_toEndOf="@+id/iv_apps" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/enterMessageText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_corner_details"
-                android:inputType="textMultiLine"
-                android:maxLength="160"
-                android:textSize="14sp" />
+        <EditText
+            android:id="@+id/enterMessage_full"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
+            android:autofillHints="@string/enter_message"
+            android:background="@drawable/round_corner_details"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:hint="@string/enter_message"
+            android:inputType="textMultiLine"
+            android:paddingStart="16dp"
+            android:textSize="14sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/sendMessage"
+            app:layout_constraintStart_toEndOf="@+id/iv_redo_arrow"
+            tools:visibility="gone" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageButton
             android:id="@+id/sendMessage"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="@dimen/spacing_normal"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/send_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/round_send_button"
             android:contentDescription="@string/send_message"
-            app:civ_circle_background_color="@color/colorAccent"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iv_gallery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            android:contentDescription="@string/open_gallery"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_camera"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="@+id/iv_camera"
             app:srcCompat="@drawable/image_black_24dp" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/iv_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="@+id/imageView4"
+            android:contentDescription="@string/open_camera_image"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_apps"
+            app:layout_constraintStart_toEndOf="@+id/iv_gallery"
+            app:layout_constraintTop_toTopOf="@+id/iv_apps"
             app:srcCompat="@drawable/camera_black" />
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/iv_apps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/enterMessage"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
-            app:layout_constraintTop_toTopOf="@+id/enterMessage"
+            android:contentDescription="@string/open_apps"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/sendMessage"
+            app:layout_constraintStart_toEndOf="@+id/iv_camera"
+            app:layout_constraintTop_toTopOf="@+id/sendMessage"
             app:srcCompat="@drawable/apps_icon" />
+
+        <ImageView
+            android:id="@+id/iv_redo_arrow"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/undo_enter_message"
+            android:focusable="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailsList"
+            app:srcCompat="@drawable/redo_arrow" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_go_to_list_end"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@color/activity_background"
+            app:borderWidth="0dp"
+            app:elevation="0dp"
+            app:fabCustomSize="28dp"
+            app:layout_constraintBottom_toBottomOf="@+id/detailsList"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/last_page" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

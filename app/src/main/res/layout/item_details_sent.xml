@@ -8,6 +8,10 @@
         <variable
             name="obj"
             type="com.franjo.smsapp.domain.Message" />
+
+        <variable
+            name="obj2"
+            type="com.franjo.smsapp.domain.Message" />
     </data>
 
     <RelativeLayout
@@ -22,7 +26,8 @@
             android:layout_centerInParent="false"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
-            app:detailsHeaderDate="@{obj}"
+            app:message="@{obj}"
+            app:previousMessageDateVisibility="@{obj2}"
             tools:text="Tuesday, November 28, 2020" />
 
         <TextView

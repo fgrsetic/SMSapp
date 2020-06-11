@@ -52,8 +52,8 @@
             app:popExitAnim="@anim/slide_out_right">
 
             <argument
-                android:name="threadID"
-                app:argType="integer"/>
+                android:name="conversation"
+                app:argType="com.franjo.smsapp.domain.Conversation" />
 
         </action>
 
@@ -116,8 +116,8 @@
         android:name="com.franjo.smsapp.ui.messages.conversations_details.DetailsFragment">
 
         <argument
-            android:name="threadID"
-            app:argType="integer" />
+            android:name="conversation"
+            app:argType="com.franjo.smsapp.domain.Conversation" />
 
     </fragment>
 

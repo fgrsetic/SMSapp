@@ -17,8 +17,9 @@ class DatabaseMessage {
     var messageType: Int = 0
     var mmsType: String = ""
     var dateMsgReceived: Long = 0L
-    var dateMsgSent: Long = 0L
+  //  var dateMsgSent: Long = 0L
     var bodyMessageAttachment: String? = null
+    var part: String? = null
 }
 
 fun List<DatabaseMessage>.asDomainModel(): List<Message> {
@@ -32,7 +33,7 @@ fun List<DatabaseMessage>.asDomainModel(): List<Message> {
                 messageType = it.messageType,
                 mmsType = it.mmsType,
                 dateMsgReceived = it.dateMsgReceived,
-                dateMsgSent = it.dateMsgSent,
+             //   dateMsgSent = it.dateMsgSent,
                 bodyMessageAttachment = it.bodyMessageAttachment.toString()
         )
     }

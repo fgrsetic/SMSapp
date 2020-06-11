@@ -18,6 +18,9 @@ import com.franjo.smsapp.util.ImageUtil;
 
 import java.util.List;
 
+import static com.franjo.smsapp.util.DateFormatting.DATE_FORMAT_MESSAGES;
+import static com.franjo.smsapp.util.DateFormatting.DATE_FORMAT_MESSAGES_CURRENT_YEAR;
+
 public class BindingAdaptersConversations {
 
     @BindingAdapter("conversationsList")
@@ -40,7 +43,7 @@ public class BindingAdaptersConversations {
 
     @BindingAdapter("dateCreated")
     public static void bindConversationsDate(TextView textView, Conversation conversation) {
-        String dateFormatted = DateFormatting.formatConversationsDate(conversation.getDateMsgCreated());
+        String dateFormatted = DateFormatting.formatConversationsDate(conversation.getDateMsgCreated(), DATE_FORMAT_MESSAGES_CURRENT_YEAR, DATE_FORMAT_MESSAGES);
         textView.setText(dateFormatted);
     }
 

@@ -6,7 +6,7 @@
     <string name="activity_new_message">New conversation</string>
     <string name="enter_recipients">Recipient…</string>
     <string name="enter_contact">Enter recipient</string>
-    <string name="enter_message">Enter conversation…</string>
+    <string name="enter_message">Enter message…</string>
     <string name="background">Background</string>
     <string name="send_message">SEND</string>
 
@@ -56,6 +56,14 @@
     <string name="menu">Menu</string>
     <string name="recipent_button">addContactAsRecipentButton</string>
     <string name="new_message">New conversation</string>
+
+
+
+
+    <string name="open_camera_image">Open camera to take an image</string>
+    <string name="open_apps">Open and choose applications</string>
+    <string name="undo_enter_message">"Shrink enter message area to revile icons for camera and gallery "</string>
+    <string name="open_gallery">Open gallery</string>
 
 
 </resources>

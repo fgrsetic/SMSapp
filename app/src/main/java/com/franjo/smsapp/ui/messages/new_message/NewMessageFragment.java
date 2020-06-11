@@ -68,6 +68,7 @@ public class NewMessageFragment extends Fragment {
     }
 
     private void sendMessage() {
+
         binding.sendMessage.setOnClickListener(v -> {
             if (hasNumber() && hasText()) {
                 if (binding.addRecipientText.getText() != null && binding.enterMessageText.getText() != null) {
