@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JAVA-SMSapp.iml" filepath="$PROJECT_DIR$/.idea/modules/JAVA-SMSapp.iml" group="SMSapp" />
       <module fileurl="file://$PROJECT_DIR$/SMSapp.iml" filepath="$PROJECT_DIR$/SMSapp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="SMSapp/app" />
     </modules>
   </component>
 </project>
