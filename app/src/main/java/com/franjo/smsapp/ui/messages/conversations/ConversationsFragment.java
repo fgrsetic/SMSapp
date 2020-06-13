@@ -190,7 +190,7 @@ public class ConversationsFragment extends Fragment implements OnItemClickListen
     }
 
     private void onSearchClicked(MenuItem item) {
-        NavHostFragment.findNavController(this).navigate(R.id.search_messages_action);
+     //   NavHostFragment.findNavController(this).navigate(R.id.search_messages_action);
     }
 
     private void showFabVisibility() {

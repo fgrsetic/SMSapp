@@ -54,7 +54,6 @@ public class DetailsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_details, container, false);
-        binding.setLifecycleOwner(this);
 
         if (getArguments() != null) {
             conversation = DetailsFragmentArgs.fromBundle(getArguments()).getConversation();
@@ -63,6 +62,7 @@ public class DetailsFragment extends Fragment {
         DetailsViewModelFactory viewModelFactory = new DetailsViewModelFactory(conversation.getThreadId());
         viewModel = new ViewModelProvider(this, viewModelFactory).get(DetailsViewModel.class);
         binding.setViewModel(viewModel);
+        binding.setLifecycleOwner(this);
 
         return binding.getRoot();
     }
@@ -81,8 +81,8 @@ public class DetailsFragment extends Fragment {
         binding.fabGoToListEnd.hide();
 
         sendMessage();
-        animateArrow();
-        animateEditTextEnterMessage();
+//        animateArrow();
+//        animateEditTextEnterMessage();
         showScrollFabVisibility();
 
         //  pickGalleryPhoto();
@@ -145,31 +145,31 @@ public class DetailsFragment extends Fragment {
         startActivityForResult(intent, REQUEST_CAMERA);
     }
 
-    private void animateArrow() {
-        binding.ivRedoArrow.setOnClickListener(v -> {
-            binding.ivApps.setVisibility(View.VISIBLE);
-            binding.ivCamera.setVisibility(View.VISIBLE);
-            binding.ivGallery.setVisibility(View.VISIBLE);
-            binding.enterMessage.setVisibility(View.VISIBLE);
-            binding.ivRedoArrow.setVisibility(View.GONE);
-            binding.enterMessageFull.setVisibility(View.GONE);
-        });
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private void animateEditTextEnterMessage() {
-        binding.enterMessage.setOnTouchListener((v, event) -> {
-            binding.enterMessageFull.requestFocus();
-            binding.ivApps.setVisibility(View.GONE);
-            binding.ivCamera.setVisibility(View.GONE);
-            binding.ivGallery.setVisibility(View.GONE);
-            binding.enterMessage.setVisibility(View.GONE);
-            binding.ivRedoArrow.setVisibility(View.VISIBLE);
-            binding.enterMessageFull.setVisibility(View.VISIBLE);
-            showKeyboard(context);
-            return false;
-        });
-    }
+//    private void animateArrow() {
+//        binding.ivRedoArrow.setOnClickListener(v -> {
+//            binding.ivApps.setVisibility(View.VISIBLE);
+//            binding.ivCamera.setVisibility(View.VISIBLE);
+//            binding.ivGallery.setVisibility(View.VISIBLE);
+//            binding.enterMessage.setVisibility(View.VISIBLE);
+//            binding.ivRedoArrow.setVisibility(View.GONE);
+//            binding.enterMessageFull.setVisibility(View.GONE);
+//        });
+//    }
+//
+//    @SuppressLint("ClickableViewAccessibility")
+//    private void animateEditTextEnterMessage() {
+//        binding.enterMessage.setOnTouchListener((v, event) -> {
+//            binding.enterMessageFull.requestFocus();
+//
+//            binding.llImagesRoot.setVisibility(View.GONE);
+//            binding.enterMessage.setVisibility(View.GONE);
+//
+//            binding.ivRedoArrow.setVisibility(View.VISIBLE);
+//            binding.enterMessageFull.setVisibility(View.VISIBLE);
+//            showKeyboard(context);
+//            return false;
+//        });
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

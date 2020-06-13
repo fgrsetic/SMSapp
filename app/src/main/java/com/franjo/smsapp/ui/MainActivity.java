@@ -60,10 +60,10 @@ public class MainActivity extends AppCompatActivity {
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.new_message_dest) {
                 binding.navView.setVisibility(GONE);
-            } else if (destination.getId() == R.id.search_contacts_dest) {
-                binding.navView.setVisibility(GONE);
-            } else if (destination.getId() == R.id.search_messages_dest) {
-                binding.navView.setVisibility(GONE);
+//            } else if (destination.getId() == R.id.search_contacts_dest) {
+//                binding.navView.setVisibility(GONE);
+//            } else if (destination.getId() == R.id.search_messages_dest) {
+//                binding.navView.setVisibility(GONE);
             } else if (destination.getId() == R.id.conversations_details_dest) {
                 binding.navView.setVisibility(GONE);
             } else {

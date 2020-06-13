@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="56dp"
-            app:conversationsList="@{viewModel.showConversationsList}"
+            app:conversationList="@{viewModel.showConversationsList}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +45,6 @@
             app:srcCompat="@android:drawable/ic_menu_edit"
             app:tint="@color/colorPrimaryDark"
             tools:targetApi="lollipop" />
-
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_go_to_list_end"
