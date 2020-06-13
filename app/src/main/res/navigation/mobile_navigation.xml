@@ -6,7 +6,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/conversations_dest">
 
-
     <action
         android:id="@+id/conversations_action"
         app:destination="@id/conversations_dest"
@@ -26,7 +25,6 @@
         app:popExitAnim="@anim/slide_out_right"
         app:popUpTo="@id/contacts_dest"
         app:popUpToInclusive="true" />
-
 
     <!-- Conversations -->
     <fragment
@@ -57,17 +55,7 @@
 
         </action>
 
-        <action
-            android:id="@+id/search_messages_action"
-            app:destination="@id/search_messages_dest"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpToInclusive="false" />
-
     </fragment>
-
 
     <!-- Contacts -->
     <fragment
@@ -84,16 +72,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-        <action
-            android:id="@+id/search_contacts_action"
-            app:destination="@id/search_contacts_dest"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
-
     </fragment>
-
 
     <!-- Favorites -->
     <fragment
@@ -102,13 +81,11 @@
         android:label="@string/app_name"
         tools:layout="@layout/fragment_favorites" />
 
-
     <!-- New conversation -->
     <fragment
         android:id="@+id/new_message_dest"
         android:name="com.franjo.smsapp.ui.messages.new_message.NewMessageFragment"
         android:label="@string/new_message" />
-
 
     <!-- Conversations details-->
     <fragment
@@ -120,16 +97,5 @@
             app:argType="com.franjo.smsapp.domain.Conversation" />
 
     </fragment>
-
-
-    <!-- Search -->
-    <fragment
-        android:id="@+id/search_messages_dest"
-        android:name="com.franjo.smsapp.ui.messages.search.SearchMessagesFragment" />
-
-    <fragment
-        android:id="@+id/search_contacts_dest"
-        android:name="com.franjo.smsapp.ui.contacts.search.SearchContactsFragment" />
-
 
 </navigation>

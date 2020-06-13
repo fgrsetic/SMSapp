@@ -50,8 +50,11 @@ public class BindingAdaptersDetails {
 
     @BindingAdapter({"message", "previousMessageDateVisibility"})
     public static void bindMessageReceivedDateDetails(TextView textView, Message message, Message previousMsg) {
-        long timeStampPrevious = previousMsg.getDateMsgReceived();
-        setTimeTextVisibility(message.getDateMsgReceived(), timeStampPrevious, textView);
+        if (previousMsg != null) {
+            long timeStampPrevious = previousMsg.getDateMsgReceived();
+            setTimeTextVisibility(message.getDateMsgReceived(), timeStampPrevious, textView);
+        }
+
     }
 
     private static void setTimeTextVisibility(long dateMsgReceived, long timeStampPrevious, TextView textView) {
@@ -71,11 +74,15 @@ public class BindingAdaptersDetails {
         }
     }
 
-
     @BindingAdapter("detailsTime")
     public static void bindMessageTime(TextView textView, Message message) {
         String dateFormatted = DateFormatting.formatDetailsDate(message.getDateMsgReceived(), TIME_FORMAT_MESSAGES_DETAILS_);
         textView.setText(dateFormatted);
+    }
+
+    @BindingAdapter("onClickVisibility")
+    public static void setOnClickVisibility(View view, boolean isVisible) {
+        view.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
 

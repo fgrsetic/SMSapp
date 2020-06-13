@@ -55,7 +55,7 @@
                     android:focusable="true"
                     android:textColor="@color/primaryText"
                     android:textSize="18sp"
-                    app:contactsName="@{contact}"
+                    app:text="@{contact.name}"
                     app:layout_constraintBottom_toBottomOf="@+id/contactsImage"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/contactsImage"

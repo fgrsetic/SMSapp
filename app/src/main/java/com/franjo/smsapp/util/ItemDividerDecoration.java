@@ -39,7 +39,7 @@ public class ItemDividerDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void onDraw(@NonNull Canvas c, RecyclerView parent, @NonNull RecyclerView.State state) {
-        int left = convertDpToPx(72);
+        int left = convertDpToPx(80);
         int right = parent.getWidth() - convertDpToPx(16);
 
         int childCount = parent.getChildCount();
@@ -54,7 +54,7 @@ public class ItemDividerDecoration extends RecyclerView.ItemDecoration {
 
             divider.setBounds(left, top, right, bottom);
             divider.setTint(App.getAppContext().getResources().getColor(R.color.activity_background));
-            divider.setAlpha(150);
+            divider.setAlpha(255);
             divider.draw(c);
         }
     }

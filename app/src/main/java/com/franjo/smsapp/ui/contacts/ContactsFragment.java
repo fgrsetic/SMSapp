@@ -77,7 +77,7 @@ public class ContactsFragment extends Fragment {
     }
 
     private void onSearchClicked(MenuItem item) {
-        NavHostFragment.findNavController(this).navigate(R.id.search_contacts_dest);
+       // NavHostFragment.findNavController(this).navigate(R.id.search_contacts_dest);
     }
 
 }
